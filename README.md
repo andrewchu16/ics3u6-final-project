@@ -40,59 +40,21 @@ The main game takes place on a mostly 2-dimensional plane.
 
 ## Timeline
 
-May 25
-
-- Finish class diagram
-
-May 26
-
-- Submit proposal
-
-May 28 
-
-- Finish switching screens and menu screens
-
-May 30
-
-- Finish game entity superclass
-- Finish hitboxes
-
-June 1
-
-- Finish creating sprites
-
-June 3
-
-- Finish player that is animated and can move
-
-June 5
-
-- Finish item classes
-
-June 9
-
-- Finish game map system
-- Finish mini map
-
-June 11
-
-- Finish player inventory system
-- Finish player user interface
-
-June 14
-
-- Finish player attacks
-
-June 17
-
-- Finish enemies and enemy behaviour
-- Finish adding sounds
-
-June 18
-
-- Finish debugging game
-
-June 19
-
-- Finish video
-- Submit project
+- [ ] Finish class diagram
+- [ ] Submit proposal
+- [ ] Finish switching screens and menu screens
+- [ ] Finish game entity superclass
+- [ ] Finish hitboxes
+- [ ] Finish creating sprites
+- [ ] Finish player that is animated and can move
+- [ ] Finish item classes
+- [ ] Finish game map system
+- [ ] Finish mini map
+- [ ] Finish player inventory system
+- [ ] Finish player user interface
+- [ ] Finish player attacks
+- [ ] Finish enemies and enemy behaviour
+- [ ] Finish adding sounds
+- [ ] Finish debugging game
+- [ ] Finish video
+- [ ] Submit project
