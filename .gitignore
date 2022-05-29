@@ -1,1 +1,5 @@
-*.class
+# Ignore java build files.
+bin/*.class
+
+# Ignore user data.
+data/*

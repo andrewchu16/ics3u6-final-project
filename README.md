@@ -40,8 +40,8 @@ The main game takes place on a mostly 2-dimensional plane.
 
 ## Timeline
 
-- [ ] Finish class diagram
-- [ ] Submit proposal
+- [x] Finish class diagram
+- [x] Submit proposal
 - [ ] Finish switching screens and menu screens
 - [ ] Finish game entity superclass
 - [ ] Finish hitboxes
