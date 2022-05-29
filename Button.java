@@ -9,10 +9,8 @@ import java.awt.event.MouseMotionListener;
 
 public class Button {
     private Hitbox hitbox;
-
     private String name;
     private ButtonHandler handler;
-
     private Text text;
 
     private Color hoverColor;
@@ -29,10 +27,8 @@ public class Button {
     public Button(int x, int y, int width, int height, String name, String text,
                 Font font, Color hoverColor, Color unpressedColor) {
         this.hitbox = new Hitbox(x, y, width, height);
-
         this.name = name;
         this.handler = null;
-
         this.text = new Text(text, font, x + (width / 2), y + (height / 2));
 
         this.hoverColor = hoverColor;
@@ -135,7 +131,7 @@ public class Button {
 
             if (hitbox.contains(mouseX, mouseY)) {
                 if (handler != null) {
-                    handler.press();
+                    handler.handlePress();
                 }
             }
         }
@@ -172,12 +168,12 @@ public class Button {
             if (hitbox.contains(mouseX, mouseY)) {
                 activeColor = hoverColor;
                 if (handler != null) {
-                    handler.hover();
+                    handler.handleHover();
                 }
             } else {
                 activeColor = unpressedColor;
                 if (handler != null) {
-                    handler.unpress();
+                    handler.handleUnpress();
                 }
             }
         }
@@ -186,18 +182,15 @@ public class Button {
     }
     
     abstract public static class ButtonHandler {
-        public void press() {}
-        public void hover() {}
-        public void unpress() {}
+        public void handlePress() {}
+        public void handleHover() {}
+        public void handleUnpress() {}
     }
 
     public static class MenuButton extends Button {
-        private static final int MENU_BUTTON_WIDTH = 200;
-        private static final int MENU_BUTTON_HEIGHT = 70;
-
         public MenuButton(int x, int y, String name, String text) {
-            super(x, y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT, name, text, Const.buttonFont, 
-                    Const.DARK_BLUE, Const.LIGHT_BLUE);
+            super(x, y, 200, 70, name, text, Const.buttonFont, Const.DARK_BLUE, 
+                    Const.LIGHT_BLUE);
             
             // Resize the button if it is too small for the text.
             Text tmpText = new Text(text, Const.buttonFont, 0, 0);

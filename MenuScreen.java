@@ -36,6 +36,7 @@ public class MenuScreen extends Screen {
         this.addButton(howToPlayButton);
     }
 
+    @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 

@@ -48,7 +48,7 @@ public class Window {
             this.swapScreenName = swapScreenName;
         }
 
-        public void press() {
+        public void handlePress() {
             switchToScreen(swapScreenName);
         }
     }
