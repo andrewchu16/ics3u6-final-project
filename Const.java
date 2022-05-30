@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.GradientPaint;
 
+import javax.imageio.ImageIO;
+
 import java.awt.Font;
 import java.io.File;
 
@@ -50,6 +52,7 @@ public class Const {
 
     // Images.
     public static BufferedImage dayScreenBackground;
+    public static BufferedImage howToPlayScreenBackground;
 
     // Audio.
 
@@ -82,6 +85,14 @@ public class Const {
         // Draw the sun.
         graphics.setColor(YELLOW2);
         graphics.fillOval(850, 60, 70, 70);
+
+        // Load how to play screen background.
+        try {
+            howToPlayScreenBackground = ImageIO.read(new File("images/howToPlay.png"));
+        } catch (IOException ex) {
+            System.out.println("Error: Could not load how to play screen image.");
+            howToPlayScreenBackground = dayScreenBackground;
+        }
     }
 
     /**

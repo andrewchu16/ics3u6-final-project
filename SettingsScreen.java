@@ -26,14 +26,13 @@ public class SettingsScreen extends Screen {
         this.debugText = new Text("Debug", Const.buttonFont, Const.WIDTH / 2 - 120, 430);
 
         // Instantiate buttons and text field.
-        Button goBackButton = new Button.BackButton(30, 50);
+        Button goBackButton = new Button.BackButton(30, 50, window);
         TextField fpsTextField = new TextField(Const.WIDTH / 2 + 100, 300, 100, 60, 
                 "fps text field", Integer.toString(window.getFPS()), Const.buttonFont, 
                 Const.LIGHT_GRAY2, Const.WHITE, TextField.INCLUDE_DIGITS, 3);
         Button debugButton = this.createDebugButton(game);
 
         // Add button press effects.
-        goBackButton.addHandler(window.new ButtonScreenSwapper(window.getPrevScreenName()));
         goBackButton.addHandler(new Button.ButtonHandler() {
             public void handlePress() {
                 if (fpsTextField.valid(fpsTextField.getText())) {

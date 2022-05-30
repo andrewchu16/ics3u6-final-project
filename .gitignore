@@ -1,5 +1,8 @@
 # Ignore java build files.
 bin/*.class
 
+# Ignore image editing files.
+images/*.pdn
+
 # Ignore user data.
-data/*
+data/
