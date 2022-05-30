@@ -9,7 +9,6 @@ public class MenuScreen extends Screen {
     public MenuScreen(Window window) {
         super(Const.dayScreenBackground);
 
-        // Set screen name.
         this.setName(Const.MENU_SCREEN_NAME);
 
         // Instantiate title.
@@ -24,10 +23,10 @@ public class MenuScreen extends Screen {
         Button howToPlayButton = new Button.MenuButton(50, 640, "how to play button", "How To Play");
 
         // Add button press effects.
-        continueButton.setHandler(window.new ButtonScreenSwapper(Const.GAME_SCREEN_NAME));
-        newGameButton.setHandler(window.new ButtonScreenSwapper(Const.SELECT_SCREEN_NAME));
-        settingsButton.setHandler(window.new ButtonScreenSwapper(Const.SETTINGS_SCREEN_NAME));
-        howToPlayButton.setHandler(window.new ButtonScreenSwapper(Const.HOW_TO_PLAY_SCREEN_NAME));
+        continueButton.addHandler(window.new ButtonScreenSwapper(Const.GAME_SCREEN_NAME));
+        newGameButton.addHandler(window.new ButtonScreenSwapper(Const.SELECT_SCREEN_NAME));
+        settingsButton.addHandler(window.new ButtonScreenSwapper(Const.SETTINGS_SCREEN_NAME));
+        howToPlayButton.addHandler(window.new ButtonScreenSwapper(Const.HOW_TO_PLAY_SCREEN_NAME));
         
         // Add buttons to screen.
         this.addButton(continueButton);
@@ -46,5 +45,7 @@ public class MenuScreen extends Screen {
 
         graphics.setColor(Const.BLACK);
         this.titleText.draw(graphics);
+
+        this.drawButtons(graphics);
     }
 }

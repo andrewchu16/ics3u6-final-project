@@ -55,8 +55,15 @@ abstract public class Screen extends JPanel {
 
     public void addButton(Button button) {
         this.buttons.add(button);
-        this.addMouseListener(button.new ButtonMouseListener());
-        this.addMouseMotionListener(button.new ButtonMouseMotionListener());
+
+        if (button instanceof TextField) {
+            TextField textField = (TextField) button;
+            this.addMouseListener(textField.new TextFieldMouseListener());
+            this.addKeyListener(textField.new TextFieldKeyListener());
+        } else {
+            this.addMouseListener(button.new ButtonMouseListener());
+            this.addMouseMotionListener(button.new ButtonMouseMotionListener());
+        }
     }
 
     public void paintComponent(Graphics graphics) {
@@ -65,7 +72,9 @@ abstract public class Screen extends JPanel {
         if (this.background != null) {
             this.background.draw(graphics);
         }
+    }
 
+    public void drawButtons(Graphics graphics) {
         for (Button button: this.buttons) {
             button.draw(graphics);
         }

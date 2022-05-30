@@ -2,50 +2,55 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import java.util.ArrayList;
+
 public class Button {
     private Hitbox hitbox;
     private String name;
-    private ButtonHandler handler;
+    private ArrayList<ButtonHandler> handlers;
     private Text text;
 
     private Color hoverColor;
-    private Color pressedColor;
     private Color unpressedColor;
     private Color activeColor;
 
-    public Button(int x, int y, int width, int height, String name, String text, 
-                Font font, Color hoverColor, Color pressedColor, Color unpressedColor) {
-        this(x, y, width, height, name, text, font, hoverColor, unpressedColor);
-        this.pressedColor = pressedColor;
-    }
 
     public Button(int x, int y, int width, int height, String name, String text,
                 Font font, Color hoverColor, Color unpressedColor) {
         this.hitbox = new Hitbox(x, y, width, height);
         this.name = name;
-        this.handler = null;
+        this.handlers = new ArrayList<ButtonHandler>();
         this.text = new Text(text, font, x + (width / 2), y + (height / 2));
 
         this.hoverColor = hoverColor;
-        this.pressedColor = unpressedColor;
         this.unpressedColor = unpressedColor;
         this.activeColor = unpressedColor;
     }
 
     public void draw(Graphics graphics) {
+        // Draw button body.
         graphics.setColor(this.activeColor);
         ((Graphics2D) graphics).fill(this.hitbox.getRect());
+        ((Graphics2D) graphics).setStroke(new BasicStroke(1));
+        graphics.setColor(Const.BLACK);
+        ((Graphics2D) graphics).draw(this.hitbox.getRect());
 
+        // Draw text in button.
         if (this.text != null) {
             this.text.draw(graphics);
         }
     }
 
+    public Hitbox getHitbox() {
+        return this.hitbox;
+    }
+    
     public int getX() {
         return this.hitbox.getX();
     }
@@ -72,10 +77,6 @@ public class Button {
 
     public Color getHoverColor() {
         return this.hoverColor;
-    }
-
-    public Color getPressedColor() {
-        return this.pressedColor;
     }
 
     public Color getUnpressedColor() {
@@ -108,10 +109,6 @@ public class Button {
         this.hoverColor = newHoverColor;
     }
 
-    public void setPressedColor(Color newPressedColor) {
-        this.pressedColor = newPressedColor;
-    }
-
     public void setUnpressedColor(Color newUnpressedColor) {
         this.unpressedColor = newUnpressedColor;
     }
@@ -120,8 +117,8 @@ public class Button {
         this.activeColor = newActiveColor;
     }
     
-    public void setHandler(ButtonHandler handler) {
-        this.handler = handler;
+    public void addHandler(ButtonHandler handler) {
+        this.handlers.add(handler);
     }
 
     public class ButtonMouseListener implements MouseListener {
@@ -130,28 +127,22 @@ public class Button {
             int mouseY = event.getY();
 
             if (hitbox.contains(mouseX, mouseY)) {
-                if (handler != null) {
+                for (ButtonHandler handler: handlers) {
                     handler.handlePress();
                 }
             }
         }
-
-        public void mousePressed(MouseEvent event) {
-            int mouseX = event.getX();
-            int mouseY = event.getY();
-
-            if (hitbox.contains(mouseX, mouseY)) {
-                activeColor = pressedColor;
-            }
-        }
+        
+        public void mousePressed(MouseEvent event) {}
 
         public void mouseReleased(MouseEvent event) {
             int mouseX = event.getX();
             int mouseY = event.getY();
 
             if (hitbox.contains(mouseX, mouseY)) {
-                activeColor = hoverColor;
-            } else {
+                for (ButtonHandler handler: handlers) {
+                    handler.handleUnpress();
+                }
                 activeColor = unpressedColor;
             }
         }
@@ -166,31 +157,29 @@ public class Button {
             int mouseY = event.getY();
 
             if (hitbox.contains(mouseX, mouseY)) {
+                // Handle user hovering.
                 activeColor = hoverColor;
-                if (handler != null) {
+                for (ButtonHandler handler: handlers) {
                     handler.handleHover();
                 }
             } else {
                 activeColor = unpressedColor;
-                if (handler != null) {
-                    handler.handleUnpress();
-                }
             }
         }
 
         public void mouseDragged(MouseEvent event) {}
     }
     
-    abstract public static class ButtonHandler {
-        public void handlePress() {}
-        public void handleHover() {}
-        public void handleUnpress() {}
+    public interface ButtonHandler {
+        public void handlePress();
+        public void handleHover();
+        public void handleUnpress();
     }
 
     public static class MenuButton extends Button {
         public MenuButton(int x, int y, String name, String text) {
             super(x, y, 200, 70, name, text, Const.buttonFont, Const.DARK_BLUE, 
-                    Const.LIGHT_BLUE);
+                    Const.BLUE);
             
             // Resize the button if it is too small for the text.
             Text tmpText = new Text(text, Const.buttonFont, 0, 0);
@@ -199,6 +188,13 @@ public class Button {
 
             this.setWidth(newWidth);
             this.setHeight(newHeight);
+        }
+    }
+
+    public static class BackButton extends Button {
+        public BackButton(int x, int y) {
+            super(x, y, 150, 60, "go back button", "Go Back", Const.buttonFont, 
+                    Const.DARK_BLUE, Const.BLUE);
         }
     }
 }

@@ -67,6 +67,17 @@ public class Text {
         this.calculateCoord();
     }
 
+    public static int getTextWidth(String text, Font font) {
+        AffineTransform affineTransform = new AffineTransform();
+        FontRenderContext frc = new FontRenderContext(affineTransform, true, true);     
+        int textWidth = (int) (font.getStringBounds(text, frc).getWidth());
+        return textWidth;
+    }
+
+    public static int getTextHeight(Font font) {
+        return font.getSize() / 2;
+    }
+
     public void draw(Graphics graphics) {
         ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);
