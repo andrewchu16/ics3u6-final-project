@@ -27,7 +27,7 @@ public class AcrossTheSandsGame {
         this.settingsScreen = new SettingsScreen(this.window, this.game);
         this.howToPlayScreen = new HowToPlayScreen(this.window);
         this.selectScreen = new SelectScreen(this.window, this.game);
-        
+        this.gameScreen = new GameScreen(this.window, this.game);
         this.gameOverScreen = new GameOverScreen(this.window);
         this.pauseScreen = new PauseScreen(this.window);
         
@@ -35,7 +35,7 @@ public class AcrossTheSandsGame {
         this.window.addScreen(this.settingsScreen);
         this.window.addScreen(this.howToPlayScreen);
         this.window.addScreen(this.selectScreen);
-
+        this.window.addScreen(this.gameScreen);
         this.window.addScreen(this.gameOverScreen);
         this.window.addScreen(this.pauseScreen);
     }
