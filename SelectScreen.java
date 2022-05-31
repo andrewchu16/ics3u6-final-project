@@ -17,7 +17,7 @@ public class SelectScreen extends Screen {
         this.setName(Const.SELECT_SCREEN_NAME);
 
         // Instantiate title.
-        this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "Settings", 
+        this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "New Game", 
                 Const.subtitleFont, Const.WHITE2);
 
         // Instantiate select center background rectangle.
