@@ -5,6 +5,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 public class SettingsScreen extends Screen {
+    private Text titleText;
+    private Rectangle titleRect;
     private Rectangle centerRect;
     private Rectangle fpsRect;
     private Text fpsText;
@@ -15,6 +17,11 @@ public class SettingsScreen extends Screen {
         super(Const.dayScreenBackground);
 
         this.setName(Const.SETTINGS_SCREEN_NAME);
+
+        // Instantiate title.
+        this.titleRect = new Rectangle(Const.WIDTH / 2 - 100, 60, 200, 80);
+        this.titleText = new Text("Settings", Const.subtitleFont, (int) this.titleRect.getCenterX(),
+                (int) this.titleRect.getCenterY());
 
         // Instantiate settings center background rectangle.
         this.centerRect = new Rectangle(Const.WIDTH / 2 - 320, 160, 640, 500);
@@ -106,6 +113,13 @@ public class SettingsScreen extends Screen {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
+
+        // Draw title.
+        graphics.setColor(Const.WHITE2);
+        ((Graphics2D) graphics).fill(this.titleRect);
+        
+        graphics.setColor(Const.BLACK);
+        this.titleText.draw(graphics);
 
         // Draw center background rectangle.
         graphics.setColor(Const.LIGHT_BLUE2);
