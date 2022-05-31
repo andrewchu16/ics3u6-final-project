@@ -3,7 +3,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -45,6 +44,10 @@ public class Button {
         if (this.text != null) {
             this.text.draw(graphics);
         }
+    }
+
+    public boolean contains(int x, int y) {
+        return this.hitbox.contains(x, y);
     }
 
     public Hitbox getHitbox() {
@@ -126,7 +129,7 @@ public class Button {
             int mouseX = event.getX();
             int mouseY = event.getY();
 
-            if (hitbox.contains(mouseX, mouseY)) {
+            if (contains(mouseX, mouseY)) {
                 for (ButtonHandler handler: handlers) {
                     handler.handlePress();
                 }
@@ -139,7 +142,7 @@ public class Button {
             int mouseX = event.getX();
             int mouseY = event.getY();
 
-            if (hitbox.contains(mouseX, mouseY)) {
+            if (contains(mouseX, mouseY)) {
                 for (ButtonHandler handler: handlers) {
                     handler.handleUnpress();
                 }
@@ -156,7 +159,7 @@ public class Button {
             int mouseX = event.getX();
             int mouseY = event.getY();
 
-            if (hitbox.contains(mouseX, mouseY)) {
+            if (contains(mouseX, mouseY)) {
                 // Handle user hovering.
                 activeColor = hoverColor;
                 for (ButtonHandler handler: handlers) {
@@ -174,34 +177,5 @@ public class Button {
         public void handlePress();
         public void handleHover();
         public void handleUnpress();
-    }
-
-    public static class MenuButton extends Button {
-        public MenuButton(int x, int y, String name, String text) {
-            super(x, y, 200, 70, name, text, Const.buttonFont, Const.DARK_BLUE, 
-                    Const.BLUE);
-            
-            // Resize the button if it is too small for the text.
-            Text tmpText = new Text(text, Const.buttonFont, 0, 0);
-            int newWidth = Math.max(this.getWidth(), tmpText.getWidth() + 20);
-            int newHeight = Math.max(this.getHeight(), tmpText.getHeight());
-
-            this.setWidth(newWidth);
-            this.setHeight(newHeight);
-        }
-    }
-
-    public static class BackButton extends Button {
-        public BackButton(int x, int y, Window window) {
-            super(x, y, 150, 60, "go back button", "Go Back", Const.buttonFont, 
-                    Const.DARK_BLUE, Const.BLUE);
-
-            this.addHandler(window.new ScreenSwapperButton(window.getPrevScreenName()));
-        }
-
-        public BackButton(int x, int y) {
-            super(x, y, 150, 60, "go back button", "Go Back", Const.buttonFont,
-                    Const.DARK_BLUE, Const.BLUE);
-        }
     }
 }

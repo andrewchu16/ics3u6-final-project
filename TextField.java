@@ -18,11 +18,12 @@ public class TextField extends Button {
     private ArrayList<TextFieldHandler> textFieldHandlers;
 
     // Filters for valid input of the text field.
-    public static final int INCLUDE_DIGITS  = 0b0001;
-    public static final int INCLUDE_UPPER   = 0b0010;
-    public static final int INCLUDE_LOWER   = 0b0100;
-    public static final int INCLUDE_SPACE   = 0b1000;
-    public static final int INCLUDE_ALL     = 0b1111; 
+    public static final int INCLUDE_DIGITS = 0b0001;
+    public static final int INCLUDE_UPPER  = 0b0010;
+    public static final int INCLUDE_LOWER  = 0b0100;
+    public static final int INCLUDE_SPACE  = 0b1000;
+    public static final int INCLUDE_ALPHA  = 0b0110;
+    public static final int INCLUDE_ALL    = 0b1111; 
 
     public static final int NO_MAX_CHARS = -1;
 
@@ -121,6 +122,10 @@ public class TextField extends Button {
 
     public class TextFieldKeyListener implements KeyListener {
         public void keyPressed(KeyEvent event) {
+            if (!active) {
+                return;
+            }
+
             int keyCode = event.getKeyCode();
 
             if (keyCode == KeyEvent.VK_BACK_SPACE) {
@@ -133,11 +138,12 @@ public class TextField extends Button {
         }
 
         public void keyTyped(KeyEvent event) {
-            char chr = event.getKeyChar();
-
-            if (active) {
-                addChar(chr);
+            if (!active) {
+                return;
             }
+
+            char chr = event.getKeyChar();
+            addChar(chr);
         }
 
         public void keyReleased(KeyEvent evnet) {}

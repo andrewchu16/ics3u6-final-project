@@ -28,7 +28,7 @@ public class Window {
 
         this.prevScreenName = Const.MENU_SCREEN_NAME;
 
-        this.drawLoop = new Timer(Const.FRAME_PERIOD, new ActionListener() {
+        this.drawLoop = new Timer(Const.DEFAULT_FRAME_PERIOD, new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 draw();
             }

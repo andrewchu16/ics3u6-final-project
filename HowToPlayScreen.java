@@ -1,10 +1,7 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 public class HowToPlayScreen extends Screen {
-    private Text titleText;
-    private Rectangle titleRect;
+    private Label titleLabel;
     private Sprite textSprite;
 
     public HowToPlayScreen(Window window) {
@@ -13,15 +10,14 @@ public class HowToPlayScreen extends Screen {
         this.setName(Const.HOW_TO_PLAY_SCREEN_NAME);
 
         // Instantiate title.
-        this.titleRect = new Rectangle(Const.WIDTH / 2 - 100, 60, 200, 80);
-        this.titleText = new Text("How To Play", Const.subtitleFont, (int) this.titleRect.getCenterX(),
-                (int) this.titleRect.getCenterY());
+        this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "How To Play", 
+                Const.subtitleFont, Const.WHITE2);
 
         // Instantiate how to play text image.
         this.textSprite = new Sprite(0, 0, 1, Const.howToPlayScreenText);
 
         // Instantiate buttons.
-        Button goBackButton = new Button.BackButton(30, 50, window);
+        Button goBackButton = new BackButton(30, 50, window);
 
         // Add buttons to screen.
         this.addButton(goBackButton);
@@ -32,11 +28,7 @@ public class HowToPlayScreen extends Screen {
         super.paintComponent(graphics);
 
         // Draw title.
-        graphics.setColor(Const.WHITE2);
-        ((Graphics2D) graphics).fill(this.titleRect);
-        
-        graphics.setColor(Const.BLACK);
-        this.titleText.draw(graphics);
+        this.titleLabel.draw(graphics);
 
         // Draw the text.
         this.textSprite.draw(graphics);

@@ -1,10 +1,7 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 public class MenuScreen extends Screen {
-    private Text titleText;
-    private Rectangle titleRect;
+    private Label titleLabel;
 
     public MenuScreen(Window window) {
         super(Const.dayScreenBackground);
@@ -12,15 +9,14 @@ public class MenuScreen extends Screen {
         this.setName(Const.MENU_SCREEN_NAME);
 
         // Instantiate title.
-        this.titleRect = new Rectangle(Const.WIDTH / 2 - 170, 120, 380, 140);
-        this.titleText = new Text("Across The Sands", Const.titleFont, 
-                (int) this.titleRect.getCenterX(), (int) this.titleRect.getCenterY());
+        this.titleLabel = new Label(Const.WIDTH / 2 - 170, 120, 380, 140, "Across The Sands",
+                Const.titleFont, Const.WHITE2);
 
         // Instantiate buttons.
-        Button continueButton = new Button.MenuButton(50, 400, "continue button", "Continue");
-        Button newGameButton = new Button.MenuButton(50, 480, "new game button", "New Game");
-        Button settingsButton = new Button.MenuButton(50, 560, "settings button", "Settings");
-        Button howToPlayButton = new Button.MenuButton(50, 640, "how to play button", "How To Play");
+        Button continueButton = new MenuButton(50, 400, "continue button", "Continue");
+        Button newGameButton = new MenuButton(50, 480, "new game button", "New Game");
+        Button settingsButton = new MenuButton(50, 560, "settings button", "Settings");
+        Button howToPlayButton = new MenuButton(50, 640, "how to play button", "How To Play");
 
         // Add button press effects.
         continueButton.addHandler(window.new ScreenSwapperButton(Const.GAME_SCREEN_NAME));
@@ -40,12 +36,9 @@ public class MenuScreen extends Screen {
         super.paintComponent(graphics);
 
         // Draw title.
-        graphics.setColor(Const.WHITE2);
-        ((Graphics2D) graphics).fill(this.titleRect);
+        this.titleLabel.draw(graphics);
 
-        graphics.setColor(Const.BLACK);
-        this.titleText.draw(graphics);
-
+        // Draw button.
         this.drawButtons(graphics);
     }
 }

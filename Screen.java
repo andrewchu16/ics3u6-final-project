@@ -59,6 +59,7 @@ abstract public class Screen extends JPanel {
         if (button instanceof TextField) {
             TextField textField = (TextField) button;
             this.addMouseListener(textField.new TextFieldMouseListener());
+            this.addMouseMotionListener(textField.new ButtonMouseMotionListener());
             this.addKeyListener(textField.new TextFieldKeyListener());
         } else {
             this.addMouseListener(button.new ButtonMouseListener());

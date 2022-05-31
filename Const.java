@@ -1,9 +1,8 @@
 import java.awt.Color;
 
-import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.GradientPaint;
-
+import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import java.awt.Font;
@@ -20,7 +19,7 @@ public class Const {
     // Update rates.
     public static final int MS_PER_S = 1000;
 
-    public static final int FRAME_PERIOD = MS_PER_S / 60;
+    public static final int DEFAULT_FRAME_PERIOD = MS_PER_S / 60;
     public static final int UPDATE_PERIOD = MS_PER_S / 45;
 
     // Labels for the different screens.
@@ -50,10 +49,11 @@ public class Const {
     public static final Color GRAY = new Color(57, 70, 72);
     public static final Color BLACK = new Color(14, 38, 47);
 
-    // Difficulty levels.
-    public static final String EASY_DIFFICULTY = "Easy";
-    public static final String MEDIUM_DIFFICULTY = "Medium";
-    public static final String HARD_DIFFICULTY = "Hard";
+    // Directions.
+    public static final int UP = 1;
+    public static final int LEFT = 2;
+    public static final int DOWN = 3;
+    public static final int RIGHT = 4;
 
     // Images.
     public static BufferedImage dayScreenBackground;
@@ -64,12 +64,12 @@ public class Const {
 
     // Fonts.
     private static final int MENU_BUTTON_FONT_SIZE = 30;
-    private static final int BACK_BUTTON_FONT_SIZE = 20;
+    private static final int SMALL_BUTTON_FONT_SIZE = 24;
     private static final int TITLE_FONT_SIZE = 64;
     private static final int SUBTITLE_FONT_SIZE = 50;
 
     public static Font buttonFont;
-    public static Font backButtonFont;
+    public static Font smallButtonFont;
     public static Font titleFont;
     public static Font subtitleFont;
 
@@ -79,7 +79,7 @@ public class Const {
     public static void loadImages() {
         // Create the day screen background.
         dayScreenBackground = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = (Graphics2D) dayScreenBackground.getGraphics();
+        Graphics2D graphics = (Graphics2D) dayScreenBackground.createGraphics();
         // Draw the sky.
         graphics.setColor(LIGHT_BLUE1);
         graphics.fillRect(0, 0, WIDTH, 500);
@@ -109,7 +109,7 @@ public class Const {
      */
     public static void loadFonts() {
         buttonFont = new Font("Sans-Serif", Font.PLAIN, MENU_BUTTON_FONT_SIZE);
-        backButtonFont = new Font("Sans-Serif", Font.PLAIN, BACK_BUTTON_FONT_SIZE);
+        smallButtonFont = new Font("Sans-Serif", Font.PLAIN, SMALL_BUTTON_FONT_SIZE);
 
         // Load title font.
         try {

@@ -5,13 +5,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 public class SettingsScreen extends Screen {
-    private Text titleText;
-    private Rectangle titleRect;
+    private Label titleLabel;
+    private Label fpsLabel;
+    private Label debugLabel;
+
     private Rectangle centerRect;
-    private Rectangle fpsRect;
-    private Text fpsText;
-    private Rectangle debugRect;
-    private Text debugText;
 
     public SettingsScreen(Window window, Game game) {
         super(Const.dayScreenBackground);
@@ -19,21 +17,20 @@ public class SettingsScreen extends Screen {
         this.setName(Const.SETTINGS_SCREEN_NAME);
 
         // Instantiate title.
-        this.titleRect = new Rectangle(Const.WIDTH / 2 - 100, 60, 200, 80);
-        this.titleText = new Text("Settings", Const.subtitleFont, (int) this.titleRect.getCenterX(),
-                (int) this.titleRect.getCenterY());
+        this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "Settings", 
+                Const.subtitleFont, Const.WHITE2);
 
         // Instantiate settings center background rectangle.
         this.centerRect = new Rectangle(Const.WIDTH / 2 - 320, 160, 640, 500);
         
         // Instantiate button labels.
-        this.fpsRect = new Rectangle(Const.WIDTH / 2 - 180, 300, 120, 60);
-        this.fpsText = new Text("FPS", Const.buttonFont, Const.WIDTH / 2 - 120, 330);
-        this.debugRect = new Rectangle(Const.WIDTH / 2 - 180, 400, 120, 60);
-        this.debugText = new Text("Debug", Const.buttonFont, Const.WIDTH / 2 - 120, 430);
-
+        this.fpsLabel = new Label(Const.WIDTH / 2 - 180, 300, 120, 60, "FPS", 
+                Const.buttonFont, Const.WHITE);
+        this.debugLabel = new Label(Const.WIDTH / 2 - 180, 400, 120, 60, "Debug",
+                Const.buttonFont, Const.WHITE);
+                
         // Instantiate buttons and text field.
-        Button goBackButton = new Button.BackButton(30, 50, window);
+        Button goBackButton = new BackButton(30, 50, window);
         TextField fpsTextField = new TextField(Const.WIDTH / 2 + 100, 300, 100, 60, 
                 "fps text field", Integer.toString(window.getFPS()), Const.buttonFont, 
                 Const.LIGHT_GRAY2, Const.WHITE, TextField.INCLUDE_DIGITS, 3);
@@ -115,26 +112,18 @@ public class SettingsScreen extends Screen {
         super.paintComponent(graphics);
 
         // Draw title.
-        graphics.setColor(Const.WHITE2);
-        ((Graphics2D) graphics).fill(this.titleRect);
-        
-        graphics.setColor(Const.BLACK);
-        this.titleText.draw(graphics);
+        this.titleLabel.draw(graphics);
 
         // Draw center background rectangle.
-        graphics.setColor(Const.LIGHT_BLUE2);
+        graphics.setColor(Const.LIGHT_BLUE1);
         ((Graphics2D) graphics).fill(this.centerRect);
         graphics.setColor(Const.BLACK);
         ((Graphics2D) graphics).setStroke(new BasicStroke(4));
         ((Graphics2D) graphics).draw(this.centerRect);
 
         // Draw button labels.
-        graphics.setColor(Const.WHITE);
-        ((Graphics2D) graphics).fill(this.fpsRect);
-        ((Graphics2D) graphics).fill(this.debugRect);
-
-        this.fpsText.draw(graphics);
-        this.debugText.draw(graphics);
+        this.fpsLabel.draw(graphics);
+        this.debugLabel.draw(graphics);
 
         // Draw buttons.
         this.drawButtons(graphics);

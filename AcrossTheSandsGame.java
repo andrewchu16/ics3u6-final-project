@@ -26,7 +26,7 @@ public class AcrossTheSandsGame {
         this.menuScreen = new MenuScreen(this.window);
         this.settingsScreen = new SettingsScreen(this.window, this.game);
         this.howToPlayScreen = new HowToPlayScreen(this.window);
-        this.selectScreen = new SelectScreen(this.window);
+        this.selectScreen = new SelectScreen(this.window, this.game);
         
         this.window.addScreen(this.menuScreen);
         this.window.addScreen(this.settingsScreen);
