@@ -196,7 +196,12 @@ public class Button {
             super(x, y, 150, 60, "go back button", "Go Back", Const.buttonFont, 
                     Const.DARK_BLUE, Const.BLUE);
 
-            this.addHandler(window.new ButtonScreenSwapper(window.getPrevScreenName()));
+            this.addHandler(window.new ScreenSwapperButton(window.getPrevScreenName()));
+        }
+
+        public BackButton(int x, int y) {
+            super(x, y, 150, 60, "go back button", "Go Back", Const.buttonFont,
+                    Const.DARK_BLUE, Const.BLUE);
         }
     }
 }

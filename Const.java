@@ -50,9 +50,15 @@ public class Const {
     public static final Color GRAY = new Color(57, 70, 72);
     public static final Color BLACK = new Color(14, 38, 47);
 
+    // Difficulty levels.
+    public static final String EASY_DIFFICULTY = "Easy";
+    public static final String MEDIUM_DIFFICULTY = "Medium";
+    public static final String HARD_DIFFICULTY = "Hard";
+
     // Images.
     public static BufferedImage dayScreenBackground;
-    public static BufferedImage howToPlayScreenBackground;
+    public static BufferedImage nightScreenBackground;
+    public static BufferedImage howToPlayScreenText;
 
     // Audio.
 
@@ -88,10 +94,12 @@ public class Const {
 
         // Load how to play screen background.
         try {
-            howToPlayScreenBackground = ImageIO.read(new File("images/howToPlay.png"));
+            howToPlayScreenText = ImageIO.read(new File("images/howToPlay.png"));
+            nightScreenBackground = ImageIO.read(new File("images/nightScreenBackground.png"));
         } catch (IOException ex) {
             System.out.println("Error: Could not load how to play screen image.");
-            howToPlayScreenBackground = dayScreenBackground;
+            howToPlayScreenText = dayScreenBackground;
+            nightScreenBackground = dayScreenBackground;
         }
     }
 

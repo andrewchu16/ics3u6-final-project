@@ -87,10 +87,10 @@ public class Window {
         this.drawLoop.setDelay(Const.MS_PER_S / fps);
     }
     
-    public class ButtonScreenSwapper implements Button.ButtonHandler {
+    public class ScreenSwapperButton implements Button.ButtonHandler {
         private String swapScreenName;
 
-        public ButtonScreenSwapper(String swapScreenName) {
+        public ScreenSwapperButton(String swapScreenName) {
             this.swapScreenName = swapScreenName;
         }
 
