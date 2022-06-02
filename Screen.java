@@ -27,12 +27,12 @@ abstract public class Screen extends JPanel {
 
     public Screen(String backgroundPicName) {
         this();
-        this.background = new Sprite(0, 0, 1, backgroundPicName);
+        this.background = new Sprite(0, 0, backgroundPicName);
     }
 
     public Screen(BufferedImage backgroundImage) {
         this();
-        this.background = new Sprite(0, 0, 1, backgroundImage);
+        this.background = new Sprite(0, 0, backgroundImage);
     }
 
     public Button getButton(String buttonName) {

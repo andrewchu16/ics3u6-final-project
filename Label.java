@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.awt.Font;
 import java.awt.Color;
 
-public class Label {
+public class Label implements Drawable {
     private Rectangle rect;
     private Text text;
     private Color bodyColor;
@@ -21,6 +21,7 @@ public class Label {
         this.text.setText(text);
     }
 
+    @Override
     public void draw(Graphics graphics) {
         graphics.setColor(this.bodyColor);
         ((Graphics2D) graphics).fill(this.rect);

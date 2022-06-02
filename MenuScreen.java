@@ -3,7 +3,7 @@ import java.awt.Graphics;
 public class MenuScreen extends Screen {
     private Label titleLabel;
 
-    public MenuScreen(Window window) {
+    public MenuScreen(Window window, Game game) {
         super(Const.dayScreenBackground);
 
         this.setName(Const.MENU_SCREEN_NAME);
@@ -20,7 +20,23 @@ public class MenuScreen extends Screen {
 
         // Add button press effects.
         continueButton.addHandler(window.new ScreenSwapperButton(Const.GAME_SCREEN_NAME));
+        continueButton.addHandler(new Button.ButtonHandler() {
+            public void handlePress() {
+                game.run();
+            }
+
+            public void handleHover() {}
+            public void handleUnpress() {}
+        });
         newGameButton.addHandler(window.new ScreenSwapperButton(Const.SELECT_SCREEN_NAME));
+        newGameButton.addHandler(new Button.ButtonHandler() {
+            public void handlePress() {
+                
+            }
+
+            public void handleHover() {}
+            public void handleUnpress() {}
+        });
         settingsButton.addHandler(window.new ScreenSwapperButton(Const.SETTINGS_SCREEN_NAME));
         howToPlayButton.addHandler(window.new ScreenSwapperButton(Const.HOW_TO_PLAY_SCREEN_NAME));
         

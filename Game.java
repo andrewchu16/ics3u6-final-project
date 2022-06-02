@@ -4,7 +4,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Game {
+public class Game implements Drawable, Debuggable {
     // Difficulty levels.
     public static final String[] DIFFICULTY_STRINGS = {"Easy", "Medium", "Hard"};
     public static final int EASY = 0;
@@ -31,22 +31,26 @@ public class Game {
     }
 
     public void run() {
-
+        System.out.println("Starting game");
+        this.updateLoop.start();
     }
 
     private void update() {
-
+        this.player.update();
     }
 
+    @Override
     public void draw(Graphics graphics) {
+        this.player.draw(graphics);
 
-        if (this.debugMode) {
-            this.debugDraw(graphics);
+        if (this.checkDebugging()) {
+            this.drawDebugInfo(graphics);
         }
     }
 
-    public void debugDraw(Graphics graphics) {
-        
+    @Override
+    public void drawDebugInfo(Graphics graphics) {
+        this.player.drawDebugInfo(graphics);
     }
 
     public boolean checkDebugging() {

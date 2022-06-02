@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GradientPaint;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 import java.awt.Font;
 import java.io.File;
@@ -20,7 +19,7 @@ public class Const {
     public static final int MS_PER_S = 1000;
 
     public static final int DEFAULT_FRAME_PERIOD = MS_PER_S / 60;
-    public static final int UPDATE_PERIOD = MS_PER_S / 45;
+    public static final int UPDATE_PERIOD = MS_PER_S / 24;
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -55,10 +54,13 @@ public class Const {
     public static final int DOWN = 3;
     public static final int RIGHT = 4;
 
-    // Images.
+    // Menu images.
     public static BufferedImage dayScreenBackground;
     public static BufferedImage nightScreenBackground;
     public static BufferedImage howToPlayScreenText;
+
+    // Entity images.
+    public static BufferedImage playerSpriteSheet;
 
     // Audio.
 
@@ -92,15 +94,12 @@ public class Const {
         graphics.setColor(YELLOW2);
         graphics.fillOval(850, 60, 70, 70);
 
-        // Load how to play screen background.
-        try {
-            howToPlayScreenText = ImageIO.read(new File("images/howToPlay.png"));
-            nightScreenBackground = ImageIO.read(new File("images/nightScreenBackground.png"));
-        } catch (IOException ex) {
-            System.out.println("Error: Could not load how to play screen image.");
-            howToPlayScreenText = dayScreenBackground;
-            nightScreenBackground = dayScreenBackground;
-        }
+        // Load screen backgrounds.
+        howToPlayScreenText = Sprite.tryLoadImage("images/howToPlay.png");
+        nightScreenBackground = Sprite.tryLoadImage("images/nightScreenBackground.png");
+
+        // Load player images.
+        playerSpriteSheet = Sprite.tryLoadImage("images/testSpriteSheet.png");
     }
 
     /**

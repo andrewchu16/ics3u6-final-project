@@ -14,7 +14,7 @@ public class HowToPlayScreen extends Screen {
                 Const.subtitleFont, Const.WHITE2);
 
         // Instantiate how to play text image.
-        this.textSprite = new Sprite(0, 0, 1, Const.howToPlayScreenText);
+        this.textSprite = new Sprite(0, 0, Const.howToPlayScreenText);
 
         // Instantiate buttons.
         Button goBackButton = new BackButton(30, 50, window);

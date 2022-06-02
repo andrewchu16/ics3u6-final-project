@@ -9,7 +9,7 @@ import java.awt.event.MouseMotionListener;
 
 import java.util.ArrayList;
 
-public class Button {
+public class Button implements Drawable {
     private Hitbox hitbox;
     private String name;
     private ArrayList<ButtonHandler> handlers;
@@ -32,6 +32,7 @@ public class Button {
         this.activeColor = unpressedColor;
     }
 
+    @Override
     public void draw(Graphics graphics) {
         // Draw button body.
         graphics.setColor(this.activeColor);

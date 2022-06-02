@@ -10,61 +10,58 @@ import java.io.IOException;
  * animations. Each sprite in the sprite sheet should be stacked on top 
  * of each other.
  */
-public class Sprite {
-    private int x;
-    private int y;
+public class Sprite implements Drawable {
+    private Vector position;
     private int width;
     private int height;
 
-    private int numFrames;
-    private int curIndex;
-
-    private BufferedImage spriteSheet;
-    private BufferedImage activeFrame;
+    private BufferedImage image;
     
-    public Sprite(int x, int y, int numFrames, String picName) {
-        this.x = x;
-        this.y = y;
+    public Sprite(int x, int y, String picName) {
+        this.position = new Vector(x, y);
         
         // Load the image from file.
-        this.tryLoadImage(picName);
-
-        this.numFrames = numFrames;
-        this.width = this.spriteSheet.getWidth();
-        this.height = this.spriteSheet.getHeight() / numFrames;
-
-        this.curIndex = 0;
-        this.setActiveFrame(this.curIndex);
+        this.image = tryLoadImage(picName);
     }
 
-    public Sprite(int x, int y, int numFrames, BufferedImage pic) {
-        this.x = x;
-        this.y = y;
+    public Sprite(int x, int y, BufferedImage pic) {
+        this.position = new Vector(x, y);
+        this.image = pic;
 
-        this.spriteSheet = pic;
-
-        this.numFrames = numFrames;
-        this.width = this.spriteSheet.getWidth();
-        this.height = this.spriteSheet.getHeight() / numFrames;
-
-        this.curIndex = 0;
-        this.setActiveFrame(this.curIndex);
+        this.width = this.image.getWidth();
+        this.height = this.image.getHeight();
     }
 
-    public void tryLoadImage(String picName) {
+    public Sprite(Vector position, BufferedImage pic) {
+        this.position = position;
+        this.image = pic;
+
+        this.width = this.image.getWidth();
+        this.height = this.image.getHeight();
+    }
+
+    public static BufferedImage tryLoadImage(String picName) {
+        BufferedImage image;
         try {
-            this.spriteSheet = ImageIO.read(new File(picName));
+            image = ImageIO.read(new File(picName));
         } catch (IOException ex) {
             System.out.println("Error: Image file not found [" + picName + "]");
+            return null;
         }
+
+        return image;
     }
 
     public int getX() {
-        return this.x;
+        return (int) this.position.getX();
     }
 
     public int getY() {
-        return this.y;
+        return (int) this.position.getY();
+    }
+
+    public Vector getPos() {
+        return this.position;
     }
     
     public int getWidth() {
@@ -75,38 +72,20 @@ public class Sprite {
         return this.height;
     }
 
-    public int getNumFrames() {
-        return this.numFrames;
-    }
-
     public void setX(int x) {
-        this.x = x;
+        this.position.setX(x);
     }
 
     public void setY(int y) {
-        this.y = y;
-    }
-    
-    /**
-     * This method loads a frame in the sprite sheet. If the index is higher than the
-     * number of frames in the sprite sheet, it uses the modulus of the index.
-     * @param index The index of the sprite in the spirte sheet.
-     */
-    public void setActiveFrame(int index) {
-        this.curIndex = index % this.numFrames;
-        this.activeFrame = this.spriteSheet.getSubimage(0, this.height * this.curIndex, this.width, this.height);
+        this.position.setY(y);
     }
 
-    /**
-     * This method loads the next frame in the sprite sheet. If the current frame is the 
-     * last frame, it loops to the first one.
-     */
-    public void setNextFrame() {
-        this.curIndex++;
-        this.setActiveFrame(this.curIndex);
+    public void setPos(Vector newPos) {
+        this.position = newPos;
     }
 
+    @Override
     public void draw(Graphics graphics) {
-        graphics.drawImage(this.activeFrame, this.x, this.y, null);
+        graphics.drawImage(this.image, this.getX(), this.getY(), null);
     }
 }

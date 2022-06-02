@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-public class Text {
+public class Text implements Drawable {
     private int x;
     private int y;
     private int centerX;
@@ -78,6 +78,7 @@ public class Text {
         return font.getSize() / 2;
     }
 
+    @Override
     public void draw(Graphics graphics) {
         ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);

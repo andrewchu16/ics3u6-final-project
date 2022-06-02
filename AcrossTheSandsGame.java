@@ -23,7 +23,7 @@ public class AcrossTheSandsGame {
     private void initializeWindow() {
         this.window = new Window("Across The Sands", Const.WIDTH, Const.HEIGHT);
 
-        this.menuScreen = new MenuScreen(this.window);
+        this.menuScreen = new MenuScreen(this.window, this.game);
         this.settingsScreen = new SettingsScreen(this.window, this.game);
         this.howToPlayScreen = new HowToPlayScreen(this.window);
         this.selectScreen = new SelectScreen(this.window, this.game);
