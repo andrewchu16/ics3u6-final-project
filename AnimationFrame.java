@@ -41,6 +41,16 @@ public class AnimationFrame implements Drawable, Debuggable {
         this.setRelHitboxPos(this.position);
     }
 
+    public AnimationFrame(Vector position, BufferedImage pic) {
+        this.position = position;
+        this.sprite = new Sprite(position, pic);
+        this.hitboxes = new ArrayList<Hitbox>();
+
+        Hitbox hitbox = new Hitbox(this.position, this.sprite.getWidth(), 
+                this.sprite.getHeight());
+        this.hitboxes.add(hitbox);
+    }
+
     @Override
     public void draw(Graphics graphics) {
         this.sprite.draw(graphics);

@@ -20,6 +20,7 @@ public class Const {
 
     public static final int DEFAULT_FRAME_PERIOD = MS_PER_S / 60;
     public static final int UPDATE_PERIOD = MS_PER_S / 24;
+    public static final int ANIMATE_PERIOD = MS_PER_S / 10;
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -31,6 +32,7 @@ public class Const {
     public static final String PAUSE_SCREEN_NAME = "pause screen";
     
     // Color palette.
+    // d03d35,ff582e,f6ad41,ffda54,7dba84,4d9357,a7cedd,5ca4c1,53a1be,0c4197,d8dbe2,f3f5f7,c6cfd2,afbdc0,394748,0e262f
     public static final Color RED = new Color(208, 61, 53);
     public static final Color ORANGE = new Color(255, 88, 46);
     public static final Color YELLOW = new Color(246, 173, 65);
@@ -95,11 +97,11 @@ public class Const {
         graphics.fillOval(850, 60, 70, 70);
 
         // Load screen backgrounds.
-        howToPlayScreenText = Sprite.tryLoadImage("images/howToPlay.png");
-        nightScreenBackground = Sprite.tryLoadImage("images/nightScreenBackground.png");
+        howToPlayScreenText = Sprite.tryLoadImage("images/menu/howToPlay.png");
+        nightScreenBackground = Sprite.tryLoadImage("images/menu/nightScreenBackground.png");
 
         // Load player images.
-        playerSpriteSheet = Sprite.tryLoadImage("images/testSpriteSheet.png");
+        playerSpriteSheet = Sprite.tryLoadImage("images/player/mummy_idle.png");
     }
 
     /**

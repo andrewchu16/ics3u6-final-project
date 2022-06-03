@@ -43,7 +43,7 @@ The main game takes place on a mostly 2-dimensional plane.
 - [x] Finish class diagram
 - [x] Submit proposal
 - [x] Finish switching screens and menu screens
-- [ ] Finish game entity superclass
+- [x] Finish game entity superclass
 - [x] Finish hitboxes
 - [ ] Finish creating sprites
 - [ ] Finish player that is animated and can move

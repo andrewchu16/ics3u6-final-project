@@ -16,6 +16,7 @@ public class Game implements Drawable, Debuggable {
     private int difficulty;
 
     private Timer updateLoop;
+    private Timer animateLoop;
     
     public Game() {
         this.debugMode = false;
@@ -28,19 +29,32 @@ public class Game implements Drawable, Debuggable {
                 update();
             }
         });
+
+        this.animateLoop = new Timer(Const.ANIMATE_PERIOD, new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                animate();
+            }
+        });
     }
 
     public void run() {
         System.out.println("Starting game");
         this.updateLoop.start();
+        this.animateLoop.start();
     }
 
     private void update() {
         this.player.update();
     }
 
+    private void animate() {
+        this.player.animate();
+    }
+
     @Override
     public void draw(Graphics graphics) {
+        graphics.translate((int) this.player.getX() + (Const.WIDTH - this.player.getWidth()) / 2, 
+                (int) this.player.getY() + (Const.HEIGHT - this.player.getHeight()) / 2);
         this.player.draw(graphics);
 
         if (this.checkDebugging()) {
