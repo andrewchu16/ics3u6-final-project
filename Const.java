@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.io.File;
 
+import java.awt.event.KeyEvent;
+
 import java.io.IOException;
 import java.awt.FontFormatException;
 
@@ -19,8 +21,8 @@ public class Const {
     public static final int MS_PER_S = 1000;
 
     public static final int DEFAULT_FRAME_PERIOD = MS_PER_S / 60;
-    public static final int UPDATE_PERIOD = MS_PER_S / 24;
-    public static final int ANIMATE_PERIOD = MS_PER_S / 10;
+    public static final int UPDATE_PERIOD = MS_PER_S / 30;
+    public static final int ANIMATE_PERIOD = MS_PER_S / 8;
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -56,13 +58,25 @@ public class Const {
     public static final int DOWN = 3;
     public static final int RIGHT = 4;
 
+    // Keys.
+    public static final int K_ESC = KeyEvent.VK_ESCAPE;
+    public static final int K_UP = KeyEvent.VK_W;
+    public static final int K_LEFT = KeyEvent.VK_A;
+    public static final int K_DOWN = KeyEvent.VK_S;
+    public static final int K_RIGHT = KeyEvent.VK_D;
+    public static final int K_USE = KeyEvent.VK_E;
+    public static final int K_RELOAD = KeyEvent.VK_R;
+    
     // Menu images.
     public static BufferedImage dayScreenBackground;
     public static BufferedImage nightScreenBackground;
     public static BufferedImage howToPlayScreenText;
 
-    // Entity images.
-    public static BufferedImage playerSpriteSheet;
+    // Player images.
+    public static BufferedImage playerIdleSpriteSheet;
+    public static BufferedImage playerStaticSpriteSheet;
+    public static BufferedImage playerWalkSpriteSheet;
+    public static BufferedImage playerHurtSpriteSheet;
 
     // Audio.
 
@@ -101,7 +115,10 @@ public class Const {
         nightScreenBackground = Sprite.tryLoadImage("images/menu/nightScreenBackground.png");
 
         // Load player images.
-        playerSpriteSheet = Sprite.tryLoadImage("images/player/mummy_idle.png");
+        playerIdleSpriteSheet = Sprite.tryLoadImage("images/player/mummy_idle.png");
+        playerStaticSpriteSheet = Sprite.tryLoadImage("images/player/mummy.png");
+        playerWalkSpriteSheet = Sprite.tryLoadImage("images/player/mummy_walk.png");
+        playerHurtSpriteSheet = Sprite.tryLoadImage("images/player/mummy_hurt.png");
     }
 
     /**

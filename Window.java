@@ -4,29 +4,30 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 
 import java.awt.CardLayout;
-import java.awt.Component;
 
 import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Window {
     private JFrame frame;
     private JPanel cards;
 
-    private String prevScreenName;
+    private ArrayList<String> screenStack;
 
     private Timer drawLoop;
 
     public Window(String title, int width, int height) {
+        // Create the window.
         this.frame = new JFrame(title);
         this.frame.getContentPane().setPreferredSize(new Dimension(width, height));
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setResizable(false);
         this.cards = new JPanel(new CardLayout());
 
-        this.prevScreenName = Const.MENU_SCREEN_NAME;
+        this.screenStack = new ArrayList<String>();
 
         this.drawLoop = new Timer(Const.DEFAULT_FRAME_PERIOD, new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -57,26 +58,19 @@ public class Window {
     public void switchToScreen(String screenName) {
         CardLayout layout = (CardLayout) this.cards.getLayout();
 
-        // Record the previously shown screen.
-        Screen prevScreen = getShownScreen();
-        this.prevScreenName = prevScreen.getName();
+        String prevScreenName = "";
+        if (!this.screenStack.isEmpty()) {
+            prevScreenName = this.screenStack.get(this.screenStack.size() - 1);
+        }
+
+        if (this.screenStack.isEmpty() || !prevScreenName.equals(screenName)) {
+            this.screenStack.add(screenName);
+        }
 
         // Switch screens.
         layout.show(this.cards, screenName);
-        System.out.println("Switching: " + this.prevScreenName + " --> " + screenName);
-    }
-
-    public String getPrevScreenName() {
-        return this.prevScreenName;
-    }
-
-    private Screen getShownScreen() {
-        for (Component comp: this.cards.getComponents()) {
-            if (comp.isShowing()) {
-                return (Screen) comp;
-            }
-        }
-        return null;
+        System.out.println("Switching: " + prevScreenName + " --> " + screenName);
+        System.out.println(this.screenStack);
     }
 
     public int getFPS() {
@@ -87,15 +81,26 @@ public class Window {
         this.drawLoop.setDelay(Const.MS_PER_S / fps);
     }
     
-    public class ScreenSwapperButton implements Button.ButtonHandler {
+    public class ScreenSwapperButtonHandler implements Button.ButtonHandler {
         private String swapScreenName;
 
-        public ScreenSwapperButton(String swapScreenName) {
+        public ScreenSwapperButtonHandler(String swapScreenName) {
             this.swapScreenName = swapScreenName;
         }
 
         public void handlePress() {
             switchToScreen(swapScreenName);
+        }
+
+        public void handleHover() {}
+        public void handleUnpress() {}
+    }
+
+    public class BackButtonHandler implements Button.ButtonHandler {
+        public void handlePress() {
+            String screenName = screenStack.get(screenStack.size() - 2);
+            screenStack.remove(screenStack.size() - 1);
+            switchToScreen(screenName);
         }
 
         public void handleHover() {}

@@ -1,18 +1,27 @@
 import java.awt.Graphics;
 
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
 public class Player extends Entity implements Moveable {
-    private AnimationCycle animationCycle;
-    private int width;
-    private int height;
+    private static final int WALK_SPEED = 3;
+
+    private AnimationCycle activeCycle;
+    private AnimationCycle idleCycle;
+    private AnimationCycle attackCycle;
+    private AnimationCycle hurtCycle;
+    private AnimationCycle walkCycle;
 
     public Player() {
         super(0, 0, "Leto");
-        this.animationCycle = new AnimationCycle(this.getPos(), Const.playerSpriteSheet, 4);
+        this.idleCycle = new AnimationCycle(this.getPos(), Const.playerIdleSpriteSheet, 4, true);
+        this.walkCycle = new AnimationCycle(this.getPos(), Const.playerWalkSpriteSheet, 6, true);
+        this.activeCycle = idleCycle;
     }
 
     @Override
     public void draw(Graphics graphics) {
-        this.animationCycle.draw(graphics);
+        this.activeCycle.draw(graphics);
     }
 
     public void update() {
@@ -20,44 +29,92 @@ public class Player extends Entity implements Moveable {
     }
 
     public void animate() {
-        this.animationCycle.loadNextFrame();
+        this.activeCycle.loadNextFrame();
     }
 
     @Override
     public void drawDebugInfo(Graphics graphics) {
-        this.animationCycle.drawDebugInfo(graphics);
+        this.activeCycle.drawDebugInfo(graphics);
     }
 
     @Override
     public void moveHorizontal(double units) {
-        // TODO Auto-generated method stub
-        
+        this.setX(this.getX() + units);
+        activeCycle = walkCycle;
+
+        this.activeCycle.setPos(this.getPos());
     }
 
     @Override
     public void moveVertical(double units) {
-        // TODO Auto-generated method stub
+        this.setY(this.getY() + units);
+        activeCycle = walkCycle;
         
+        this.activeCycle.setPos(this.getPos());
     }
 
     @Override
     public int getWidth() {
-        return this.width;
+        return this.activeCycle.getFrameWidth();
     }
 
     @Override
     public int getHeight() {
-        return this.height;
+        return this.activeCycle.getFrameHeight();
     }
 
-    @Override
-    public void setWidth(int newWidth) {
+    public class PlayerKeyListener implements KeyListener {
+        private Window window;
 
-    }
+        public PlayerKeyListener(Window window) {
+            this.window = window;
+        }
 
-    @Override
-    public void setHeight(int newHeight) {
-        // TODO Auto-generated method stub
-        
-    }
+        public void keyTyped(KeyEvent event) {}
+
+        @Override
+        public void keyPressed(KeyEvent event) {
+            int keyCode = event.getKeyCode();
+            
+            switch (keyCode) {
+                case Const.K_ESC:
+                    window.switchToScreen(Const.PAUSE_SCREEN_NAME);
+                    break;
+                case Const.K_UP:
+                    moveVertical(-WALK_SPEED);
+                    break;
+                case Const.K_LEFT:
+                    moveHorizontal(-WALK_SPEED);
+                    break;
+                case Const.K_DOWN:
+                    moveVertical(WALK_SPEED);
+                    break;
+                case Const.K_RIGHT:
+                    moveHorizontal(WALK_SPEED);
+                    break;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent event) {
+            int keyCode = event.getKeyCode();
+            
+            switch (keyCode) {
+                case Const.K_UP:
+                    activeCycle = idleCycle;
+                    break;
+                case Const.K_LEFT:
+                    activeCycle = idleCycle;
+                    break;
+                case Const.K_DOWN:
+                    activeCycle = idleCycle;
+                    break;
+                case Const.K_RIGHT:
+                    activeCycle = idleCycle;
+                    break;
+            }
+
+            System.out.println(getPos());
+        }
+    };
 }

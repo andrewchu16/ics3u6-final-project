@@ -43,7 +43,7 @@ abstract public class Entity implements Drawable, Debuggable {
     public void setName(String newName) {
         this.name = newName;
     }
-    
+
     public void setX(double newX) {
         this.position.setX(newX);
     }
@@ -55,7 +55,4 @@ abstract public class Entity implements Drawable, Debuggable {
     public void setPos(Vector newPos) {
         this.position = newPos;
     }
-
-    abstract public void setWidth(int newWidth);
-    abstract public void setHeight(int newHeight);
 }

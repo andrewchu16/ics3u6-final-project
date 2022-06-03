@@ -9,6 +9,8 @@ public class GameScreen extends Screen {
         this.game = game;
 
         this.setName(Const.GAME_SCREEN_NAME);
+
+        this.addKeyListener(game.getPlayer().new PlayerKeyListener(window));
     }
 
     @Override
