@@ -76,6 +76,7 @@ public class Const {
     public static BufferedImage playerIdleSpriteSheet;
     public static BufferedImage playerStaticSpriteSheet;
     public static BufferedImage playerWalkSpriteSheet;
+    public static BufferedImage playerAttackSpriteSheet;
     public static BufferedImage playerHurtSpriteSheet;
 
     // Audio.
@@ -118,6 +119,7 @@ public class Const {
         playerIdleSpriteSheet = Sprite.tryLoadImage("images/player/mummy_idle.png");
         playerStaticSpriteSheet = Sprite.tryLoadImage("images/player/mummy.png");
         playerWalkSpriteSheet = Sprite.tryLoadImage("images/player/mummy_walk.png");
+        playerAttackSpriteSheet = Sprite.tryLoadImage("images/player/mummy_attack.png");
         playerHurtSpriteSheet = Sprite.tryLoadImage("images/player/mummy_hurt.png");
     }
 

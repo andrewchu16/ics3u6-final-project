@@ -61,7 +61,7 @@ public class Sprite implements Drawable {
     }
 
     public Vector getPos() {
-        return this.position;
+        return this.position.clone();
     }
     
     public int getWidth() {

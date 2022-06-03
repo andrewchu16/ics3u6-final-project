@@ -77,7 +77,7 @@ public class AnimationFrame implements Drawable, Debuggable {
 
     private void setRelHitboxPos(Vector newRelPos) {
         for (Hitbox hitbox: this.hitboxes) {
-            Vector newHitboxPos = hitbox.getPos();
+            Vector newHitboxPos = hitbox.getPos().clone();
             newHitboxPos.sub(this.position);
             newHitboxPos.add(newRelPos);
             hitbox.setPos(newHitboxPos);

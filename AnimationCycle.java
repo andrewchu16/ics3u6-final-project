@@ -5,6 +5,7 @@ public class AnimationCycle implements Drawable, Debuggable {
     private AnimationFrame[] frames;
     private AnimationFrame activeFrame;
     private boolean loopBackwards;
+    private boolean isLooping;
 
     private int indexDir;
     private int curIndex;
@@ -28,6 +29,7 @@ public class AnimationCycle implements Drawable, Debuggable {
         }
 
         this.loopBackwards = loopBackwards;
+        this.isLooping = false;
         this.indexDir = 1;
         this.setActiveFrame(0);
     }
@@ -48,22 +50,32 @@ public class AnimationCycle implements Drawable, Debuggable {
         }
 
         this.loopBackwards = loopBackwards;
+        this.isLooping = false;
         this.indexDir = 1;
         this.setActiveFrame(0);
     }
 
-    public Vector getPos() {
-        return this.position;
+    public void reset() {
+        this.setActiveFrame(0);
+        this.indexDir = 1;
     }
 
+    public boolean checkDone() {
+        return (!this.isLooping && this.curIndex == this.numFrames - 1);
+    }
+    
+    public Vector getPos() {
+        return this.position.clone();
+    }
+    
     public int getFrameWidth() {
         return this.frameWidth;
     }
-
+    
     public int getFrameHeight() {
         return this.frameHeight;
     }
-
+    
     public void setPos(Vector newPos) {
         this.position = newPos;
         for (AnimationFrame frame: this.frames) {
@@ -71,20 +83,27 @@ public class AnimationCycle implements Drawable, Debuggable {
         }
     }
 
+    public void setLooping(boolean isLooping) {
+        this.isLooping = isLooping;
+    }
+    
     public void setActiveFrame(int index) {
         this.curIndex = index % this.numFrames;
         this.activeFrame = this.frames[this.curIndex];
     }
 
     public void loadNextFrame() {
+        if (!this.isLooping && this.curIndex == this.numFrames - 1) {
+            return;
+        }
+        
         this.curIndex += this.indexDir;
-
         this.setActiveFrame(this.curIndex);
 
         if (this.loopBackwards) {
             if (this.curIndex == 0) {
                 this.indexDir = 1;
-            } else if (this.curIndex == numFrames - 1) {
+            } else if (this.curIndex == this.numFrames - 1) {
                 this.indexDir = -1;
             }
         }

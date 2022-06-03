@@ -1,4 +1,6 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 import java.awt.Rectangle;
 
 public class PauseScreen extends Screen {
@@ -24,7 +26,7 @@ public class PauseScreen extends Screen {
 
         // Add button press effects.
         settingsButton.addHandler(window.new ScreenSwapperButtonHandler(Const.SETTINGS_SCREEN_NAME));
-        
+
         // Add buttons to screen.
         this.addButton(goBackButton);
         this.addButton(settingsButton);
@@ -35,6 +37,13 @@ public class PauseScreen extends Screen {
         super.paintComponent(graphics);
 
         this.titleLabel.draw(graphics);
+
+        // Draw center background rectangle.
+        graphics.setColor(Const.LIGHT_BLUE1);
+        ((Graphics2D) graphics).fill(this.centerRect);
+        graphics.setColor(Const.BLACK);
+        ((Graphics2D) graphics).setStroke(new BasicStroke(4));
+        ((Graphics2D) graphics).draw(this.centerRect);
 
         this.drawButtons(graphics);
     }

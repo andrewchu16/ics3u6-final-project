@@ -34,7 +34,7 @@ abstract public class Entity implements Drawable, Debuggable {
     }
 
     public Vector getPos() {
-        return this.position;
+        return this.position.clone();
     }
 
     abstract public int getWidth();

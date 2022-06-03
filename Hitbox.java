@@ -53,7 +53,7 @@ public class Hitbox implements Drawable, Debuggable {
     }
 
     public Vector getPos() {
-        return this.position;
+        return this.position.clone();
     }
 
     public void setWidth(int newWidth) {

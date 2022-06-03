@@ -70,7 +70,6 @@ public class Window {
         // Switch screens.
         layout.show(this.cards, screenName);
         System.out.println("Switching: " + prevScreenName + " --> " + screenName);
-        System.out.println(this.screenStack);
     }
 
     public int getFPS() {

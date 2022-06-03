@@ -2,6 +2,8 @@ import java.awt.Graphics;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 public class Player extends Entity implements Moveable {
     private static final int WALK_SPEED = 3;
@@ -12,10 +14,20 @@ public class Player extends Entity implements Moveable {
     private AnimationCycle hurtCycle;
     private AnimationCycle walkCycle;
 
+    private Vector speed;
+
     public Player() {
         super(0, 0, "Leto");
         this.idleCycle = new AnimationCycle(this.getPos(), Const.playerIdleSpriteSheet, 4, true);
         this.walkCycle = new AnimationCycle(this.getPos(), Const.playerWalkSpriteSheet, 6, true);
+        this.attackCycle = new AnimationCycle(this.getPos(), Const.playerAttackSpriteSheet, 6, false);
+        this.hurtCycle = new AnimationCycle(this.getPos(), Const.playerHurtSpriteSheet, 2, false);
+
+        this.idleCycle.setLooping(true);
+        this.walkCycle.setLooping(true);
+
+        this.speed = Vector.VECTOR_ZERO.clone();
+
         this.activeCycle = idleCycle;
     }
 
@@ -25,32 +37,24 @@ public class Player extends Entity implements Moveable {
     }
 
     public void update() {
-
+        Vector newPos = this.getPos();
+        newPos.add(this.speed);
+        this.setPos(newPos);
     }
 
     public void animate() {
         this.activeCycle.loadNextFrame();
+        
+        if (this.activeCycle.checkDone()) {
+            this.activeCycle.reset();
+            this.activeCycle = this.idleCycle;
+            this.activeCycle.setPos(this.getPos());
+        }
     }
 
     @Override
     public void drawDebugInfo(Graphics graphics) {
         this.activeCycle.drawDebugInfo(graphics);
-    }
-
-    @Override
-    public void moveHorizontal(double units) {
-        this.setX(this.getX() + units);
-        activeCycle = walkCycle;
-
-        this.activeCycle.setPos(this.getPos());
-    }
-
-    @Override
-    public void moveVertical(double units) {
-        this.setY(this.getY() + units);
-        activeCycle = walkCycle;
-        
-        this.activeCycle.setPos(this.getPos());
     }
 
     @Override
@@ -61,6 +65,24 @@ public class Player extends Entity implements Moveable {
     @Override
     public int getHeight() {
         return this.activeCycle.getFrameHeight();
+    }
+
+    @Override
+    public void setX(double newX) {
+        super.setX(newX);
+        this.activeCycle.setPos(this.getPos());
+    }
+
+    @Override
+    public void setY(double newY) {
+        super.setY(newY);
+        this.activeCycle.setPos(this.getPos());
+    }
+
+    @Override
+    public void setPos(Vector newPos) {
+        super.setPos(newPos);
+        this.activeCycle.setPos(newPos);
     }
 
     public class PlayerKeyListener implements KeyListener {
@@ -81,16 +103,16 @@ public class Player extends Entity implements Moveable {
                     window.switchToScreen(Const.PAUSE_SCREEN_NAME);
                     break;
                 case Const.K_UP:
-                    moveVertical(-WALK_SPEED);
+                    moveUp();
                     break;
                 case Const.K_LEFT:
-                    moveHorizontal(-WALK_SPEED);
+                    moveLeft();
                     break;
                 case Const.K_DOWN:
-                    moveVertical(WALK_SPEED);
+                    moveDown();
                     break;
                 case Const.K_RIGHT:
-                    moveHorizontal(WALK_SPEED);
+                    moveRight();
                     break;
             }
         }
@@ -101,20 +123,69 @@ public class Player extends Entity implements Moveable {
             
             switch (keyCode) {
                 case Const.K_UP:
-                    activeCycle = idleCycle;
+                    stopMoving();
                     break;
                 case Const.K_LEFT:
-                    activeCycle = idleCycle;
+                    stopMoving();
                     break;
                 case Const.K_DOWN:
-                    activeCycle = idleCycle;
+                    stopMoving();
                     break;
                 case Const.K_RIGHT:
-                    activeCycle = idleCycle;
+                    stopMoving();
                     break;
             }
 
-            System.out.println(getPos());
         }
     };
+
+    public class PlayerMouseListener implements MouseListener {
+        public void mousePressed(MouseEvent event) {
+            if (event.isShiftDown()) {
+                activeCycle = hurtCycle;
+            } else {
+                activeCycle = attackCycle;
+            }
+            activeCycle.setPos(getPos());
+        }
+
+        public void mouseReleased(MouseEvent event) {
+
+        }
+        
+        public void mouseClicked(MouseEvent event) {}
+        public void mouseEntered(MouseEvent event) {}
+        public void mouseExited(MouseEvent event) {}
+    }
+
+    @Override
+    public void moveUp() {
+        this.activeCycle = walkCycle;
+        this.speed.setY(-WALK_SPEED);
+    }
+
+    @Override
+    public void moveLeft() {
+        this.activeCycle = walkCycle;
+        this.speed.setX(-WALK_SPEED);
+    }
+
+    @Override
+    public void moveDown() {
+        this.activeCycle = walkCycle;
+        this.speed.setY(WALK_SPEED);
+    }
+
+    @Override
+    public void moveRight() {
+        this.activeCycle = walkCycle;
+        this.speed.setX(WALK_SPEED);
+    }
+    
+    public void stopMoving() {
+        this.activeCycle = idleCycle;
+        this.speed.setX(0);
+        this.speed.setY(0);
+        this.activeCycle.setPos(this.getPos());
+    }
 }

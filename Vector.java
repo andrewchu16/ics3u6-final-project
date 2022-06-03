@@ -135,7 +135,7 @@ public class Vector {
      */
     @Override
     public String toString() {
-        String info = "Vec(" + this.getX() + ", " + this.getY() + ")";
+        String info = "Vec(" + x + ", " + y + ")";
         return info;
     }
 }
