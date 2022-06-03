@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -38,6 +39,16 @@ public class Player extends Entity implements Moveable {
         this.activeCycle.draw(graphics);
     }
 
+    @Override
+    public void drawDebugInfo(Graphics graphics) {
+        this.activeCycle.drawDebugInfo(graphics);
+        
+        // Draw the coordinates of the player.
+        String info = "(" + (Math.round(this.getX() * 100) / 100) + ", " + (Math.round(this.getY() * 100) / 100) + ")";
+        Text text = new Text(info, Const.debugFont, (int) this.getX(), (int) this.getY());
+        text.draw(graphics);
+    }
+
     public void update() {
         Vector newPos = this.getPos();
         newPos.add(this.speed);
@@ -54,10 +65,6 @@ public class Player extends Entity implements Moveable {
         }
     }
 
-    @Override
-    public void drawDebugInfo(Graphics graphics) {
-        this.activeCycle.drawDebugInfo(graphics);
-    }
 
     @Override
     public int getWidth() {
@@ -145,7 +152,6 @@ public class Player extends Entity implements Moveable {
                 activeCycle.setPos(getPos());
             } else {
                 speed.setLength(WALK_SPEED);
-                System.out.println(speed);
             }
         }
     };
@@ -178,7 +184,6 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setY(-WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
-        System.out.println(this.speed);
     }
 
     @Override
@@ -186,7 +191,6 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setX(-WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
-        System.out.println(this.speed);
     }
 
     @Override
@@ -194,7 +198,6 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setY(WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
-        System.out.println(this.speed);
     }
 
     @Override
@@ -202,6 +205,5 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setX(WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
-        System.out.println(this.speed);
     }
 }

@@ -86,11 +86,13 @@ public class Const {
     private static final int SMALL_BUTTON_FONT_SIZE = 24;
     private static final int TITLE_FONT_SIZE = 64;
     private static final int SUBTITLE_FONT_SIZE = 50;
+    private static final int DEBUG_FONT_SIZE = 12;
 
     public static Font buttonFont;
     public static Font smallButtonFont;
     public static Font titleFont;
     public static Font subtitleFont;
+    public static Font debugFont;
 
     /**
      * This method loads all the images used in the game.
@@ -130,6 +132,7 @@ public class Const {
     public static void loadFonts() {
         buttonFont = new Font("Sans-Serif", Font.PLAIN, MENU_BUTTON_FONT_SIZE);
         smallButtonFont = new Font("Sans-Serif", Font.PLAIN, SMALL_BUTTON_FONT_SIZE);
+        debugFont = new Font("Sans-Serif", Font.PLAIN, DEBUG_FONT_SIZE);
 
         // Load title font.
         try {

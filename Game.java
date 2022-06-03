@@ -1,4 +1,6 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import javax.swing.Timer;
 
 import java.awt.event.ActionListener;
@@ -59,16 +61,29 @@ public class Game implements Drawable, Debuggable {
 
     @Override
     public void draw(Graphics graphics) {
+        // Center the player in the window.
+        AffineTransform saveAT = ((Graphics2D) graphics).getTransform();
+        AffineTransform translateCenterPlayer = AffineTransform.getTranslateInstance(
+                Const.WIDTH / 2 - this.player.getX(), Const.HEIGHT / 2 - this.player.getY());
+        ((Graphics2D) graphics).transform(translateCenterPlayer);
+
+        // Draw the player.
         this.player.draw(graphics);
         
         if (this.checkDebugging()) {
             this.drawDebugInfo(graphics);
         }
+
+        // Reset the graphics.
+        ((Graphics2D) graphics).setTransform(saveAT);
     }
 
     @Override
     public void drawDebugInfo(Graphics graphics) {
         this.player.drawDebugInfo(graphics);
+
+        graphics.setColor(Const.RED);
+        graphics.fillOval(0, 0, 5, 5);
     }
 
     public boolean checkDebugging() {
