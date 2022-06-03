@@ -3,6 +3,8 @@ import javax.swing.Timer;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
 public class Game implements Drawable, Debuggable {
     // Difficulty levels.
@@ -38,9 +40,13 @@ public class Game implements Drawable, Debuggable {
     }
 
     public void run() {
-        System.out.println("Starting game");
         this.updateLoop.start();
         this.animateLoop.start();
+    }
+
+    public void pause() {
+        this.updateLoop.stop();
+        this.updateLoop.stop();
     }
 
     private void update() {
@@ -54,7 +60,7 @@ public class Game implements Drawable, Debuggable {
     @Override
     public void draw(Graphics graphics) {
         this.player.draw(graphics);
-
+        
         if (this.checkDebugging()) {
             this.drawDebugInfo(graphics);
         }
@@ -87,5 +93,24 @@ public class Game implements Drawable, Debuggable {
 
     public void setUpdatePeriod(int updatePeriod) {
         this.updateLoop.setDelay(updatePeriod);
+    }
+
+    public class GameKeyListener implements KeyListener {
+        private Window window;
+
+        public GameKeyListener(Window window) {
+            this.window = window;
+        }
+
+        public void keyPressed(KeyEvent event) {
+            int keyCode = event.getKeyCode();
+
+            if (keyCode == Const.K_ESC) {
+                pause();
+                this.window.switchToScreen(Const.PAUSE_SCREEN_NAME);
+            }
+        }
+        public void keyTyped(KeyEvent event) {}
+        public void keyReleased(KeyEvent event) {}
     }
 }

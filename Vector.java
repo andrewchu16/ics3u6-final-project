@@ -48,11 +48,27 @@ public class Vector {
     }
 
     /**
+     * This method divides the x and y-coordinates of the vector by a scalar.
+     * @param scalar The number to divide the vector by.
+     */
+    public void div(double scalar) {
+        this.x /= scalar;
+        this.y /= scalar;
+    }
+    /**
+     * This method multiplies the x and y-coordinates of the vector by a scalar.
+     * @param scalar The number to multiply the vector by.
+     */
+    public void mult(double scalar) {
+        this.scale(scalar);
+    }
+
+    /**
      * This method calculates the length of the vector. It will always return a
      * positive value for all valid vectors.
      * @return The length of the vector.
      */
-    public double getLength() {
+    public double getMagnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
     
@@ -69,7 +85,7 @@ public class Vector {
      * This method scales the length of the vector to 1.
      */
     public void normalize() {
-        this.scale(1 / this.getLength());
+        this.scale(1 / this.getMagnitude());
     }
 
     /**
@@ -119,7 +135,8 @@ public class Vector {
      * @param length The new length of the vector.
      */
     public void setLength(double length) {
-        this.scale(length / this.getLength());
+        this.normalize();
+        this.scale(length);
     }
 
     /**

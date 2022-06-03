@@ -5,8 +5,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
+import java.util.Arrays;
+
 public class Player extends Entity implements Moveable {
-    private static final int WALK_SPEED = 3;
+    private static final int WALK_SPEED = 5;
 
     private AnimationCycle activeCycle;
     private AnimationCycle idleCycle;
@@ -86,10 +88,11 @@ public class Player extends Entity implements Moveable {
     }
 
     public class PlayerKeyListener implements KeyListener {
-        private Window window;
+        private boolean[] pressedKeys;
 
-        public PlayerKeyListener(Window window) {
-            this.window = window;
+        public PlayerKeyListener() {
+            this.pressedKeys = new boolean[KeyEvent.KEY_LAST + 1];
+            Arrays.fill(this.pressedKeys, false);
         }
 
         public void keyTyped(KeyEvent event) {}
@@ -97,10 +100,13 @@ public class Player extends Entity implements Moveable {
         @Override
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
+
+            if (this.pressedKeys[keyCode]) {
+                return;
+            }
+
+            this.pressedKeys[keyCode] = true;
             
-            if (keyCode == Const.K_ESC) {
-                window.switchToScreen(Const.PAUSE_SCREEN_NAME);
-            } 
             if (keyCode == Const.K_UP) {
                 moveUp();
             } 
@@ -118,6 +124,8 @@ public class Player extends Entity implements Moveable {
         @Override
         public void keyReleased(KeyEvent event) {
             int keyCode = event.getKeyCode();
+
+            this.pressedKeys[keyCode] = false;
             
             if (keyCode == Const.K_UP) {
                 speed.setY(0);
@@ -137,6 +145,7 @@ public class Player extends Entity implements Moveable {
                 activeCycle.setPos(getPos());
             } else {
                 speed.setLength(WALK_SPEED);
+                System.out.println(speed);
             }
         }
     };
@@ -169,6 +178,7 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setY(-WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
+        System.out.println(this.speed);
     }
 
     @Override
@@ -176,6 +186,7 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setX(-WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
+        System.out.println(this.speed);
     }
 
     @Override
@@ -183,6 +194,7 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setY(WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
+        System.out.println(this.speed);
     }
 
     @Override
@@ -190,5 +202,6 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.speed.setX(WALK_SPEED);
         this.speed.setLength(WALK_SPEED);
+        System.out.println(this.speed);
     }
 }

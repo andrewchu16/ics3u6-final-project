@@ -8,7 +8,7 @@ public class PauseScreen extends Screen {
 
     private Rectangle centerRect;
 
-    public PauseScreen(Window window) {
+    public PauseScreen(Window window, Game game) {
         super(Const.dayScreenBackground);
         
         this.setName(Const.PAUSE_SCREEN_NAME);
@@ -22,13 +22,24 @@ public class PauseScreen extends Screen {
         
         // Instantiate buttons.
         Button goBackButton = new BackButton(30, 50, window);
-        Button settingsButton = new MenuButton(Const.WIDTH / 2 - 100, 200, "settings button", "Settings");
+        Button resumeButton = new MenuButton(Const.WIDTH / 2 - 100, 200, "resume button", "Resume");
+        Button settingsButton = new MenuButton(Const.WIDTH / 2 - 100, 300, "settings button", "Settings");
 
         // Add button press effects.
+        resumeButton.addHandler(new Button.ButtonHandler() {
+            public void handlePress() {
+                game.run();
+            }
+
+            public void handleHover() {}
+            public void handleUnpress() {}
+        });
+        resumeButton.addHandler(window.new ScreenSwapperButtonHandler(Const.GAME_SCREEN_NAME));
         settingsButton.addHandler(window.new ScreenSwapperButtonHandler(Const.SETTINGS_SCREEN_NAME));
 
         // Add buttons to screen.
         this.addButton(goBackButton);
+        this.addButton(resumeButton);
         this.addButton(settingsButton);
     }
 
