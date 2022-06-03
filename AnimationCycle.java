@@ -108,6 +108,14 @@ public class AnimationCycle implements Drawable, Debuggable {
             }
         }
     }
+
+    public boolean contains(int x, int y) {
+        return this.activeFrame.contains(x, y);
+    }
+
+    public boolean intersects(Hitbox other) {
+        return this.activeFrame.intersects(other);
+    }
     
     @Override
     public void draw(Graphics graphics) {

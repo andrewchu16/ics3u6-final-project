@@ -130,6 +130,20 @@ public class Vector {
     public Vector clone() {
         return new Vector(this.getX(), this.getY());
     }
+
+    /**
+     * This method determines whether another object is the same as it.
+     * @return True if they are the same, false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vector) {
+            Vector vector = (Vector) obj;
+            return Double.compare(this.x, vector.getX()) == 0 && Double.compare(this.y, vector.getY()) == 0;
+        }
+
+        return false;
+    }
     /**
      * This method returns a string representation of the vector in the form, Vec(x, y).
      */

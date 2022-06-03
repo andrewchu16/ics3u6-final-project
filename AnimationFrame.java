@@ -63,6 +63,25 @@ public class AnimationFrame implements Drawable, Debuggable {
         }
     }
 
+    public boolean contains(int x, int y) {
+        for (Hitbox hitbox: this.hitboxes) {
+            if (hitbox.contains(x, y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean intersects(Hitbox other) {
+        for (Hitbox hitbox: this.hitboxes) {
+            if (hitbox.intersects(other)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     /**
      * This method moves the position of the sprites and the hitboxes to the
      * new position. The hiboxes maintain their relative positions to the position

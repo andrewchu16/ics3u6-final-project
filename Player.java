@@ -98,22 +98,20 @@ public class Player extends Entity implements Moveable {
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
             
-            switch (keyCode) {
-                case Const.K_ESC:
-                    window.switchToScreen(Const.PAUSE_SCREEN_NAME);
-                    break;
-                case Const.K_UP:
-                    moveUp();
-                    break;
-                case Const.K_LEFT:
-                    moveLeft();
-                    break;
-                case Const.K_DOWN:
-                    moveDown();
-                    break;
-                case Const.K_RIGHT:
-                    moveRight();
-                    break;
+            if (keyCode == Const.K_ESC) {
+                window.switchToScreen(Const.PAUSE_SCREEN_NAME);
+            } 
+            if (keyCode == Const.K_UP) {
+                moveUp();
+            } 
+            if (keyCode == Const.K_LEFT) {
+                moveLeft();
+            } 
+            if (keyCode == Const.K_DOWN) {
+                moveDown();
+            } 
+            if (keyCode == Const.K_RIGHT) {
+                moveRight();
             }
         }
 
@@ -121,31 +119,39 @@ public class Player extends Entity implements Moveable {
         public void keyReleased(KeyEvent event) {
             int keyCode = event.getKeyCode();
             
-            switch (keyCode) {
-                case Const.K_UP:
-                    stopMoving();
-                    break;
-                case Const.K_LEFT:
-                    stopMoving();
-                    break;
-                case Const.K_DOWN:
-                    stopMoving();
-                    break;
-                case Const.K_RIGHT:
-                    stopMoving();
-                    break;
+            if (keyCode == Const.K_UP) {
+                speed.setY(0);
+            } 
+            if (keyCode == Const.K_LEFT) {
+                speed.setX(0);
+            } 
+            if (keyCode == Const.K_DOWN) {
+                speed.setY(0);
+            } 
+            if (keyCode == Const.K_RIGHT) {
+                speed.setX(0);
             }
 
+            if (speed.equals(Vector.VECTOR_ZERO)) {
+                activeCycle = idleCycle;
+                activeCycle.setPos(getPos());
+            } else {
+                speed.setLength(WALK_SPEED);
+            }
         }
     };
 
     public class PlayerMouseListener implements MouseListener {
         public void mousePressed(MouseEvent event) {
-            if (event.isShiftDown()) {
+            int x = event.getX();
+            int y = event.getY();
+
+            if (activeCycle.contains(x, y)) {
                 activeCycle = hurtCycle;
             } else {
                 activeCycle = attackCycle;
             }
+
             activeCycle.setPos(getPos());
         }
 
@@ -162,30 +168,27 @@ public class Player extends Entity implements Moveable {
     public void moveUp() {
         this.activeCycle = walkCycle;
         this.speed.setY(-WALK_SPEED);
+        this.speed.setLength(WALK_SPEED);
     }
 
     @Override
     public void moveLeft() {
         this.activeCycle = walkCycle;
         this.speed.setX(-WALK_SPEED);
+        this.speed.setLength(WALK_SPEED);
     }
 
     @Override
     public void moveDown() {
         this.activeCycle = walkCycle;
         this.speed.setY(WALK_SPEED);
+        this.speed.setLength(WALK_SPEED);
     }
 
     @Override
     public void moveRight() {
         this.activeCycle = walkCycle;
         this.speed.setX(WALK_SPEED);
-    }
-    
-    public void stopMoving() {
-        this.activeCycle = idleCycle;
-        this.speed.setX(0);
-        this.speed.setY(0);
-        this.activeCycle.setPos(this.getPos());
+        this.speed.setLength(WALK_SPEED);
     }
 }

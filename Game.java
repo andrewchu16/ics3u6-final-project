@@ -53,8 +53,6 @@ public class Game implements Drawable, Debuggable {
 
     @Override
     public void draw(Graphics graphics) {
-        // graphics.translate((int) this.player.getX() + (Const.WIDTH - this.player.getWidth()) / 2, 
-                // (int) this.player.getY() + (Const.HEIGHT - this.player.getHeight()) / 2);
         this.player.draw(graphics);
 
         if (this.checkDebugging()) {
