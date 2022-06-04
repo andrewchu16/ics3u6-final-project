@@ -20,8 +20,11 @@ public class Const {
     // Update rates.
     public static final int MS_PER_S = 1000;
 
+    // The duration between window redraws in milliseconds.
     public static final int DEFAULT_FRAME_PERIOD = MS_PER_S / 60;
+    // The duration between game updates in milliseconds.
     public static final int UPDATE_PERIOD = MS_PER_S / 30;
+    // The duration betweeen each frame in an animation in milliseconds.
     public static final int ANIMATE_PERIOD = MS_PER_S / 8;
 
     // Labels for the different screens.
@@ -58,7 +61,7 @@ public class Const {
     public static final int DOWN = 3;
     public static final int RIGHT = 4;
 
-    // Keys.
+    // Game keys.
     public static final int K_ESC = KeyEvent.VK_ESCAPE;
     public static final int K_UP = KeyEvent.VK_W;
     public static final int K_LEFT = KeyEvent.VK_A;
@@ -82,16 +85,16 @@ public class Const {
     // Audio.
 
     // Fonts.
-    private static final int MENU_BUTTON_FONT_SIZE = 30;
-    private static final int SMALL_BUTTON_FONT_SIZE = 24;
     private static final int TITLE_FONT_SIZE = 64;
     private static final int SUBTITLE_FONT_SIZE = 50;
+    private static final int MENU_BUTTON_FONT_SIZE = 30;
+    private static final int SMALL_BUTTON_FONT_SIZE = 24;
     private static final int DEBUG_FONT_SIZE = 12;
 
-    public static Font buttonFont;
-    public static Font smallButtonFont;
     public static Font titleFont;
     public static Font subtitleFont;
+    public static Font buttonFont;
+    public static Font smallButtonFont;
     public static Font debugFont;
 
     /**
@@ -114,15 +117,15 @@ public class Const {
         graphics.fillOval(850, 60, 70, 70);
 
         // Load screen backgrounds.
-        howToPlayScreenText = Sprite.tryLoadImage("images/menu/howToPlay.png");
-        nightScreenBackground = Sprite.tryLoadImage("images/menu/nightScreenBackground.png");
+        howToPlayScreenText = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
+        nightScreenBackground = Sprite.tryLoadImage("assets/images/menu/night_background.png");
 
         // Load player images.
-        playerIdleSpriteSheet = Sprite.tryLoadImage("images/player/mummy_idle.png");
-        playerStaticSpriteSheet = Sprite.tryLoadImage("images/player/mummy.png");
-        playerWalkSpriteSheet = Sprite.tryLoadImage("images/player/mummy_walk.png");
-        playerAttackSpriteSheet = Sprite.tryLoadImage("images/player/mummy_attack.png");
-        playerHurtSpriteSheet = Sprite.tryLoadImage("images/player/mummy_hurt.png");
+        playerIdleSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_idle.png");
+        playerStaticSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy.png");
+        playerWalkSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_walk.png");
+        playerAttackSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_attack.png");
+        playerHurtSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_hurt.png");
     }
 
     /**
@@ -130,26 +133,26 @@ public class Const {
      * from memory, a default font will be used.
      */
     public static void loadFonts() {
-        buttonFont = new Font("Sans-Serif", Font.PLAIN, MENU_BUTTON_FONT_SIZE);
-        smallButtonFont = new Font("Sans-Serif", Font.PLAIN, SMALL_BUTTON_FONT_SIZE);
-        debugFont = new Font("Sans-Serif", Font.PLAIN, DEBUG_FONT_SIZE);
-
-        // Load title font.
+        // Load title and subtitle font.
         try {
             Font amaticSCBold = Font.createFont(Font.TRUETYPE_FONT, 
-                    new File("fonts/AmaticSC-Bold.ttf"));
-                                            
+            new File("assets/fonts/AmaticSC-Bold.ttf"));
+            
             titleFont = amaticSCBold.deriveFont((float) TITLE_FONT_SIZE);
             subtitleFont = amaticSCBold.deriveFont((float) SUBTITLE_FONT_SIZE);
         } catch (IOException ex) {
-            System.out.println("Error: Could not read title font.");
+            System.out.println("Error: Could not read fonts.");
             titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
             subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
         } catch (FontFormatException ex) {
-            System.out.println("Error: Invalid title font file.");
+            System.out.println("Error: Invalid font files.");
             titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
             subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
         }
+
+        buttonFont = new Font("Sans-Serif", Font.PLAIN, MENU_BUTTON_FONT_SIZE);
+        smallButtonFont = new Font("Sans-Serif", Font.PLAIN, SMALL_BUTTON_FONT_SIZE);
+        debugFont = new Font("Sans-Serif", Font.PLAIN, DEBUG_FONT_SIZE);
     }
 
     private Const() {}
