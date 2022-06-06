@@ -11,11 +11,9 @@ import java.awt.Color;
  * This class represents text on a surface. It has a font and color.
  */
 public class Text implements Drawable {
-    private int x;
-    private int y;
-    private int centerX;
-    private int centerY;
-    
+    private Vector position;
+    private Vector center;
+
     private String text;
     private Font font;
     private Color color;
@@ -32,8 +30,8 @@ public class Text implements Drawable {
         this.font = font;
         this.color = Const.BLACK;
 
-        this.centerX = centerX;
-        this.centerY = centerY;
+        this.center = new Vector(centerX, centerY);
+        this.position = new Vector();
         this.calculateCoord();
     }
 
@@ -41,8 +39,8 @@ public class Text implements Drawable {
      * This method calculates the top-left coordinate based off of the center coordinates.
      */
     private void calculateCoord() {
-        this.x = this.centerX - (this.getWidth() / 2);
-        this.y = this.centerY + (this.getHeight() / 2);
+        this.position.setX(this.center.getX() - (this.getWidth() / 2));
+        this.position.setY(this.center.getY() + (this.getHeight() / 2));
     }
 
     public int getWidth() {
@@ -61,12 +59,12 @@ public class Text implements Drawable {
     }
 
     public void setCenterX(int newCenterX) {
-        this.centerX = newCenterX;
+        this.center.setX(newCenterX);
         this.calculateCoord();
     }
 
     public void setCenterY(int newCenterY) {
-        this.centerY = newCenterY;
+        this.center.setY(newCenterY);
         this.calculateCoord();
     }
 
@@ -113,6 +111,6 @@ public class Text implements Drawable {
 
         graphics.setColor(this.color);
         graphics.setFont(this.font);
-        graphics.drawString(this.text, this.x, this.y);
+        graphics.drawString(this.text, (int) this.position.getX(), (int) this.position.getY());
     }
 }

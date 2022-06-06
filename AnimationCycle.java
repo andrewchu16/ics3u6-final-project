@@ -1,7 +1,7 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public class AnimationCycle implements Drawable, Debuggable {
+public class AnimationCycle implements Drawable, Debuggable, Collidable {
     private AnimationFrame[] frames;
     private AnimationFrame activeFrame;
     private boolean loopBackwards;
@@ -109,10 +109,12 @@ public class AnimationCycle implements Drawable, Debuggable {
         }
     }
 
+    @Override
     public boolean contains(int x, int y) {
         return this.activeFrame.contains(x, y);
     }
 
+    @Override
     public boolean intersects(Hitbox other) {
         return this.activeFrame.intersects(other);
     }

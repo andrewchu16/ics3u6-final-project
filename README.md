@@ -15,7 +15,7 @@ The player will use the keyboard to move and interact with the materials they ga
 
 ## Layout
 
-The main game takes place on a mostly 2-dimensional plane.
+The main game takes place on a 2-dimensional plane.
 
 ## Programming Challenges
 
@@ -45,17 +45,21 @@ The main game takes place on a mostly 2-dimensional plane.
 - [x] Finish switching screens and menu screens
 - [x] Finish game entity superclass
 - [x] Finish hitboxes
-- [ ] Finish adding sprites
-- [ ] Finish player that is animated and can move
-- [ ] Finish item classes
+- [x] Finish player that is animated and can move
 - [ ] Finish game map system
 - [ ] Finish mini map
+- [ ] Finish adding sprites
+- [ ] Finish item classes
+- [ ] Finish player attacks
 - [ ] Finish player inventory system
 - [ ] Finish player user interface
-- [ ] Finish player attacks
 - [ ] Finish enemies and enemy behaviour
 - [ ] Finish adding sounds
 - [ ] Finish debugging game
 - [ ] Finish adding comments
 - [ ] Finish video
 - [ ] Submit project
+
+## Sprite Credits
+
+- [Player](https://craftpix.net/freebies/free-desert-enemy-sprite-sheets-pixel-art/)

@@ -7,9 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * This class loads a sprite sheet and draws the appropriate frame for 
- * animations. Each sprite in the sprite sheet should be stacked on top 
- * of each other.
+ * This class loads an image into memory.
  */
 public class Sprite implements Drawable {
     private Vector position;
@@ -97,8 +95,8 @@ public class Sprite implements Drawable {
     /**
      * This method gets a reference of the position of the {@code Sprite} object.
      * If the reference of the position gets modified elsewhere, the position of
-     * the {@code Sprite} will change.
-     * @return A reference to the position of the {@code Sprite} object.
+     * this {@code Sprite} will change.
+     * @return A reference to the position of this {@code Sprite} object.
      */
     public Vector getRefPos() {
         return this.position;
@@ -130,5 +128,14 @@ public class Sprite implements Drawable {
     @Override
     public void draw(Graphics graphics) {
         graphics.drawImage(this.image, this.getX(), this.getY(), null);
+    }
+
+    /**
+     * This method draws this {@code Sprite} onto a surface at a coordinate.
+     * @param graphics The {@code Graphics} of the surface to draw on.
+     * @param position The top-left coordinate to draw this {@code Sprite}.
+     */
+    public void draw(Graphics graphics, Vector position) {
+        graphics.drawImage(this.image, (int) position.getX(), (int) position.getY(), null);
     }
 }

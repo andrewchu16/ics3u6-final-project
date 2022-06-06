@@ -8,7 +8,7 @@ import java.awt.BasicStroke;
 /**
  * This class represents a hitbox for determining the collision of objects.
  */
-public class Hitbox implements Drawable, Debuggable {
+public class Hitbox implements Drawable, Debuggable, Collidable {
     private Vector position;
     private Rectangle rect;
 
@@ -126,6 +126,7 @@ public class Hitbox implements Drawable, Debuggable {
      * @param y The y-cooridnate of the point to check.
      * @return {@code true} if the point is inside this {@code Hitbox}, {@code false} otherwise.
      */
+    @Override
     public boolean contains(int x, int y) {
         return this.rect.contains(x, y);
     }
@@ -135,6 +136,7 @@ public class Hitbox implements Drawable, Debuggable {
      * @param other The other {@code Hitbox} to check.
      * @return {@code true} if the hitboxes overlap, {@code false} otherwise.
      */
+    @Override
     public boolean intersects(Hitbox other) {
         return this.rect.intersects(other.getRect());
     }

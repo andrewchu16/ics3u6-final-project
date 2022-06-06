@@ -6,7 +6,7 @@ import java.awt.Graphics;
  * This class represents a single frame in the animation cycle of an entity. It
  * contains both the sprite and the hitboxes associated with it.
  */
-public class AnimationFrame implements Drawable, Debuggable {
+public class AnimationFrame implements Drawable, Debuggable, Collidable {
     private Vector position;
     private Sprite sprite;
     private ArrayList<Hitbox> hitboxes;
@@ -63,6 +63,7 @@ public class AnimationFrame implements Drawable, Debuggable {
         }
     }
 
+    @Override
     public boolean contains(int x, int y) {
         for (Hitbox hitbox: this.hitboxes) {
             if (hitbox.contains(x, y)) {
@@ -72,6 +73,7 @@ public class AnimationFrame implements Drawable, Debuggable {
         return false;
     }
 
+    @Override
     public boolean intersects(Hitbox other) {
         for (Hitbox hitbox: this.hitboxes) {
             if (hitbox.intersects(other)) {

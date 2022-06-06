@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @see Screen
  * @see Text
  */
-public class Button implements Drawable {
+public class Button implements Drawable, Collidable {
     private Hitbox hitbox;
     private String name;
     private ArrayList<ButtonHandler> handlers;
@@ -78,8 +78,14 @@ public class Button implements Drawable {
      * @param y The y-coordinate of the point to check.
      * @return True if the point is contained in this {@code Button}, false otherwise.
      */
+    @Override
     public boolean contains(int x, int y) {
         return this.hitbox.contains(x, y);
+    }
+    
+    @Override
+    public boolean intersects(Hitbox other) {
+        return this.hitbox.intersects(other);
     }
 
     public Hitbox getHitbox() {
