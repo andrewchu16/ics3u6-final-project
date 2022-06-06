@@ -1,9 +1,8 @@
-import java.awt.Color;
-
 import java.awt.Graphics2D;
 import java.awt.GradientPaint;
 import java.awt.image.BufferedImage;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 
@@ -116,7 +115,7 @@ public class Const {
         graphics.setColor(YELLOW2);
         graphics.fillOval(850, 60, 70, 70);
 
-        // Load screen backgrounds.
+        // Load menu screen images.
         howToPlayScreenText = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
         nightScreenBackground = Sprite.tryLoadImage("assets/images/menu/night_background.png");
 
@@ -133,18 +132,20 @@ public class Const {
      * from memory, a default font will be used.
      */
     public static void loadFonts() {
-        // Load title and subtitle font.
         try {
+            // Load title and subtitle font.
             Font amaticSCBold = Font.createFont(Font.TRUETYPE_FONT, 
-            new File("assets/fonts/AmaticSC-Bold.ttf"));
+                    new File("assets/fonts/AmaticSC-Bold.ttf"));
             
             titleFont = amaticSCBold.deriveFont((float) TITLE_FONT_SIZE);
             subtitleFont = amaticSCBold.deriveFont((float) SUBTITLE_FONT_SIZE);
         } catch (IOException ex) {
+            // Handle I/O exception.
             System.out.println("Error: Could not read fonts.");
             titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
             subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
         } catch (FontFormatException ex) {
+            // Handle file format exception.
             System.out.println("Error: Invalid font files.");
             titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
             subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);

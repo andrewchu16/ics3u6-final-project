@@ -1,8 +1,21 @@
 import java.awt.Graphics;
 
+/**
+ * This class represents a {@code Screen} for displaying the main title screen. 
+ * It has {@code Button}s that lead to the other subscreens.
+ * @see GameScreen
+ * @see SelectScreen
+ * @see SettingsScreen
+ * @see HowToPlayScreen
+ */
 public class MenuScreen extends Screen {
     private Label titleLabel;
 
+    /**
+     * This constructs a {@code MenuScreen} object.
+     * @param window The {@code Window} that this {@code MenuScreen} is a part of.
+     * @param game The {@code Game} object.
+     */
     public MenuScreen(Window window, Game game) {
         super(Const.dayScreenBackground);
 
@@ -47,6 +60,9 @@ public class MenuScreen extends Screen {
         this.addButton(howToPlayButton);
     }
 
+    /**
+     * This method draws this {@code MenuScreen}.
+     */
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);

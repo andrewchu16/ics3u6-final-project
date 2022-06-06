@@ -8,7 +8,7 @@ public class Vector {
     private double y;
 
     /**
-     * This constructs a new Vector object at (0, 0).
+     * This constructs a new {@code Vector} object at (0, 0).
      */
     public Vector() {
         this.x = 0.0;
@@ -16,9 +16,9 @@ public class Vector {
     }
 
     /**
-     * This constructs a new Vector object at the specified coordinate.
-     * @param x The x component of the vector.
-     * @param y The y component of the vector.
+     * This constructs a new {@code Vector} object at the specified coordinate.
+     * @param x The x-coordinate of the {@code Vector}.
+     * @param y The y-coordinate of the {@code Vector}.
      */
     public Vector(double x, double y) {
         this.x = x;
@@ -26,10 +26,11 @@ public class Vector {
     }
 
     /**
-     * This method adds the x and y parts of a vector to the vector. If the
-     * first vector is at (a, b) and the second vector is at (c, d), This method
-     * will set the first vector to (a+c, b+d).
-     * @param other The vector to add.
+     * This method adds the x and y parts of a {@code Vector} to this {@code Vector}. 
+     * For example, if the first {@code Vector} is at {@code (a, b)} and the second 
+     * {@code Vector} s at {@code (c, d)}, This method will set the first {@code Vector} 
+     * to {@code (a+c, b+d)}.
+     * @param other The {@code Vector} to add.
      */
     public void add(Vector other) {
         this.x += other.getX();
@@ -37,10 +38,11 @@ public class Vector {
     }
 
     /**
-     * This method subtracts the x and y parts of a vector to the vector. If the
-     * first vector is at (a, b) and the second vector is at (c, d), This method
-     * will set the first vector to (a-c, b-d).
-     * @param other The vector to add.
+     * This method subtracts the x and y parts of a {@code Vector} to this 
+     * {@code Vector}. For example, if the first {@code Vector} is at {@code (a, b)} 
+     * and the second {@code Vector} is at {@code (c, d)}, This method will set the 
+     * first {@code Vector} to {@code (a-c, b-d)}.
+     * @param other The {@code Vector} to subtract.
      */
     public void sub(Vector other) {
         this.x -= other.getX();
@@ -48,49 +50,49 @@ public class Vector {
     }
 
     /**
-     * This method divides the x and y-coordinates of the vector by a scalar.
-     * @param scalar The number to divide the vector by.
+     * This method divides the x and y-coordinates of this {@code Vector} by a scalar.
+     * @param scalar The number to divide this {@code Vector} by.
      */
     public void div(double scalar) {
         this.x /= scalar;
         this.y /= scalar;
     }
     /**
-     * This method multiplies the x and y-coordinates of the vector by a scalar.
-     * @param scalar The number to multiply the vector by.
+     * This method multiplies the x and y-coordinates of this {@code Vector} by a scalar.
+     * @param scalar The number to multiply the {@code Vector} by.
      */
     public void mult(double scalar) {
         this.scale(scalar);
     }
 
     /**
-     * This method calculates the length of the vector. It will always return a
-     * positive value for all valid vectors.
-     * @return The length of the vector.
+     * This method calculates the length of this {@code Vector}. It will always 
+     * return a positive value for all valid {@code Vector}s.
+     * @return The length or magnitude of the {@code Vector}.
      */
     public double getMagnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
     
     /**
-     * This method gets the dot product of two vectors.
-     * @param other The other vector.
-     * @return The dot product of the vectors, a scalar.
+     * This method gets the dot product of this and another {@code Vector}.
+     * @param other The other {@code Vector}.
+     * @return The dot product of the {@code Vector}s, a scalar.
      */
     public double dot(Vector other) {
         return this.x * other.getX() + this.y * other.getY();
     }
     
     /**
-     * This method scales the length of the vector to 1.
+     * This method sets the length of this {@code Vector} to 1.
      */
     public void normalize() {
         this.scale(1 / this.getMagnitude());
     }
 
     /**
-     * This method scales the length of the vector.
-     * @param scalar The length to scale the vector by.
+     * This method scales the length of this {@code Vector}.
+     * @param scalar The length to scale this {@code Vector} by.
      */
     public void scale(double scalar) {
         this.x *= scalar;
@@ -98,7 +100,7 @@ public class Vector {
     }
 
     /**
-     * This method rotates the vector in user coordinates.
+     * This method rotates this {@code Vector} in user coordinates.
      * @param angleDegrees The degree to rotate the vector in user coordinates.
      */
     public void rotate(double angleDegrees) {
@@ -131,17 +133,16 @@ public class Vector {
     }
 
     /**
-     * This method sets the vector to the specified length.
-     * @param length The new length of the vector.
+     * This method sets this {@code Vector} to the specified length.
+     * @param length The new length of this {@code Vector}.
      */
     public void setLength(double length) {
-        this.normalize();
-        this.scale(length);
+        this.scale(length / this.getMagnitude());
     }
 
     /**
-     * This method returns a copy of the vector.
-     * @return The copied vector.
+     * This method returns a copy of this {@code Vector}.
+     * @return The copied {@code Vector}.
      */
     @Override
     public Vector clone() {
@@ -150,7 +151,7 @@ public class Vector {
 
     /**
      * This method determines whether another object is the same as it.
-     * @return True if they are the same, false otherwise.
+     * @return {@code true} if they are the same, {@code false} otherwise.
      */
     @Override
     public boolean equals(Object obj) {
@@ -162,11 +163,11 @@ public class Vector {
         return false;
     }
     /**
-     * This method returns a string representation of the vector in the form, Vec(x, y).
+     * This method returns a string representation of this {@code Vector} in the form, 
+     * Vec(x, y).
      */
     @Override
     public String toString() {
-        String info = "Vec(" + x + ", " + y + ")";
-        return info;
+        return "Vec(" + x + ", " + y + ")";
     }
 }

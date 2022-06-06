@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -17,6 +18,12 @@ public class Sprite implements Drawable {
 
     private BufferedImage image;
     
+    /**
+     * This constructs a new {@code Sprite} object.
+     * @param x The top-left x-coordinate.
+     * @param y The top-left y-coordinate.
+     * @param picName The file name of the image.
+     */
     public Sprite(int x, int y, String picName) {
         this.position = new Vector(x, y);
         
@@ -24,6 +31,13 @@ public class Sprite implements Drawable {
         this.image = tryLoadImage(picName);
     }
 
+    /**
+     * This constructs a new {@code Sprite} object.
+     * @param x The top-left x-coordinate.
+     * @param y The top-left y-coordinate.
+     * @param pic The image object.
+     * @see BufferedImage
+     */
     public Sprite(int x, int y, BufferedImage pic) {
         this.position = new Vector(x, y);
         this.image = pic;
@@ -32,6 +46,13 @@ public class Sprite implements Drawable {
         this.height = this.image.getHeight();
     }
 
+    /**
+     * This constructs a new {@code Sprite} object. If the reference to the position
+     * gets changed, the {@code Sprite}'s position also changes.
+     * @param position The position of the top-left of the Sprite.
+     * @param pic The image object.
+     * @see BufferedImage
+     */
     public Sprite(Vector position, BufferedImage pic) {
         this.position = position;
         this.image = pic;
@@ -40,6 +61,11 @@ public class Sprite implements Drawable {
         this.height = this.image.getHeight();
     }
 
+    /**
+     * This method attempts to create a {@code BufferedImage} object.
+     * @param picName The file name of the image.
+     * @return A {@code BufferedImage} object of the image if no errors occur, {@code null} otherwise.
+     */
     public static BufferedImage tryLoadImage(String picName) {
         BufferedImage image;
         try {
@@ -60,8 +86,22 @@ public class Sprite implements Drawable {
         return (int) this.position.getY();
     }
 
+    /**
+     * This method gets a copy of the position of the {@code Sprite} object.
+     * @return A copy of the position of the {@code Sprite} object.
+     */
     public Vector getPos() {
         return this.position.clone();
+    }
+
+    /**
+     * This method gets a reference of the position of the {@code Sprite} object.
+     * If the reference of the position gets modified elsewhere, the position of
+     * the {@code Sprite} will change.
+     * @return A reference to the position of the {@code Sprite} object.
+     */
+    public Vector getRefPos() {
+        return this.position;
     }
     
     public int getWidth() {
@@ -84,6 +124,9 @@ public class Sprite implements Drawable {
         this.position = newPos;
     }
 
+    /**
+     * This method draws this {@code Sprite} onto a surface.
+     */
     @Override
     public void draw(Graphics graphics) {
         graphics.drawImage(this.image, this.getX(), this.getY(), null);

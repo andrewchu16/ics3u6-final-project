@@ -1,8 +1,13 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import java.awt.Rectangle;
 import java.awt.BasicStroke;
 
+/**
+ * This class represents a {@code Screen} for starting a new {@code Game}.
+ * It provides options to change the {@code Player}'s name and difficulty.
+ */
 public class SelectScreen extends Screen {
     private Label titleLabel;
 
@@ -11,6 +16,11 @@ public class SelectScreen extends Screen {
     private Label difficultyLabel;
     private Label currentDifficultyLabel;
 
+    /**
+     * This constructs a {@code SelectScreen} object.
+     * @param window The {@code Window} this {@code SelectScreen} is a part of.
+     * @param game The {@code Game} object.
+     */
     public SelectScreen(Window window, Game game) {
         super(Const.dayScreenBackground);
 
@@ -41,7 +51,6 @@ public class SelectScreen extends Screen {
         ArrowButton raiseDifficultyButton = new ArrowButton(Const.WIDTH / 2 + 220, 430,
                 40, 36, Const.RIGHT, "raise difficulty button", Const.GREEN2, Const.GREEN);
         Button startButton = new MenuButton(Const.WIDTH / 2 - 20, 570, "start button", "Start Game");
-
 
         // Add button press effects.
         nameTextField.addTextFieldHandler(new TextField.TextFieldHandler() {
@@ -80,7 +89,6 @@ public class SelectScreen extends Screen {
             public void handleUnpress() {}
         });
 
-
         // Add buttons to screen.
         this.addButton(goBackButton);
         this.addButton(nameTextField);
@@ -89,6 +97,9 @@ public class SelectScreen extends Screen {
         this.addButton(startButton);
     }
 
+    /**
+     * This method draws the {@code SelectScreen}.
+     */
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);

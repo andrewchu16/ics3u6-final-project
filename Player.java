@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -9,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 public class Player extends Entity implements Moveable {
-    private static final int WALK_SPEED = 5;
+    private static final int WALK_SPEED = 8;
 
     private AnimationCycle activeCycle;
     private AnimationCycle idleCycle;
@@ -158,8 +157,8 @@ public class Player extends Entity implements Moveable {
 
     public class PlayerMouseListener implements MouseListener {
         public void mousePressed(MouseEvent event) {
-            int x = event.getX();
-            int y = event.getY();
+            int x = event.getX() - (int) getX();
+            int y = event.getY() - (int) getY();
 
             if (activeCycle.contains(x, y)) {
                 activeCycle = hurtCycle;

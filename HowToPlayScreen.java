@@ -1,9 +1,17 @@
 import java.awt.Graphics;
 
+/**
+ * This class represents a {@code Screen} for displaying information on how to 
+ * play the game.
+ */
 public class HowToPlayScreen extends Screen {
     private Label titleLabel;
     private Sprite textSprite;
 
+    /**
+     * This constructs a {@code HowToPlayScreen} object.
+     * @param window The window this {@code HowToPlayScreen} object is a part of.
+     */
     public HowToPlayScreen(Window window) {
         super(Const.nightScreenBackground);
 
@@ -23,6 +31,9 @@ public class HowToPlayScreen extends Screen {
         this.addButton(goBackButton);
     }
 
+    /**
+     * This method draws the {@code HowToPlayScreen}.
+     */
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);

@@ -3,11 +3,21 @@ import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Rectangle;
 
+/**
+ * This class represents a screen for pausing the {@code Game}. It also allows 
+ * the player to change the game settings.
+ * @see SettingsScreen
+ */
 public class PauseScreen extends Screen {
     private Label titleLabel;
 
     private Rectangle centerRect;
 
+    /**
+     * This constructs a {@code PauseScreen} object.
+     * @param window The {@code Window} this {@code PauseScreen} is a part of.
+     * @param game The {@code Game} object.
+     */
     public PauseScreen(Window window, Game game) {
         super(Const.dayScreenBackground);
         
@@ -43,6 +53,9 @@ public class PauseScreen extends Screen {
         this.addButton(settingsButton);
     }
 
+    /**
+     * This method draws this {@code PauseScreen}.
+     */
     @Override 
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);

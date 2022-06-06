@@ -1,12 +1,15 @@
-import java.awt.Font;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
-
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import java.awt.Font;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.Color;
+
+/**
+ * This class represents text on a surface. It has a font and color.
+ */
 public class Text implements Drawable {
     private int x;
     private int y;
@@ -17,6 +20,13 @@ public class Text implements Drawable {
     private Font font;
     private Color color;
 
+    /**
+     * This constructs a {@code Text} object with a black color.
+     * @param text The string text.
+     * @param font The font of the text.
+     * @param centerX The center of this {@code Text}.
+     * @param centerY The center of this {@code Text}.
+     */
     public Text(String text, Font font, int centerX, int centerY) {
         this.text = text;
         this.font = font;
@@ -27,6 +37,9 @@ public class Text implements Drawable {
         this.calculateCoord();
     }
 
+    /**
+     * This method calculates the top-left coordinate based off of the center coordinates.
+     */
     private void calculateCoord() {
         this.x = this.centerX - (this.getWidth() / 2);
         this.y = this.centerY + (this.getHeight() / 2);
@@ -67,6 +80,12 @@ public class Text implements Drawable {
         this.calculateCoord();
     }
 
+    /**
+     * This method calculates the width of a string of text rendered in a given font.
+     * @param text The string.
+     * @param font The font of the text.
+     * @return The width of the text in the font.
+     */
     public static int getTextWidth(String text, Font font) {
         AffineTransform affineTransform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(affineTransform, true, true);     
@@ -74,10 +93,18 @@ public class Text implements Drawable {
         return textWidth;
     }
 
+    /**
+     * This method calculates the height of a font.
+     * @param font The font.
+     * @return
+     */
     public static int getTextHeight(Font font) {
         return font.getSize() / 2;
     }
 
+    /**
+     * This method draws the text onto a surface with anti-aliasing. 
+     */
     @Override
     public void draw(Graphics graphics) {
         ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, 

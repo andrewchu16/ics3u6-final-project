@@ -4,6 +4,10 @@ import java.awt.Rectangle;
 import java.awt.BasicStroke;
 import java.awt.Color;
 
+/**
+ * This class represents a {@code Screen} for changing the {@code Window} settings. 
+ * It allows the player to enter debug mode or change the FPS of the window.
+ */
 public class SettingsScreen extends Screen {
     private Label titleLabel;
     private Label fpsLabel;
@@ -11,6 +15,11 @@ public class SettingsScreen extends Screen {
 
     private Rectangle centerRect;
 
+    /**
+     * This constructs a {@code SettingsScreen} object.
+     * @param window The {@code Window} this {@code SettingsScreen} is a part of.
+     * @param game The {@code Game} object.
+     */
     public SettingsScreen(Window window, Game game) {
         super(Const.dayScreenBackground);
 
@@ -61,6 +70,12 @@ public class SettingsScreen extends Screen {
         this.addButton(debugButton);
     }
 
+    /**
+     * This method creates the button for enabling debugging. Instead of just 
+     * changing colour on hover, it toggles between colours.
+     * @param game The {@code Game} object.
+     * @return The created debug button.
+     */
     private Button createDebugButton(Game game) {
         String startDebugText;
         Color startDebugUnpressedColor;
@@ -107,6 +122,9 @@ public class SettingsScreen extends Screen {
         return debugButton;
     }
 
+    /**
+     * This method draws the {@code SettingsScreen}.
+     */
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
