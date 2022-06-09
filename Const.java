@@ -24,7 +24,7 @@ public class Const {
     // The duration between game updates in milliseconds.
     public static final int UPDATE_PERIOD = MS_PER_S / 30;
     // The duration betweeen each frame in an animation in milliseconds.
-    public static final int ANIMATE_PERIOD = MS_PER_S / 8;
+    public static final int ANIMATE_PERIOD = MS_PER_S / 12;
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -53,13 +53,13 @@ public class Const {
     public static final Color LIGHT_GRAY2 = new Color(175, 189, 192);
     public static final Color GRAY = new Color(57, 70, 72);
     public static final Color BLACK = new Color(14, 38, 47);
-
+    
     // Directions.
-    public static final int UP = 1;
-    public static final int LEFT = 2;
-    public static final int DOWN = 3;
-    public static final int RIGHT = 4;
-
+    public static final int UP = 0;
+    public static final int LEFT = 1;
+    public static final int DOWN = 2;
+    public static final int RIGHT = 3;
+    
     // Game keys.
     public static final int K_ESC = KeyEvent.VK_ESCAPE;
     public static final int K_UP = KeyEvent.VK_W;
@@ -68,6 +68,10 @@ public class Const {
     public static final int K_RIGHT = KeyEvent.VK_D;
     public static final int K_USE = KeyEvent.VK_E;
     public static final int K_RELOAD = KeyEvent.VK_R;
+    
+    // Map constants.
+    public static final String MAP_FILE_NAME = "assets/map/map.txt";
+    public static final int MAP_RENDER_DISTANCE = 2;
     
     // Menu images.
     public static BufferedImage dayScreenBackground;
@@ -95,7 +99,12 @@ public class Const {
     public static Font buttonFont;
     public static Font smallButtonFont;
     public static Font debugFont;
+    
 
+    // Tile and map sprites.
+    public static final Sprite SAND_TILE_SPRITE = new Sprite(0, 0, "assets/images/tiles/sand_tile.png");
+    public static final Sprite ROCK_TILE_SPRITE = new Sprite(0, 0, "assets/images/tiles/rock_tile.png");
+    
     /**
      * This method loads all the images used in the game.
      */
@@ -141,7 +150,7 @@ public class Const {
             subtitleFont = amaticSCBold.deriveFont((float) SUBTITLE_FONT_SIZE);
         } catch (IOException ex) {
             // Handle I/O exception.
-            System.out.println("Error: Could not read fonts.");
+            System.out.println("Error: Could not read font files.");
             titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
             subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
         } catch (FontFormatException ex) {

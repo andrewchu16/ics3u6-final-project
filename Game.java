@@ -16,8 +16,10 @@ public class Game implements Drawable, Debuggable {
     public static final int HARD = 2;
 
     private boolean debugMode;
-    private Player player;
     private int difficulty;
+
+    private Player player;
+    private Map map;
 
     private Timer updateLoop;
     private Timer animateLoop;
@@ -26,7 +28,10 @@ public class Game implements Drawable, Debuggable {
         this.debugMode = false;
         this.difficulty = MEDIUM;
 
-        player = new Player();
+        this.player = new Player();
+        this.map = new Map(Const.MAP_FILE_NAME);
+        this.map.loadFromFile();
+        this.map.updateRendering(this.player.getPos());
 
         this.updateLoop = new Timer(Const.UPDATE_PERIOD, new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -48,11 +53,18 @@ public class Game implements Drawable, Debuggable {
 
     public void pause() {
         this.updateLoop.stop();
-        this.updateLoop.stop();
+        this.animateLoop.stop();
     }
 
     private void update() {
+        Vector prevPlayerMapPosition = Map.calculateMapPosition(this.player.getPos());
+        
         this.player.update();
+
+        Vector curPlayerMapPosition = Map.calculateMapPosition(this.player.getPos());
+        if (!prevPlayerMapPosition.equals(curPlayerMapPosition)) {
+            this.map.updateRendering(this.player.getPos());
+        }
     }
 
     private void animate() {
@@ -67,7 +79,7 @@ public class Game implements Drawable, Debuggable {
                 Const.WIDTH / 2 - this.player.getX(), Const.HEIGHT / 2 - this.player.getY());
         ((Graphics2D) graphics).transform(translateCenterPlayer);
 
-        // Draw the player.
+        this.map.draw(graphics);
         this.player.draw(graphics);
         
         if (this.checkDebugging()) {
@@ -80,8 +92,10 @@ public class Game implements Drawable, Debuggable {
 
     @Override
     public void drawDebugInfo(Graphics graphics) {
+        this.map.drawDebugInfo(graphics);
         this.player.drawDebugInfo(graphics);
 
+        // Draw a circle at (0, 0)
         graphics.setColor(Const.RED);
         graphics.fillOval(0, 0, 5, 5);
     }

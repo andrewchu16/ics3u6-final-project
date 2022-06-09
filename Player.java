@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 public class Player extends Entity implements Moveable {
-    private static final int WALK_SPEED = 8;
+    private static final int WALK_SPEED = 16;
 
     private AnimationCycle activeCycle;
     private AnimationCycle idleCycle;
