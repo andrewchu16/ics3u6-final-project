@@ -38,6 +38,18 @@ public class Vector {
     }
 
     /**
+     * This method adds an x and y value to this {@code Vector}. For example, if
+     * this {@code Vector} is at {@code (a, b)}, then this {@code Vector} will become
+     * {@code (a+dx, b+dy)}.
+     * @param dx
+     * @param dy
+     */
+    public void add(double dx, double dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+
+    /**
      * This method subtracts the x and y parts of a {@code Vector} to this 
      * {@code Vector}. For example, if the first {@code Vector} is at {@code (a, b)} 
      * and the second {@code Vector} is at {@code (c, d)}, This method will set the 
@@ -116,6 +128,22 @@ public class Vector {
         this.y = y2;
     }
 
+    /**
+     * This method reflect this {@code Vector} or turns it 180 degrees.
+     */
+    public void reflect() {
+        this.x *= -1;
+        this.y *= -1;
+    }
+
+    public Vector getVectorX() {
+        return new Vector(this.x, 0);
+    }
+
+    public Vector getVectorY() {
+        return new Vector(0, this.y);
+    }
+
     public double getX() {
         return this.x;
     }
@@ -137,7 +165,12 @@ public class Vector {
      * @param length The new length of this {@code Vector}.
      */
     public void setLength(double length) {
-        this.scale(length / this.getMagnitude());
+        double magnitude = this.getMagnitude();
+        if (Double.compare(magnitude, 0.0) != 0) {
+            this.scale(length / this.getMagnitude());
+        } else {
+            this.scale(0);
+        }
     }
 
     /**
@@ -163,11 +196,23 @@ public class Vector {
         return false;
     }
     /**
-     * This method returns a string representation of this {@code Vector} in the form, 
-     * Vec(x, y).
+     * This method returns a string representation of this {@code Vector} in the form, (x, y).
      */
     @Override
     public String toString() {
-        return "Vec(" + x + ", " + y + ")";
+        return "(" + this.x + ", " + this.y + ")";
+    }
+
+    /**
+     * This method returns the sum of two {@code Vector}s.
+     * @param v1 The first {@code Vector}.
+     * @param v2 The second {@code Vector}.
+     * @return A new {@code Vector} that is a sum of the two {@code Vector}s.
+     */
+    public static Vector sum(Vector v1, Vector v2) {
+        Vector tmp = v1.clone();
+        tmp.add(v2);
+
+        return tmp;
     }
 }

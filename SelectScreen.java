@@ -80,9 +80,10 @@ public class SelectScreen extends Screen {
             public void handleHover() {}
             public void handleUnpress() {}
         });
+        startButton.addHandler(window.new ScreenSwapperButtonHandler(Const.GAME_SCREEN_NAME));
         startButton.addHandler(new Button.ButtonHandler() {
             public void handlePress() {
-                System.out.println("Pressing start button");
+                game.run();
             }
 
             public void handleHover() {}

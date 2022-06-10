@@ -17,9 +17,10 @@ public class Player extends Entity implements Moveable {
     private AnimationCycle walkCycle;
 
     private Vector speed;
+    private Map map;
 
     public Player() {
-        super(0, 0, "Leto");
+        super(0, 0, "Player");
         this.idleCycle = new AnimationCycle(this.getPos(), Const.playerIdleSpriteSheet, 4, true);
         this.walkCycle = new AnimationCycle(this.getPos(), Const.playerWalkSpriteSheet, 6, true);
         this.attackCycle = new AnimationCycle(this.getPos(), Const.playerAttackSpriteSheet, 6, false);
@@ -27,10 +28,10 @@ public class Player extends Entity implements Moveable {
 
         this.idleCycle.setLooping(true);
         this.walkCycle.setLooping(true);
+        this.activeCycle = idleCycle;
 
         this.speed = Vector.VECTOR_ZERO.clone();
-
-        this.activeCycle = idleCycle;
+        this.map = null;
     }
 
     @Override
@@ -43,14 +44,17 @@ public class Player extends Entity implements Moveable {
         this.activeCycle.drawDebugInfo(graphics);
         
         // Draw the coordinates of the player.
-        String info = "(" + (Math.round(this.getX() * 100) / 100) + ", " + (Math.round(this.getY() * 100) / 100) + ")";
+        String info = "(" + (Math.round(this.getX() * 10) / 10.0) + ", " + (Math.round(this.getY() * 10) / 10.0) + ")";
         Text text = new Text(info, Const.debugFont, (int) this.getX(), (int) this.getY());
         text.draw(graphics);
     }
 
     public void update() {
+        // Update the position.
         Vector newPos = this.getPos();
-        newPos.add(this.speed);
+        Vector realSpeed = this.getRealSpeed();
+        newPos.add(realSpeed);
+
         this.setPos(newPos);
     }
 
@@ -62,6 +66,38 @@ public class Player extends Entity implements Moveable {
             this.activeCycle = this.idleCycle;
             this.activeCycle.setPos(this.getPos());
         }
+    }
+
+    private Vector getRealSpeed() {
+        RelativeHitbox shiftedHitbox = (RelativeHitbox) this.activeCycle.getGeneralHitbox().clone();
+
+        Vector newSpeed = this.speed.getVectorX();
+        double speedPercentage = 1.0;
+
+        // Reduce the speed until it can move horizontally.
+        shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+        while (this.map.intersectsWithActiveSolid(shiftedHitbox) && 
+                Double.compare(speedPercentage, 0) >= 0.1) {
+            speedPercentage -= 0.1;
+            speedPercentage = Math.round(speedPercentage * 10) / 10.0;
+            newSpeed.setX(this.speed.getX() * speedPercentage);
+            shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+        }
+
+
+        // Reduce the speed until it can move vertically.
+        newSpeed.setY(this.speed.getY());
+        speedPercentage = 1.0;
+        shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+        while (this.map.intersectsWithActiveSolid(shiftedHitbox) && 
+                Double.compare(speedPercentage, 0) >= 0.1) {
+            speedPercentage -= 0.1;
+            speedPercentage = Math.round(speedPercentage * 10) / 10;
+            newSpeed.setY(this.speed.getY() * speedPercentage);
+            shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+        }
+
+        return newSpeed;
     }
 
 
@@ -93,6 +129,10 @@ public class Player extends Entity implements Moveable {
         this.activeCycle.setPos(newPos);
     }
 
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     public class PlayerKeyListener implements KeyListener {
         private boolean[] pressedKeys;
 
@@ -113,6 +153,7 @@ public class Player extends Entity implements Moveable {
 
             this.pressedKeys[keyCode] = true;
             
+            // Handle movement input.
             if (keyCode == Const.K_UP) {
                 moveUp();
             } 
@@ -134,16 +175,24 @@ public class Player extends Entity implements Moveable {
             this.pressedKeys[keyCode] = false;
             
             if (keyCode == Const.K_UP) {
-                speed.setY(0);
+                if (!this.pressedKeys[Const.K_DOWN]) {
+                    speed.setY(0);
+                }
             } 
             if (keyCode == Const.K_LEFT) {
-                speed.setX(0);
+                if (!this.pressedKeys[Const.K_RIGHT]) {
+                    speed.setX(0);
+                }
             } 
             if (keyCode == Const.K_DOWN) {
-                speed.setY(0);
+                if (!this.pressedKeys[Const.K_UP]) {
+                    speed.setY(0);
+                }
             } 
             if (keyCode == Const.K_RIGHT) {
-                speed.setX(0);
+                if (!this.pressedKeys[Const.K_LEFT]) {
+                    speed.setX(0);
+                }
             }
 
             if (speed.equals(Vector.VECTOR_ZERO)) {
@@ -152,13 +201,14 @@ public class Player extends Entity implements Moveable {
             } else {
                 speed.setLength(WALK_SPEED);
             }
+
         }
     };
 
     public class PlayerMouseListener implements MouseListener {
         public void mousePressed(MouseEvent event) {
-            int x = event.getX() - (int) getX();
-            int y = event.getY() - (int) getY();
+            int x = event.getX() + (int) getX() - Const.WIDTH / 2;
+            int y = event.getY() + (int) getY() - Const.HEIGHT / 2;
 
             if (activeCycle.contains(x, y)) {
                 activeCycle = hurtCycle;

@@ -9,8 +9,12 @@ import java.awt.BasicStroke;
  * This class represents a hitbox for determining the collision of objects.
  */
 public class Hitbox implements Drawable, Debuggable, Collidable {
-    private Vector position;
     private Rectangle rect;
+    private Color color;
+
+    private Vector position;
+    private int width;
+    private int height;
 
     /**
      * This constructs a {@code Hitbox} object at a the given position, with 
@@ -21,8 +25,11 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
      * @param height The height of this {@code Hitbox}.
      */
     public Hitbox(int x, int y, int width, int height) {
-        this.position = new Vector(x, y);
         this.rect = new Rectangle(x, y, width, height);
+        this.color = Const.RED;
+        this.position = new Vector(x, y);
+        this.width = width;
+        this.height = height;
     }
 
     /**
@@ -34,9 +41,12 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
      * @param height The height of this {@code Hitbox}.
      */
     public Hitbox(Vector position, int width, int height) {
-        this.position = position.clone();
         this.rect = new Rectangle((int) position.getX(), (int) position.getY(), 
                 width, height);
+        this.color = Const.RED;
+        this.position = position;
+        this.width = width;
+        this.height = height;
     }
 
     /**
@@ -46,23 +56,27 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
      * @see Rectangle
      */
     public Rectangle getRect() {
+        if (this.rect == null) {
+            this.rect = new Rectangle(this.getX(), this.getY(), this.width, this.height);
+        }
+
         return this.rect;
     }
 
     public int getX() {
-        return (int) this.rect.getX();
+        return (int) this.position.getX();
     }
 
     public int getY() {
-        return (int) this.rect.getY();
+        return (int) this.position.getY();
     }
 
     public int getWidth() {
-        return (int) this.rect.getWidth();
+        return this.width;
     }
 
     public int getHeight() {
-        return (int) this.rect.getHeight();
+        return this.height;
     }
 
     /**
@@ -73,20 +87,18 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
         return this.position.clone();
     }
 
-    /**
-     * This method gets a reference of the position of this {@code Hitbox}.
-     * @return A reference of this {@code Hitbox}'s position.
-     */
-    public Vector getRefPos() {
-        return this.position;
+    public Color getColor() {
+        return this.color;
     }
 
     public void setWidth(int newWidth) {
-        this.rect.setSize(newWidth, this.getHeight());
+        this.width = newWidth;
+        this.rect = null;
     }
 
     public void setHeight(int newHeight) {
-        this.rect.setSize(this.getWidth(), newHeight);
+        this.height = newHeight;
+        this.rect = null;
     }
 
     /**
@@ -95,25 +107,27 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
      * @param newPos The new postion of this {@code Hitbox}.
      */
     public void setPos(Vector newPos) {
-        this.rect.setLocation((int) newPos.getX(), (int) newPos.getY());
-        this.position = newPos.clone();
+        this.position = newPos;
+        this.rect = null;
+    }
+
+    public void setColor(Color newColor) {
+        this.color = newColor;
     }
     
     /**
-     * This method draws the outline of this {@code Hitbox} in red.
-     * @see java.awt.Color#RED
+     * This method draws the outline of this {@code Hitbox}.
      */
     @Override
     public void draw(Graphics graphics) {
-        graphics.setColor(Color.RED);
+        graphics.setColor(this.color);
         ((Graphics2D) graphics).setStroke(new BasicStroke(2));
-        ((Graphics2D) graphics).draw(this.rect);
+        ((Graphics2D) graphics).drawRect(this.getX(), this.getY(), this.width, this.height);
     }
 
     /**
      * This method does the same thing as the draw method. It draws the outline
-     * of this {@code Hitbox} in red.
-     * @see java.awt.Color#RED
+     * of this {@code Hitbox}.
      */
     @Override
     public void drawDebugInfo(Graphics graphics) {
@@ -128,7 +142,8 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
      */
     @Override
     public boolean contains(int x, int y) {
-        return this.rect.contains(x, y);
+        return (this.getX() <= x && x <= this.getX() + this.getWidth()) &&
+            (this.getY() <= y && y <= this.getY() + this.getHeight());
     }
 
     /**
@@ -138,7 +153,22 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
      */
     @Override
     public boolean intersects(Hitbox other) {
-        return this.rect.intersects(other.getRect());
+        int left1 = this.getX();
+        int up1 = this.getY();
+        int right1 = this.getX() + this.getWidth();
+        int down1 = this.getY() + this.getHeight();
+
+        int left2 = other.getX();
+        int up2 = other.getY();
+        int right2 = other.getX() + other.getWidth();
+        int down2 = other.getY() + other.getHeight();
+        
+        boolean xOverlap = (left2 <= left1 && left1 <= right2) ||
+                (left1 <= left2 && left2 <= right1);
+        boolean yOverlap = (up1 <= up2 && up2 <= down1) || 
+                (up2 <= up1 && up1 <= down2);
+
+        return xOverlap && yOverlap;
     }
 
     /**
@@ -148,9 +178,11 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
      * @return {@code true} if the hitboxes overlap, {@code false} otherwise.
      */
     public static boolean intersects(Hitbox box1, Hitbox box2) {
-        Rectangle rect1 = box1.getRect();
-        Rectangle rect2 = box2.getRect();
+        return box1.intersects(box2);
+    }
 
-        return rect1.intersects(rect2);
+    @Override
+    public Hitbox clone() {
+        return new Hitbox(this.position.clone(), this.getWidth(), this.getHeight());
     }
 }

@@ -32,6 +32,7 @@ public class Game implements Drawable, Debuggable {
         this.map = new Map(Const.MAP_FILE_NAME);
         this.map.loadFromFile();
         this.map.updateRendering(this.player.getPos());
+        this.player.setMap(map);
 
         this.updateLoop = new Timer(Const.UPDATE_PERIOD, new ActionListener() {
             public void actionPerformed(ActionEvent event) {

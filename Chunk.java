@@ -2,8 +2,11 @@ import java.awt.Graphics;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.FileNotFoundException;
+
+import java.util.ArrayList;
 
 public class Chunk implements Drawable, Debuggable, Collidable {
     // Number of tiles horizontally and vertically. (Eg, 16x16)
@@ -12,6 +15,7 @@ public class Chunk implements Drawable, Debuggable, Collidable {
     private String fileName;
     private Hitbox hitbox;
     private Tile[][] tiles;
+    private ArrayList<Tile> solidTiles;
     private Vector mapPosition;
 
     public Chunk() {
@@ -36,14 +40,15 @@ public class Chunk implements Drawable, Debuggable, Collidable {
         try {
             this.mapPosition = new Vector(Integer.parseInt(input.readLine()), 
                     Integer.parseInt(input.readLine()));
-            int ofsX = (int) this.mapPosition.getX() * LENGTH * Tile.LENGTH;
-            int ofsY = (int) this.mapPosition.getY() * LENGTH * Tile.LENGTH;
+            this.hitbox = new Hitbox(this.getPos(), LENGTH * Tile.LENGTH, LENGTH * Tile.LENGTH);
+            this.hitbox.setColor(Const.GREEN);
+            Vector offset = Map.calculateRealPosition(this.mapPosition);
             
             for (int y = 0; y < LENGTH; y++) {
                 String line = input.readLine();
                 for (int x = 0; x < LENGTH; x++) {
-                    Vector tilePosition = new Vector(ofsX + x * Tile.LENGTH,
-                            ofsY + y * Tile.LENGTH);
+                    Vector tilePosition = new Vector(offset.getX() + x * Tile.LENGTH,
+                            offset.getY() + y * Tile.LENGTH);
                     char tileType = line.charAt(x);
                     this.tiles[y][x] = new Tile(tilePosition, tileType);
                 }
@@ -69,8 +74,8 @@ public class Chunk implements Drawable, Debuggable, Collidable {
     }
 
     public Vector getPos() {
-        return new Vector(this.mapPosition.getX() * LENGTH, 
-                this.mapPosition.getY() * LENGTH);
+        return new Vector(this.mapPosition.getX() * LENGTH * Tile.LENGTH, 
+                this.mapPosition.getY() * LENGTH * Tile.LENGTH);
     }
 
     public Vector getMapPos() {
@@ -93,6 +98,36 @@ public class Chunk implements Drawable, Debuggable, Collidable {
 
         int distance = deltaX + deltaY;
         return distance;
+    }
+
+    public ArrayList<Tile> getSolidTiles() {
+        if (this.solidTiles != null) {
+            return this.solidTiles;
+        }
+
+        this.solidTiles = new ArrayList<Tile>();
+
+        for (int y = 0; y < LENGTH; y++) {
+            for (int x = 0; x < LENGTH; x++) {
+                if (this.tiles[y][x].checkSolid()) {
+                    this.solidTiles.add(this.tiles[y][x]);
+                }
+            }
+        }
+
+        return this.solidTiles;
+    }
+
+    public boolean intersectsWithSolid(Hitbox other) {
+        this.getSolidTiles();
+
+        for (Tile tile: this.solidTiles) {
+            if (tile.intersects(other)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -121,5 +156,11 @@ public class Chunk implements Drawable, Debuggable, Collidable {
                 tile.drawDebugInfo(graphics);
             }
         }
+        this.hitbox.drawDebugInfo(graphics);
+    }
+
+    @Override
+    public String toString() {
+        return "Chunk " + this.mapPosition; 
     }
 }

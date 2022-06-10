@@ -1,5 +1,3 @@
-import java.awt.Graphics2D;
-import java.awt.GradientPaint;
 import java.awt.image.BufferedImage;
 
 import java.awt.Color;
@@ -22,7 +20,7 @@ public class Const {
     // The duration between window redraws in milliseconds.
     public static final int DEFAULT_FRAME_PERIOD = MS_PER_S / 60;
     // The duration between game updates in milliseconds.
-    public static final int UPDATE_PERIOD = MS_PER_S / 30;
+    public static final int UPDATE_PERIOD = MS_PER_S / 45;
     // The duration betweeen each frame in an animation in milliseconds.
     public static final int ANIMATE_PERIOD = MS_PER_S / 12;
 
@@ -54,6 +52,8 @@ public class Const {
     public static final Color GRAY = new Color(57, 70, 72);
     public static final Color BLACK = new Color(14, 38, 47);
     
+    // Animation cycle data files.
+
     // Directions.
     public static final int UP = 0;
     public static final int LEFT = 1;
@@ -69,10 +69,9 @@ public class Const {
     public static final int K_USE = KeyEvent.VK_E;
     public static final int K_RELOAD = KeyEvent.VK_R;
     
-    // Map constants.
+    // Map data file.
     public static final String MAP_FILE_NAME = "assets/map/map.txt";
-    public static final int MAP_RENDER_DISTANCE = 2;
-    
+
     // Menu images.
     public static BufferedImage dayScreenBackground;
     public static BufferedImage nightScreenBackground;
@@ -109,24 +108,10 @@ public class Const {
      * This method loads all the images used in the game.
      */
     public static void loadImages() {
-        // Create the day screen background.
-        dayScreenBackground = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = (Graphics2D) dayScreenBackground.createGraphics();
-        // Draw the sky.
-        graphics.setColor(LIGHT_BLUE1);
-        graphics.fillRect(0, 0, WIDTH, 500);
-        // Draw the sand.
-        GradientPaint yellowToOrange = new GradientPaint(WIDTH / 2, 500, YELLOW, 
-                WIDTH / 2, 950, ORANGE);
-        graphics.setPaint(yellowToOrange);
-        graphics.fillRect(0, 500, WIDTH, HEIGHT - 500);
-        // Draw the sun.
-        graphics.setColor(YELLOW2);
-        graphics.fillOval(850, 60, 70, 70);
-
         // Load menu screen images.
-        howToPlayScreenText = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
+        dayScreenBackground = Sprite.tryLoadImage("assets/images/menu/day_background.png");
         nightScreenBackground = Sprite.tryLoadImage("assets/images/menu/night_background.png");
+        howToPlayScreenText = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
 
         // Load player images.
         playerIdleSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_idle.png");
@@ -149,17 +134,16 @@ public class Const {
             titleFont = amaticSCBold.deriveFont((float) TITLE_FONT_SIZE);
             subtitleFont = amaticSCBold.deriveFont((float) SUBTITLE_FONT_SIZE);
         } catch (IOException ex) {
-            // Handle I/O exception.
             System.out.println("Error: Could not read font files.");
             titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
             subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
         } catch (FontFormatException ex) {
-            // Handle file format exception.
             System.out.println("Error: Invalid font files.");
             titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
             subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
         }
 
+        // Load button and debug fonts.
         buttonFont = new Font("Sans-Serif", Font.PLAIN, MENU_BUTTON_FONT_SIZE);
         smallButtonFont = new Font("Sans-Serif", Font.PLAIN, SMALL_BUTTON_FONT_SIZE);
         debugFont = new Font("Sans-Serif", Font.PLAIN, DEBUG_FONT_SIZE);

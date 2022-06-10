@@ -13,6 +13,7 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
     private Vector position;
     private int frameWidth;
     private int frameHeight;
+    private RelativeHitbox generalHitbox;
 
     public AnimationCycle(Vector position, BufferedImage picSheet, int numFrames, boolean loopBackwards) {
         this.position = position;
@@ -32,6 +33,9 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         this.isLooping = false;
         this.indexDir = 1;
         this.setActiveFrame(0);
+
+        this.generalHitbox = new RelativeHitbox(position, Vector.VECTOR_ZERO.clone(), 
+                this.frameWidth, this.frameHeight);
     }
 
     public AnimationCycle(Vector position, BufferedImage picSheet, int frameWidth, int frameHeight,
@@ -53,6 +57,13 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         this.isLooping = false;
         this.indexDir = 1;
         this.setActiveFrame(0);
+        this.generalHitbox = new RelativeHitbox(position, Vector.VECTOR_ZERO.clone(), 
+                this.frameWidth, this.frameHeight);
+    }
+
+    public AnimationCycle(Vector position, BufferedImage picSheet, String animationFileName) {
+        this.position = position;
+
     }
 
     public void reset() {
@@ -75,12 +86,17 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
     public int getFrameHeight() {
         return this.frameHeight;
     }
+
+    public Hitbox getGeneralHitbox() {
+        return this.generalHitbox;
+    }
     
     public void setPos(Vector newPos) {
         this.position = newPos;
         for (AnimationFrame frame: this.frames) {
             frame.setPos(newPos);
         }
+        this.generalHitbox.setPos(newPos);
     }
 
     public void setLooping(boolean isLooping) {

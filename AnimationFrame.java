@@ -9,7 +9,7 @@ import java.awt.Graphics;
 public class AnimationFrame implements Drawable, Debuggable, Collidable {
     private Vector position;
     private Sprite sprite;
-    private ArrayList<Hitbox> hitboxes;
+    private ArrayList<RelativeHitbox> hitboxes;
 
     /**
      * This constructs an AnimationFrame object with a single hitbox around the image.
@@ -20,10 +20,10 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
     public AnimationFrame(int x, int y, BufferedImage pic) {
         this.position = new Vector(x, y);
         this.sprite = new Sprite(x, y, pic);
-        this.hitboxes = new ArrayList<Hitbox>();
+        this.hitboxes = new ArrayList<RelativeHitbox>();
 
-        Hitbox hitbox = new Hitbox(this.position, this.sprite.getWidth(), 
-                this.sprite.getHeight());
+        RelativeHitbox hitbox = new RelativeHitbox(this.position, Vector.VECTOR_ZERO.clone(), 
+                this.sprite.getWidth(), this.sprite.getHeight());
         this.hitboxes.add(hitbox);
     }
 
@@ -34,20 +34,20 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
      * @param pic The image to use for the sprite.
      * @param hitboxes The hitboxes for the frame, with the position relative to the sprite.
      */
-    public AnimationFrame(int x, int y, BufferedImage pic, ArrayList<Hitbox> hitboxes) {
+    public AnimationFrame(int x, int y, BufferedImage pic, ArrayList<RelativeHitbox> hitboxes) {
         this.position = new Vector(x, y);
         this.sprite = new Sprite(x, y, pic);
         this.hitboxes = hitboxes;
-        this.setRelHitboxPos(this.position);
+        this.setHitboxAnchorPos(this.position);
     }
 
     public AnimationFrame(Vector position, BufferedImage pic) {
         this.position = position;
         this.sprite = new Sprite(position, pic);
-        this.hitboxes = new ArrayList<Hitbox>();
+        this.hitboxes = new ArrayList<RelativeHitbox>();
 
-        Hitbox hitbox = new Hitbox(this.position, this.sprite.getWidth(), 
-                this.sprite.getHeight());
+        RelativeHitbox hitbox = new RelativeHitbox(this.position, Vector.VECTOR_ZERO.clone(),
+                this.sprite.getWidth(), this.sprite.getHeight());
         this.hitboxes.add(hitbox);
     }
 
@@ -92,16 +92,13 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
      */
     public void setPos(Vector newPos) {
         this.sprite.setPos(newPos);
-        this.setRelHitboxPos(newPos);
+        this.setHitboxAnchorPos(newPos);
         this.position = newPos;
     }
 
-    private void setRelHitboxPos(Vector newRelPos) {
-        for (Hitbox hitbox: this.hitboxes) {
-            Vector newHitboxPos = hitbox.getPos().clone();
-            newHitboxPos.sub(this.position);
-            newHitboxPos.add(newRelPos);
-            hitbox.setPos(newHitboxPos);
+    private void setHitboxAnchorPos(Vector newAnchorPos) {
+        for (RelativeHitbox hitbox: this.hitboxes) {
+            hitbox.setAnchorPos(newAnchorPos);
         }
     }
 }

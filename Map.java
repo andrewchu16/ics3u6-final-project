@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 public class Map implements Drawable, Debuggable {
+    public static final int RENDER_DISTANCE = 2;
+
     private String fileName;
     private ArrayList<Chunk> unactiveChunks;
     private ArrayList<Chunk> activeChunks;
@@ -18,7 +20,6 @@ public class Map implements Drawable, Debuggable {
         this.fileName = mapFileName;
         this.unactiveChunks = new ArrayList<Chunk>();
         this.activeChunks = new ArrayList<Chunk>();
-        this.loadFromFile();
     }
 
     public void loadFromFile() {
@@ -62,7 +63,7 @@ public class Map implements Drawable, Debuggable {
         // Remove chunks that are now outside render distance.
         for (Iterator<Chunk> it = this.activeChunks.iterator(); it.hasNext(); ) {
             Chunk chunk = it.next();
-            if (chunk.getMapDistanceFrom(cameraMapPosition) > Const.MAP_RENDER_DISTANCE) {
+            if (chunk.getMapDistanceFrom(cameraMapPosition) > Map.RENDER_DISTANCE) {
                 this.unactiveChunks.add(chunk);
                 it.remove();
             }
@@ -71,7 +72,7 @@ public class Map implements Drawable, Debuggable {
         // Add chunks that are now inside render distance.
         for (Iterator<Chunk> it = this.unactiveChunks.iterator(); it.hasNext(); ) {
             Chunk chunk = it.next();
-            if (chunk.getMapDistanceFrom(cameraMapPosition) <= Const.MAP_RENDER_DISTANCE) {
+            if (chunk.getMapDistanceFrom(cameraMapPosition) <= Map.RENDER_DISTANCE) {
                 this.activeChunks.add(chunk);
                 it.remove();
             }
@@ -96,6 +97,30 @@ public class Map implements Drawable, Debuggable {
         return null;
     }
 
+    public ArrayList<Chunk> getActiveChunksIntersecting(Hitbox other) {
+        ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+        
+        // Search in active chunks.
+        for (Chunk chunk: this.activeChunks) {
+            if (chunk.intersects(other)) {
+                chunks.add(chunk);
+            }
+        }
+
+        return chunks;
+    }
+
+    public boolean intersectsWithActiveSolid(Hitbox other) {
+        ArrayList<Chunk> intersectingChunks = this.getActiveChunksIntersecting(other);
+
+        for (Chunk chunk: intersectingChunks) {
+            if (chunk.intersectsWithSolid(other)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void draw(Graphics graphics) {
         for (Chunk chunk: this.activeChunks) {
@@ -114,5 +139,11 @@ public class Map implements Drawable, Debuggable {
         Vector mapPosition = realPosition.clone();
         mapPosition.div(Chunk.LENGTH * Tile.LENGTH);
         return mapPosition;
+    }
+
+    public static Vector calculateRealPosition(Vector mapPosition) {
+        Vector realPosition = mapPosition.clone();
+        realPosition.mult(Chunk.LENGTH * Tile.LENGTH);
+        return realPosition;
     }
 }

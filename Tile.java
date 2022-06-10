@@ -11,6 +11,7 @@ public class Tile implements Drawable, Debuggable, Collidable {
 
     private Vector position;
     private char type;
+    // Whether the tile should be collidable with entities or not.
     private boolean solid;
 
     private Sprite sprite;
@@ -35,6 +36,7 @@ public class Tile implements Drawable, Debuggable, Collidable {
     public Tile(Vector position, char type) {
         this.position = position;
         this.type = type;
+        this.hitbox = new Hitbox(position, LENGTH, LENGTH);
 
         switch (type) {
             case SAND:
@@ -46,10 +48,13 @@ public class Tile implements Drawable, Debuggable, Collidable {
                 this.solid = true;
                 this.sprite = Const.ROCK_TILE_SPRITE;
                 this.solid = true;
+                this.hitbox.setColor(Const.BLUE);
                 break;
         }
+    }
 
-        this.hitbox = new Hitbox(position, LENGTH, LENGTH);
+    public boolean checkSolid() {
+        return this.solid;
     }
     
     /**
