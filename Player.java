@@ -16,21 +16,21 @@ public class Player extends Entity implements Moveable {
     private AnimationCycle hurtCycle;
     private AnimationCycle walkCycle;
 
-    private Vector speed;
+    private Vector moveSpeed;
+    private Vector realSpeed;
     private Map map;
 
     public Player() {
         super(0, 0, "Player");
-        this.idleCycle = new AnimationCycle(this.getPos(), Const.playerIdleSpriteSheet, 4, true);
-        this.walkCycle = new AnimationCycle(this.getPos(), Const.playerWalkSpriteSheet, 6, true);
-        this.attackCycle = new AnimationCycle(this.getPos(), Const.playerAttackSpriteSheet, 6, false);
-        this.hurtCycle = new AnimationCycle(this.getPos(), Const.playerHurtSpriteSheet, 2, false);
 
-        this.idleCycle.setLooping(true);
-        this.walkCycle.setLooping(true);
+        this.idleCycle = new AnimationCycle(this.getPos(), Const.playerIdleSpriteSheet, Const.PLAYER_IDLE_FILE_NAME);
+        this.walkCycle = new AnimationCycle(this.getPos(), Const.playerWalkSpriteSheet, Const.PLAYER_WALK_FILE_NAME);
+        this.attackCycle = new AnimationCycle(this.getPos(), Const.playerAttackSpriteSheet, Const.PLAYER_ATTACK_FILE_NAME);
+        this.hurtCycle = new AnimationCycle(this.getPos(), Const.playerHurtSpriteSheet, Const.PLAYER_HURT_FILE_NAME);
+        
         this.activeCycle = idleCycle;
 
-        this.speed = Vector.VECTOR_ZERO.clone();
+        this.moveSpeed = Vector.VECTOR_ZERO.clone();
         this.map = null;
     }
 
@@ -50,11 +50,13 @@ public class Player extends Entity implements Moveable {
     }
 
     public void update() {
+        // Handle collisions.
+        this.realSpeed = this.moveSpeed.clone();
+        this.handleTileCollisions();
+
         // Update the position.
         Vector newPos = this.getPos();
-        Vector realSpeed = this.getRealSpeed();
-        newPos.add(realSpeed);
-
+        newPos.add(this.realSpeed);
         this.setPos(newPos);
     }
 
@@ -68,38 +70,40 @@ public class Player extends Entity implements Moveable {
         }
     }
 
-    private Vector getRealSpeed() {
+    private void handleTileCollisions() {
         RelativeHitbox shiftedHitbox = (RelativeHitbox) this.activeCycle.getGeneralHitbox().clone();
 
-        Vector newSpeed = this.speed.getVectorX();
+        Vector newRealSpeed = this.realSpeed.getVectorX();
         double speedPercentage = 1.0;
 
         // Reduce the speed until it can move horizontally.
-        shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+        shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newRealSpeed));
         while (this.map.intersectsWithActiveSolid(shiftedHitbox) && 
                 Double.compare(speedPercentage, 0) >= 0.1) {
             speedPercentage -= 0.1;
             speedPercentage = Math.round(speedPercentage * 10) / 10.0;
-            newSpeed.setX(this.speed.getX() * speedPercentage);
-            shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+            newRealSpeed.setX(this.realSpeed.getX() * speedPercentage);
+            shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newRealSpeed));
         }
 
-
         // Reduce the speed until it can move vertically.
-        newSpeed.setY(this.speed.getY());
+        newRealSpeed.setY(this.realSpeed.getY());
         speedPercentage = 1.0;
-        shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+        shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newRealSpeed));
         while (this.map.intersectsWithActiveSolid(shiftedHitbox) && 
                 Double.compare(speedPercentage, 0) >= 0.1) {
             speedPercentage -= 0.1;
             speedPercentage = Math.round(speedPercentage * 10) / 10;
-            newSpeed.setY(this.speed.getY() * speedPercentage);
-            shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newSpeed));
+            newRealSpeed.setY(this.realSpeed.getY() * speedPercentage);
+            shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newRealSpeed));
         }
 
-        return newSpeed;
+        this.realSpeed = newRealSpeed;
     }
 
+    private void handleObstacleCollisions() {
+
+    }
 
     @Override
     public int getWidth() {
@@ -176,30 +180,30 @@ public class Player extends Entity implements Moveable {
             
             if (keyCode == Const.K_UP) {
                 if (!this.pressedKeys[Const.K_DOWN]) {
-                    speed.setY(0);
+                    moveSpeed.setY(0);
                 }
             } 
             if (keyCode == Const.K_LEFT) {
                 if (!this.pressedKeys[Const.K_RIGHT]) {
-                    speed.setX(0);
+                    moveSpeed.setX(0);
                 }
             } 
             if (keyCode == Const.K_DOWN) {
                 if (!this.pressedKeys[Const.K_UP]) {
-                    speed.setY(0);
+                    moveSpeed.setY(0);
                 }
             } 
             if (keyCode == Const.K_RIGHT) {
                 if (!this.pressedKeys[Const.K_LEFT]) {
-                    speed.setX(0);
+                    moveSpeed.setX(0);
                 }
             }
 
-            if (speed.equals(Vector.VECTOR_ZERO)) {
+            if (moveSpeed.equals(Vector.VECTOR_ZERO)) {
                 activeCycle = idleCycle;
                 activeCycle.setPos(getPos());
             } else {
-                speed.setLength(WALK_SPEED);
+                moveSpeed.setLength(WALK_SPEED);
             }
 
         }
@@ -231,28 +235,28 @@ public class Player extends Entity implements Moveable {
     @Override
     public void moveUp() {
         this.activeCycle = walkCycle;
-        this.speed.setY(-WALK_SPEED);
-        this.speed.setLength(WALK_SPEED);
+        this.moveSpeed.setY(-WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
     }
 
     @Override
     public void moveLeft() {
         this.activeCycle = walkCycle;
-        this.speed.setX(-WALK_SPEED);
-        this.speed.setLength(WALK_SPEED);
+        this.moveSpeed.setX(-WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
     }
 
     @Override
     public void moveDown() {
         this.activeCycle = walkCycle;
-        this.speed.setY(WALK_SPEED);
-        this.speed.setLength(WALK_SPEED);
+        this.moveSpeed.setY(WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
     }
 
     @Override
     public void moveRight() {
         this.activeCycle = walkCycle;
-        this.speed.setX(WALK_SPEED);
-        this.speed.setLength(WALK_SPEED);
+        this.moveSpeed.setX(WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
     }
 }

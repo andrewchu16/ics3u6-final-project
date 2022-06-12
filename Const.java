@@ -22,7 +22,7 @@ public class Const {
     // The duration between game updates in milliseconds.
     public static final int UPDATE_PERIOD = MS_PER_S / 45;
     // The duration betweeen each frame in an animation in milliseconds.
-    public static final int ANIMATE_PERIOD = MS_PER_S / 12;
+    public static final int ANIMATE_PERIOD = MS_PER_S / 6;
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -77,12 +77,17 @@ public class Const {
     public static BufferedImage nightScreenBackground;
     public static BufferedImage howToPlayScreenText;
 
-    // Player images.
+    // Player animation images.
     public static BufferedImage playerIdleSpriteSheet;
-    public static BufferedImage playerStaticSpriteSheet;
     public static BufferedImage playerWalkSpriteSheet;
     public static BufferedImage playerAttackSpriteSheet;
     public static BufferedImage playerHurtSpriteSheet;
+
+    // Player animation files.
+    public static final String PLAYER_IDLE_FILE_NAME = "assets/animation/player/mummy_idle.txt";
+    public static final String PLAYER_WALK_FILE_NAME = "assets/animation/player/mummy_walk.txt";
+    public static final String PLAYER_ATTACK_FILE_NAME = "assets/animation/player/mummy_attack.txt";
+    public static final String PLAYER_HURT_FILE_NAME = "assets/animation/player/mummy_hurt.txt";
 
     // Audio.
 
@@ -115,7 +120,6 @@ public class Const {
 
         // Load player images.
         playerIdleSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_idle.png");
-        playerStaticSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy.png");
         playerWalkSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_walk.png");
         playerAttackSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_attack.png");
         playerHurtSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_hurt.png");

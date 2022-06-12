@@ -28,15 +28,14 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
     }
 
     /**
-     * This constructs an AnimationFrame object with preset hitboxes.
-     * @param x The x-coordinate of the AnimationFrame.
-     * @param y The y-coordinate of the AnimationFrame.
+     * This constructs an {@code AnimationFrame} object with preset {@code Hitbox}es.
+     * @param position The top-left coordinate of this {@code AnimationFrame}.
      * @param pic The image to use for the sprite.
      * @param hitboxes The hitboxes for the frame, with the position relative to the sprite.
      */
-    public AnimationFrame(int x, int y, BufferedImage pic, ArrayList<RelativeHitbox> hitboxes) {
-        this.position = new Vector(x, y);
-        this.sprite = new Sprite(x, y, pic);
+    public AnimationFrame(Vector position, BufferedImage pic, ArrayList<RelativeHitbox> hitboxes) {
+        this.position = position;
+        this.sprite = new Sprite(position, pic);
         this.hitboxes = hitboxes;
         this.setHitboxAnchorPos(this.position);
     }
@@ -94,6 +93,10 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
         this.sprite.setPos(newPos);
         this.setHitboxAnchorPos(newPos);
         this.position = newPos;
+    }
+
+    public void setHitboxes(ArrayList<RelativeHitbox> hitboxes) {
+        this.hitboxes = hitboxes;
     }
 
     private void setHitboxAnchorPos(Vector newAnchorPos) {

@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * This class loads an image into memory.
+ * This class loads an image into memory for use in a Java GUI.
  */
 public class Sprite implements Drawable {
     private Vector position;
