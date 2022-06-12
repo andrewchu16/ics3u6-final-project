@@ -61,7 +61,7 @@ public class RelativeHitbox extends Hitbox {
 
     @Override
     public RelativeHitbox clone() {
-        return new RelativeHitbox(this.anchorPosition, this.relativePosition, 
+        return new RelativeHitbox(this.anchorPosition.clone(), this.relativePosition.clone(), 
                 this.getWidth(), this.getHeight());
     }
 }

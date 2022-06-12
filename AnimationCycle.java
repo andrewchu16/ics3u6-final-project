@@ -152,8 +152,8 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
 
             // Determine the general hitbox.
             String[] generalHitboxData = input.readLine().split(" ");
-            Vector relativePosition = new Vector(Double.parseDouble(generalHitboxData[1]), 
-                    Double.parseDouble(generalHitboxData[2]));
+            Vector relativePosition = new Vector(Double.parseDouble(generalHitboxData[1]) / 2, 
+                    Double.parseDouble(generalHitboxData[2]) / 2);
             int width = Integer.parseInt(generalHitboxData[3]);
             int height = Integer.parseInt(generalHitboxData[4]);
             this.generalHitbox = new RelativeHitbox(this.position, relativePosition, width, height);
@@ -254,7 +254,7 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         for (AnimationFrame frame: this.frames) {
             frame.setPos(newPos);
         }
-        this.generalHitbox.setPos(newPos);
+        this.generalHitbox.setAnchorPos(newPos);
     }
 
     public void setLooping(int newLoopType) {

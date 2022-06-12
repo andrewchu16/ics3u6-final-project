@@ -138,6 +138,8 @@ public class Map implements Drawable, Debuggable {
     public static Vector calculateMapPosition(Vector realPosition) {
         Vector mapPosition = realPosition.clone();
         mapPosition.div(Chunk.LENGTH * Tile.LENGTH);
+        mapPosition.setX((int) mapPosition.getX());
+        mapPosition.setY((int) mapPosition.getY());
         return mapPosition;
     }
 
