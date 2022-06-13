@@ -16,6 +16,7 @@ public class Player extends Entity implements Moveable {
     private AnimationCycle hurtCycle;
     private AnimationCycle walkCycle;
 
+    private int direction;
     private Vector moveSpeed;
     private Vector realSpeed;
     private Map map;
@@ -30,6 +31,7 @@ public class Player extends Entity implements Moveable {
         
         this.activeCycle = idleCycle;
 
+        this.direction = Const.LEFT;
         this.moveSpeed = Vector.VECTOR_ZERO.clone();
         this.map = null;
     }
@@ -181,21 +183,29 @@ public class Player extends Entity implements Moveable {
             if (keyCode == Const.K_UP) {
                 if (!this.pressedKeys[Const.K_DOWN]) {
                     moveSpeed.setY(0);
+                } else {
+                    moveDown();
                 }
             } 
             if (keyCode == Const.K_LEFT) {
                 if (!this.pressedKeys[Const.K_RIGHT]) {
                     moveSpeed.setX(0);
+                } else {
+                    moveRight();
                 }
             } 
             if (keyCode == Const.K_DOWN) {
                 if (!this.pressedKeys[Const.K_UP]) {
                     moveSpeed.setY(0);
+                } else {
+                    moveUp();
                 }
             } 
             if (keyCode == Const.K_RIGHT) {
                 if (!this.pressedKeys[Const.K_LEFT]) {
                     moveSpeed.setX(0);
+                } else {
+                    moveLeft();
                 }
             }
 
@@ -244,6 +254,7 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(-WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
+        this.direction = Const.LEFT;
     }
 
     @Override
@@ -258,5 +269,6 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
+        this.direction = Const.RIGHT;
     }
 }

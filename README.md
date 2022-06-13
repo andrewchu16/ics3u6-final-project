@@ -46,7 +46,7 @@ The main game takes place on a 2-dimensional plane.
 - [x] Finish game entity superclass
 - [x] Finish hitboxes
 - [x] Finish player that is animated and can move
-- [ ] Finish game map system
+- [x] Finish game map system
 - [ ] Finish mini map
 - [ ] Finish adding sprites
 - [ ] Finish item classes

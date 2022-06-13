@@ -215,4 +215,65 @@ public class Vector {
 
         return tmp;
     }
+
+    /**
+     * This method calculates the Manhattan distance between two {@code Vector}s.
+     * The Manhattan distance is the sum of the differences in the X and Y values.
+     * @param pos1 The first coordinate.
+     * @param pos2 The second coordinate.
+     * @return The Manhattan distance as a {@code double}.
+     */
+    public static double getManhattanDistanceFrom(Vector pos1, Vector pos2) {
+        double deltaX = Math.abs(pos1.getX() - pos2.getX());
+        double deltaY = Math.abs(pos1.getY() - pos2.getY());
+
+        double distance = deltaX + deltaY;
+        return distance;
+    } 
+
+    /**
+     * This method calculates the Euclidean distance between two {@code Vector}s.
+     * The Euclidean distance is the shortest distance between two points, calculated
+     * using the Pythagorean Theorem.
+     * @param pos1 The first coordinate.
+     * @param pos2 The second coordinate.
+     * @return The Euclidean distance as a {@code double}.
+     */
+    public static double getEuclideanDistanceFrom(Vector pos1, Vector pos2) {
+        double distance = Math.sqrt(getSquareEuclideanDistanceFrom(pos1, pos2));
+
+        return distance;
+    }
+
+    /**
+     * This method calculates whether two {@code Vector}s are within a certain 
+     * distance of each other. It uses Euclidean distance, but is faster since it
+     * avoids using {@code Math.sqrt}.
+     * @param pos1 The first coordinate.
+     * @param pos2 The second coordinate.
+     * @param checkDistance The distance to compare to.
+     * @return A negative integer if the {@code Vector}s are closer than the specified 
+     * distance, {@code 0} if they are exactly the distance, and a positive integer if 
+     * they are farther than the distance. 
+     */
+    public static int checkDistance(Vector pos1, Vector pos2, double checkDistance) {
+        double squareDistance = getSquareEuclideanDistanceFrom(pos1, pos2);
+        double squareCheckDistance = checkDistance * checkDistance;
+        return Double.compare(squareDistance, squareCheckDistance);
+    }
+
+    /**
+     * This method calculates the Euclidean distance squared between two {@code Vector}s.
+     * The Euclidean distance is the shortest distance between two points. 
+     * @param pos1 The first coordinate.
+     * @param pos2 The second coordinate.
+     * @return The square of the Euclidean distance as a {@code double}.
+     */
+    public static double getSquareEuclideanDistanceFrom(Vector pos1, Vector pos2) {
+        double deltaX = pos1.getX() - pos2.getX();
+        double deltaY = pos1.getY() - pos2.getY();
+
+        double squareDistance = deltaX * deltaX + deltaY * deltaY;
+        return squareDistance;
+    }
 }

@@ -22,7 +22,7 @@ public class Const {
     // The duration between game updates in milliseconds.
     public static final int UPDATE_PERIOD = MS_PER_S / 45;
     // The duration betweeen each frame in an animation in milliseconds.
-    public static final int ANIMATE_PERIOD = MS_PER_S / 6;
+    public static final int ANIMATE_PERIOD = MS_PER_S / 12;
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";

@@ -1,5 +1,10 @@
-4
+9
+assets/map/chunks/chunk -1 1.txt
+assets/map/chunks/chunk 0 1.txt
+assets/map/chunks/chunk 1 1.txt
+assets/map/chunks/chunk -1 0.txt
 assets/map/chunks/chunk 0 0.txt
 assets/map/chunks/chunk 1 0.txt
-assets/map/chunks/chunk -1 0.txt
-assets/map/chunks/chunk 0 1.txt
+assets/map/chunks/chunk -1 -1.txt
+assets/map/chunks/chunk 0 -1.txt
+assets/map/chunks/chunk 1 -1.txt

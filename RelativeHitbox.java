@@ -56,7 +56,7 @@ public class RelativeHitbox extends Hitbox {
         super.draw(graphics);
 
         graphics.setColor(this.getColor());
-        graphics.fillOval((int) this.anchorPosition.getX(), (int) this.anchorPosition.getY(), 1, 1);
+        graphics.fillOval((int) this.anchorPosition.getX(), (int) this.anchorPosition.getY(), 2, 2);
     }
 
     @Override

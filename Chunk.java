@@ -86,20 +86,6 @@ public class Chunk implements Drawable, Debuggable, Collidable {
         this.fileName = fileName;
     }
 
-    public int getMapDistanceFromReal(Vector realPosition) {
-        Vector mapPosition = Map.calculateMapPosition(realPosition);
-
-        return this.getMapDistanceFrom(mapPosition);
-    }
-
-    public int getMapDistanceFrom(Vector mapPosition) {
-        int deltaX = (int) Math.abs(mapPosition.getX() - this.mapPosition.getX());
-        int deltaY = (int) Math.abs(mapPosition.getY() - this.mapPosition.getY());
-
-        int distance = deltaX + deltaY;
-        return distance;
-    }
-
     public ArrayList<Tile> getSolidTiles() {
         if (this.solidTiles != null) {
             return this.solidTiles;
