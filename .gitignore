@@ -1,5 +1,6 @@
 # Ignore java build files.
 bin/
+*.class
 
 # Ignore image editing files.
 *.pdn

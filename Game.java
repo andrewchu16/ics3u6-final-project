@@ -20,6 +20,7 @@ public class Game implements Drawable, Debuggable {
 
     private Player player;
     private Map map;
+    private Minimap minimap;
 
     private Timer updateLoop;
     private Timer animateLoop;
@@ -33,6 +34,8 @@ public class Game implements Drawable, Debuggable {
         this.map.loadFromFile();
         this.map.updateRendering(this.player.getPos());
         this.player.setMap(map);
+        this.minimap = new Minimap(Const.MINIMAP_POS, Const.MINIMAP_WIDTH, 
+                Const.MINIMAP_HEIGHT, Const.MINIMAP_SCALE, this.map, this.player);
 
         this.updateLoop = new Timer(Const.UPDATE_PERIOD, new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -62,10 +65,13 @@ public class Game implements Drawable, Debuggable {
         
         this.player.update();
 
+        // Update map rendering if player moves to a new chunk.
         Vector curPlayerMapPosition = Map.calculateMapPosition(this.player.getPos());
         if (!prevPlayerMapPosition.equals(curPlayerMapPosition)) {
             this.map.updateRendering(this.player.getPos());
         }
+
+        this.minimap.update();
     }
 
     private void animate() {
@@ -77,11 +83,12 @@ public class Game implements Drawable, Debuggable {
         // Center the player in the window.
         AffineTransform saveAT = ((Graphics2D) graphics).getTransform();
         AffineTransform translateCenterPlayer = AffineTransform.getTranslateInstance(
-                Const.WIDTH / 2 - this.player.getX(), Const.HEIGHT / 2 - this.player.getY());
-        ((Graphics2D) graphics).transform(translateCenterPlayer);
+                Const.WIDTH / 2 - this.player.getCenterX(), Const.HEIGHT / 2 - this.player.getCenterY());
+        ((Graphics2D) graphics).setTransform(translateCenterPlayer);
 
         this.map.draw(graphics);
         this.player.draw(graphics);
+        this.minimap.draw(graphics);
         
         if (this.checkDebugging()) {
             this.drawDebugInfo(graphics);
@@ -98,7 +105,7 @@ public class Game implements Drawable, Debuggable {
 
         // Draw a circle at (0, 0)
         graphics.setColor(Const.RED);
-        graphics.fillOval(0, 0, 5, 5);
+        graphics.fillOval(-2, -2, 5, 5);
     }
 
     public boolean checkDebugging() {

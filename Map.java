@@ -79,6 +79,11 @@ public class Map implements Drawable, Debuggable {
         }
     }
 
+    public Tile getTileContaining(int x, int y) {
+        Chunk containingChunk = this.getChunkContaining(x, y);
+        return containingChunk.getTileContaining(x, y);
+    }
+
     public Chunk getChunkContaining(int x, int y) {
         // Search in active chunks.
         for (Chunk chunk: this.activeChunks) {
@@ -95,6 +100,14 @@ public class Map implements Drawable, Debuggable {
         }
 
         return null;
+    }
+
+    public ArrayList<Chunk> getActiveChunks() {
+        return this.activeChunks;
+    }
+
+    public ArrayList<Chunk> getUnactiveChunks() {
+        return this.unactiveChunks;
     }
 
     public ArrayList<Chunk> getActiveChunksIntersecting(Hitbox other) {
@@ -138,8 +151,8 @@ public class Map implements Drawable, Debuggable {
     public static Vector calculateMapPosition(Vector realPosition) {
         Vector mapPosition = realPosition.clone();
         mapPosition.div(Chunk.LENGTH * Tile.LENGTH);
-        mapPosition.setX((int) mapPosition.getX());
-        mapPosition.setY((int) mapPosition.getY());
+        mapPosition.setX(Math.floor(mapPosition.getX()));
+        mapPosition.setY(Math.floor(mapPosition.getY()));
         return mapPosition;
     }
 

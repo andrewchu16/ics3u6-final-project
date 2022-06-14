@@ -117,6 +117,18 @@ public class Player extends Entity implements Moveable {
         return this.activeCycle.getFrameHeight();
     }
 
+    public int getCenterX() {
+        RelativeHitbox generalHitbox = (RelativeHitbox) this.activeCycle.getGeneralHitbox();
+
+        return generalHitbox.getX() + generalHitbox.getWidth() / 2;
+    }
+
+    public int getCenterY() {
+        RelativeHitbox generalHitbox = (RelativeHitbox) this.activeCycle.getGeneralHitbox();
+
+        return generalHitbox.getY() + generalHitbox.getHeight() / 2;
+    }
+
     @Override
     public void setX(double newX) {
         super.setX(newX);
@@ -153,7 +165,8 @@ public class Player extends Entity implements Moveable {
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
 
-            if (this.pressedKeys[keyCode]) {
+            if (0 <= keyCode && keyCode < this.pressedKeys.length && 
+                    this.pressedKeys[keyCode]) {
                 return;
             }
 
@@ -221,8 +234,8 @@ public class Player extends Entity implements Moveable {
 
     public class PlayerMouseListener implements MouseListener {
         public void mousePressed(MouseEvent event) {
-            int x = event.getX() + (int) getX() - Const.WIDTH / 2;
-            int y = event.getY() + (int) getY() - Const.HEIGHT / 2;
+            int x = event.getX() + (int) getCenterX() - Const.WIDTH / 2;
+            int y = event.getY() + (int) getCenterY() - Const.HEIGHT / 2;
 
             if (activeCycle.contains(x, y)) {
                 activeCycle = hurtCycle;

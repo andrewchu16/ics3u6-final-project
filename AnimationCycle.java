@@ -2,7 +2,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import java.io.FileReader;
 import java.io.BufferedReader;

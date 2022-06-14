@@ -86,6 +86,10 @@ public class Chunk implements Drawable, Debuggable, Collidable {
         this.fileName = fileName;
     }
 
+    public Tile getTileContaining(int x, int y) {
+        return null;
+    }
+
     public ArrayList<Tile> getSolidTiles() {
         if (this.solidTiles != null) {
             return this.solidTiles;

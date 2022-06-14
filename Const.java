@@ -1,5 +1,4 @@
 import java.awt.image.BufferedImage;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -9,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.awt.FontFormatException;
 
-public class Const {
+public final class Const {
     // Dimensions of the window.
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 750;
@@ -52,8 +51,6 @@ public class Const {
     public static final Color GRAY = new Color(57, 70, 72);
     public static final Color BLACK = new Color(14, 38, 47);
     
-    // Animation cycle data files.
-
     // Directions.
     public static final int UP = 0;
     public static final int LEFT = 1;
@@ -71,6 +68,12 @@ public class Const {
     
     // Map data file.
     public static final String MAP_FILE_NAME = "assets/map/map.txt";
+
+    // Minimap constants.
+    public static final Vector MINIMAP_POS = new Vector(40, 40);
+    public static final int MINIMAP_WIDTH = 180;
+    public static final int MINIMAP_HEIGHT = 180;
+    public static final double MINIMAP_SCALE = 6;
 
     // Menu images.
     public static BufferedImage dayScreenBackground;
