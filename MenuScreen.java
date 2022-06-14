@@ -17,13 +17,13 @@ public class MenuScreen extends Screen {
      * @param game The {@code Game} object.
      */
     public MenuScreen(Window window, Game game) {
-        super(Const.dayScreenBackground);
+        super(Const.DAY_SCREEN_BACKGROUND);
 
         this.setName(Const.MENU_SCREEN_NAME);
 
         // Instantiate title.
         this.titleLabel = new Label(Const.WIDTH / 2 - 170, 120, 380, 140, "Across The Sands",
-                Const.titleFont, Const.WHITE2);
+                Const.TITLE_FONT, Const.WHITE2);
 
         // Instantiate buttons.
         Button continueButton = new MenuButton(50, 400, "continue button", "Continue");

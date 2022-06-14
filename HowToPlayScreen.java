@@ -13,16 +13,16 @@ public class HowToPlayScreen extends Screen {
      * @param window The window this {@code HowToPlayScreen} object is a part of.
      */
     public HowToPlayScreen(Window window) {
-        super(Const.nightScreenBackground);
+        super(Const.NIGHT_SCREEN_BACKGROUND);
 
         this.setName(Const.HOW_TO_PLAY_SCREEN_NAME);
 
         // Instantiate title.
         this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "How To Play", 
-                Const.subtitleFont, Const.WHITE2);
+                Const.SUBTITLE_FONT, Const.WHITE2);
 
         // Instantiate how to play text image.
-        this.textSprite = new Sprite(0, 0, Const.howToPlayScreenText);
+        this.textSprite = new Sprite(0, 0, Const.HOW_TO_PlAY_SCREEN_TEXT);
 
         // Instantiate buttons.
         Button goBackButton = new BackButton(30, 50, window);

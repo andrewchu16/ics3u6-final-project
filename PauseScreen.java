@@ -19,13 +19,13 @@ public class PauseScreen extends Screen {
      * @param game The {@code Game} object.
      */
     public PauseScreen(Window window, Game game) {
-        super(Const.dayScreenBackground);
+        super(Const.DAY_SCREEN_BACKGROUND);
         
         this.setName(Const.PAUSE_SCREEN_NAME);
 
         // Instantiate title.
         this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "Paused", 
-                Const.subtitleFont, Const.WHITE2);
+                Const.SUBTITLE_FONT, Const.WHITE2);
 
         // Instantiate pause center background rectangle.
         this.centerRect = new Rectangle(Const.WIDTH / 2 - 320, 160, 640, 500);

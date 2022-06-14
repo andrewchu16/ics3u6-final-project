@@ -76,15 +76,15 @@ public final class Const {
     public static final double MINIMAP_SCALE = 6;
 
     // Menu images.
-    public static BufferedImage dayScreenBackground;
-    public static BufferedImage nightScreenBackground;
-    public static BufferedImage howToPlayScreenText;
+    public static final BufferedImage DAY_SCREEN_BACKGROUND = Sprite.tryLoadImage("assets/images/menu/day_background.png");;
+    public static final BufferedImage NIGHT_SCREEN_BACKGROUND = Sprite.tryLoadImage("assets/images/menu/night_background.png");;
+    public static final BufferedImage HOW_TO_PlAY_SCREEN_TEXT = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
 
     // Player animation images.
-    public static BufferedImage playerIdleSpriteSheet;
-    public static BufferedImage playerWalkSpriteSheet;
-    public static BufferedImage playerAttackSpriteSheet;
-    public static BufferedImage playerHurtSpriteSheet;
+    public static final BufferedImage PLAYER_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_idle.png");
+    public static final BufferedImage PLAYER_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_walk.png");
+    public static final BufferedImage PLAYER_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_attack.png");
+    public static final BufferedImage PLAYER_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_hurt.png");
 
     // Player animation files.
     public static final String PLAYER_IDLE_FILE_NAME = "assets/animation/player/mummy_idle.txt";
@@ -95,65 +95,37 @@ public final class Const {
     // Audio.
 
     // Fonts.
-    private static final int TITLE_FONT_SIZE = 64;
-    private static final int SUBTITLE_FONT_SIZE = 50;
-    private static final int MENU_BUTTON_FONT_SIZE = 30;
-    private static final int SMALL_BUTTON_FONT_SIZE = 24;
-    private static final int DEBUG_FONT_SIZE = 12;
+    private static final String AMATIC_SC_BOLD_FILE_NAME = "assets/fonts/AmaticSC-Bold.ttf";
 
-    public static Font titleFont;
-    public static Font subtitleFont;
-    public static Font buttonFont;
-    public static Font smallButtonFont;
-    public static Font debugFont;
+    public static final Font TITLE_FONT = tryLoadLocalFont(AMATIC_SC_BOLD_FILE_NAME, 
+            Font.TRUETYPE_FONT, Font.PLAIN, 64);
+    public static final Font SUBTITLE_FONT = tryLoadLocalFont(AMATIC_SC_BOLD_FILE_NAME, 
+            Font.TRUETYPE_FONT, Font.PLAIN, 50);
+    public static final Font BUTTON_FONT = new Font("Sans-Serif", Font.PLAIN, 30);
+    public static final Font SMALL_BUTTON_FONT = new Font("Sans-Serif", Font.PLAIN, 24);
+    public static final Font DEBUG_FONT = new Font("Sans-Serif", Font.PLAIN, 12);
     
-
     // Tile and map sprites.
     public static final Sprite SAND_TILE_SPRITE = new Sprite(0, 0, "assets/images/tiles/sand_tile.png");
     public static final Sprite ROCK_TILE_SPRITE = new Sprite(0, 0, "assets/images/tiles/rock_tile.png");
-    
-    /**
-     * This method loads all the images used in the game.
-     */
-    public static void loadImages() {
-        // Load menu screen images.
-        dayScreenBackground = Sprite.tryLoadImage("assets/images/menu/day_background.png");
-        nightScreenBackground = Sprite.tryLoadImage("assets/images/menu/night_background.png");
-        howToPlayScreenText = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
 
-        // Load player images.
-        playerIdleSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_idle.png");
-        playerWalkSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_walk.png");
-        playerAttackSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_attack.png");
-        playerHurtSpriteSheet = Sprite.tryLoadImage("assets/images/player/mummy_hurt.png");
-    }
+    public static Font tryLoadLocalFont(String baseFontName, int fontType, int fontStyle, int fontSize) {
+        Font fallbackFont = new Font("Calibri", fontStyle, fontSize);
+        Font font;
 
-    /**
-     * This method loads all the text fonts used in the game. If a font cannot be read
-     * from memory, a default font will be used.
-     */
-    public static void loadFonts() {
+        // Try to load the font.
         try {
-            // Load title and subtitle font.
-            Font amaticSCBold = Font.createFont(Font.TRUETYPE_FONT, 
-                    new File("assets/fonts/AmaticSC-Bold.ttf"));
-            
-            titleFont = amaticSCBold.deriveFont((float) TITLE_FONT_SIZE);
-            subtitleFont = amaticSCBold.deriveFont((float) SUBTITLE_FONT_SIZE);
+            Font baseFont = Font.createFont(fontType, new File(baseFontName));
+            font = baseFont.deriveFont((float) fontSize);
         } catch (IOException ex) {
-            System.out.println("Error: Could not read font files.");
-            titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
-            subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
+            System.out.println("Error: Could not read font file.Y [" + baseFontName + "]");
+            font = fallbackFont;
         } catch (FontFormatException ex) {
-            System.out.println("Error: Invalid font files.");
-            titleFont = new Font("Calibri", Font.BOLD, TITLE_FONT_SIZE);
-            subtitleFont = new Font("Calibri", Font.BOLD, SUBTITLE_FONT_SIZE);
+            System.out.println("Error: Invalid font file. [" + baseFontName + "]");
+            font = fallbackFont;
         }
 
-        // Load button and debug fonts.
-        buttonFont = new Font("Sans-Serif", Font.PLAIN, MENU_BUTTON_FONT_SIZE);
-        smallButtonFont = new Font("Sans-Serif", Font.PLAIN, SMALL_BUTTON_FONT_SIZE);
-        debugFont = new Font("Sans-Serif", Font.PLAIN, DEBUG_FONT_SIZE);
+        return font;
     }
 
     private Const() {}

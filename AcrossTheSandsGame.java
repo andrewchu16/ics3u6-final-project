@@ -21,10 +21,6 @@ public class AcrossTheSandsGame {
      * This constructs an AcrossTheSandsGame object.
      */
     public AcrossTheSandsGame() {
-        // Load assets into memory.
-        Const.loadImages();
-        Const.loadFonts();
-
         this.game = new Game();
         this.initializeWindow();
     }

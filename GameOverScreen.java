@@ -11,13 +11,13 @@ public class GameOverScreen extends Screen {
      * @param window The {@code Window} this {@code GameOverScreen} is a part of.
      */
     public GameOverScreen(Window window) {
-        super(Const.nightScreenBackground);
+        super(Const.NIGHT_SCREEN_BACKGROUND);
         
         this.setName(Const.GAME_OVER_SCREEN_NAME);
 
         // Instantiate title.
         this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "Game Over", 
-                Const.subtitleFont, Const.WHITE2);
+                Const.SUBTITLE_FONT, Const.WHITE2);
     }
 
     /**

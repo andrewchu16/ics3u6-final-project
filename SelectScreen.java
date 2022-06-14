@@ -22,29 +22,29 @@ public class SelectScreen extends Screen {
      * @param game The {@code Game} object.
      */
     public SelectScreen(Window window, Game game) {
-        super(Const.dayScreenBackground);
+        super(Const.DAY_SCREEN_BACKGROUND);
 
         this.setName(Const.SELECT_SCREEN_NAME);
 
         // Instantiate title.
         this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "New Game", 
-                Const.subtitleFont, Const.WHITE2);
+                Const.SUBTITLE_FONT, Const.WHITE2);
 
         // Instantiate select center background rectangle.
         this.centerRect = new Rectangle(Const.WIDTH / 2 - 320, 160, 640, 500);
 
         // Instantiate button labels.
         this.nameLabel = new Label(Const.WIDTH / 2 - 260, 300, 200, 56, "Player Name", 
-                Const.smallButtonFont, Const.WHITE);
+                Const.SMALL_BUTTON_FONT, Const.WHITE);
         this.difficultyLabel = new Label(Const.WIDTH / 2 - 260, 420, 200, 56, "Difficulty", 
-                Const.smallButtonFont, Const.WHITE);
+                Const.SMALL_BUTTON_FONT, Const.WHITE);
         this.currentDifficultyLabel = new Label(Const.WIDTH / 2 + 100, 420, 100, 56, 
-                Game.DIFFICULTY_STRINGS[game.getDifficulty()], Const.smallButtonFont, Const.WHITE);
+                Game.DIFFICULTY_STRINGS[game.getDifficulty()], Const.SMALL_BUTTON_FONT, Const.WHITE);
 
         // Instantiate buttons and text field.
         Button goBackButton = new BackButton(30, 50, window);
         TextField nameTextField = new TextField(Const.WIDTH / 2 + 20, 300, 260, 56, 
-                "name text field", game.getPlayer().getName(), Const.smallButtonFont, 
+                "name text field", game.getPlayer().getName(), Const.SMALL_BUTTON_FONT, 
                 Const.LIGHT_GRAY2, Const.WHITE, TextField.INCLUDE_ALPHA | TextField.INCLUDE_SPACE, 12);
         ArrowButton lowerDifficultyButton = new ArrowButton(Const.WIDTH / 2 + 40, 430,
                 40, 36, Const.LEFT, "lower difficulty button", Const.GREEN2, Const.GREEN);

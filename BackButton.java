@@ -11,7 +11,7 @@ public class BackButton extends Button {
      * @param window The window this {@code BackButton} is placed in.
      */
     public BackButton(int x, int y, Window window) {
-        super(x, y, 150, 60, "go back button", "Go Back", Const.buttonFont, 
+        super(x, y, 150, 60, "go back button", "Go Back", Const.BUTTON_FONT, 
                 Const.DARK_BLUE, Const.BLUE);
 
         this.addHandler(window.new BackButtonHandler());

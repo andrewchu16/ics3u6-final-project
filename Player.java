@@ -24,10 +24,10 @@ public class Player extends Entity implements Moveable {
     public Player() {
         super(0, 0, "Player");
 
-        this.idleCycle = new AnimationCycle(this.getPos(), Const.playerIdleSpriteSheet, Const.PLAYER_IDLE_FILE_NAME);
-        this.walkCycle = new AnimationCycle(this.getPos(), Const.playerWalkSpriteSheet, Const.PLAYER_WALK_FILE_NAME);
-        this.attackCycle = new AnimationCycle(this.getPos(), Const.playerAttackSpriteSheet, Const.PLAYER_ATTACK_FILE_NAME);
-        this.hurtCycle = new AnimationCycle(this.getPos(), Const.playerHurtSpriteSheet, Const.PLAYER_HURT_FILE_NAME);
+        this.idleCycle = new AnimationCycle(this.getPos(), Const.PLAYER_IDLE_SPRITE_SHEET, Const.PLAYER_IDLE_FILE_NAME);
+        this.walkCycle = new AnimationCycle(this.getPos(), Const.PLAYER_WALK_SPRITE_SHEET, Const.PLAYER_WALK_FILE_NAME);
+        this.attackCycle = new AnimationCycle(this.getPos(), Const.PLAYER_ATTACK_SPRITE_SHEET, Const.PLAYER_ATTACK_FILE_NAME);
+        this.hurtCycle = new AnimationCycle(this.getPos(), Const.PLAYER_HURT_SPRITE_SHEET, Const.PLAYER_HURT_FILE_NAME);
         
         this.activeCycle = idleCycle;
 
@@ -47,7 +47,7 @@ public class Player extends Entity implements Moveable {
         
         // Draw the coordinates of the player.
         String info = "(" + (Math.round(this.getX() * 10) / 10.0) + ", " + (Math.round(this.getY() * 10) / 10.0) + ")";
-        Text text = new Text(info, Const.debugFont, (int) this.getX(), (int) this.getY());
+        Text text = new Text(info, Const.DEBUG_FONT, (int) this.getX(), (int) this.getY());
         text.draw(graphics);
     }
 

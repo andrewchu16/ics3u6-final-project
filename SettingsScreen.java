@@ -21,27 +21,27 @@ public class SettingsScreen extends Screen {
      * @param game The {@code Game} object.
      */
     public SettingsScreen(Window window, Game game) {
-        super(Const.dayScreenBackground);
+        super(Const.DAY_SCREEN_BACKGROUND);
 
         this.setName(Const.SETTINGS_SCREEN_NAME);
 
         // Instantiate title.
         this.titleLabel = new Label(Const.WIDTH / 2 - 100, 45, 200, 80, "Settings", 
-                Const.subtitleFont, Const.WHITE2);
+                Const.SUBTITLE_FONT, Const.WHITE2);
 
         // Instantiate settings center background rectangle.
         this.centerRect = new Rectangle(Const.WIDTH / 2 - 320, 160, 640, 500);
         
         // Instantiate button labels.
         this.fpsLabel = new Label(Const.WIDTH / 2 - 180, 300, 120, 60, "FPS", 
-                Const.buttonFont, Const.WHITE);
+                Const.BUTTON_FONT, Const.WHITE);
         this.debugLabel = new Label(Const.WIDTH / 2 - 180, 400, 120, 60, "Debug",
-                Const.buttonFont, Const.WHITE);
+                Const.BUTTON_FONT, Const.WHITE);
                 
         // Instantiate buttons and text field.
         Button goBackButton = new BackButton(30, 50, window);
         TextField fpsTextField = new TextField(Const.WIDTH / 2 + 100, 300, 100, 60, 
-                "fps text field", Integer.toString(window.getFPS()), Const.buttonFont, 
+                "fps text field", Integer.toString(window.getFPS()), Const.BUTTON_FONT, 
                 Const.LIGHT_GRAY2, Const.WHITE, TextField.INCLUDE_DIGITS, 3);
         Button debugButton = this.createDebugButton(game);
 
@@ -93,7 +93,7 @@ public class SettingsScreen extends Screen {
         }
 
         Button debugButton = new Button(Const.WIDTH / 2 + 100, 400, 100, 60, "debug button", 
-        startDebugText, Const.buttonFont, startDebugHoverColor, startDebugUnpressedColor);
+        startDebugText, Const.BUTTON_FONT, startDebugHoverColor, startDebugUnpressedColor);
 
         // Add the debug button handler.
         debugButton.addHandler(new Button.ButtonHandler() {

@@ -30,7 +30,7 @@ public class ArrowButton extends Button {
      */
     public ArrowButton(int x, int y, int width, int height, int orientation, String name, 
             Color hoverColor, Color pressedColor) {
-        super(x, y, width, height, name, "", Const.buttonFont, hoverColor, pressedColor);
+        super(x, y, width, height, name, "", Const.BUTTON_FONT, hoverColor, pressedColor);
 
         this.orientation = orientation;
         this.createArrow();
