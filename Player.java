@@ -73,7 +73,7 @@ public class Player extends Entity implements Moveable {
     }
 
     private void handleTileCollisions() {
-        RelativeHitbox shiftedHitbox = (RelativeHitbox) this.activeCycle.getGeneralHitbox().clone();
+        RelativeHitbox shiftedHitbox = (RelativeHitbox) this.getGeneralHitbox();
 
         Vector newRealSpeed = this.realSpeed.getVectorX();
         double speedPercentage = 1.0;
@@ -81,7 +81,7 @@ public class Player extends Entity implements Moveable {
         // Reduce the speed until it can move horizontally.
         shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newRealSpeed));
         while (this.map.intersectsWithActiveSolid(shiftedHitbox) && 
-                Double.compare(speedPercentage, 0) >= 0.1) {
+                Double.compare(speedPercentage, 0.1) >= 0) {
             speedPercentage -= 0.1;
             speedPercentage = Math.round(speedPercentage * 10) / 10.0;
             newRealSpeed.setX(this.realSpeed.getX() * speedPercentage);
@@ -93,7 +93,7 @@ public class Player extends Entity implements Moveable {
         speedPercentage = 1.0;
         shiftedHitbox.setAnchorPos(Vector.sum(this.getPos(), newRealSpeed));
         while (this.map.intersectsWithActiveSolid(shiftedHitbox) && 
-                Double.compare(speedPercentage, 0) >= 0.1) {
+                Double.compare(speedPercentage, 0.1) >= 0) {
             speedPercentage -= 0.1;
             speedPercentage = Math.round(speedPercentage * 10) / 10;
             newRealSpeed.setY(this.realSpeed.getY() * speedPercentage);
@@ -129,6 +129,10 @@ public class Player extends Entity implements Moveable {
         return generalHitbox.getY() + generalHitbox.getHeight() / 2;
     }
 
+    public Hitbox getGeneralHitbox() {
+        return this.activeCycle.getGeneralHitbox().clone();
+    }
+
     @Override
     public void setX(double newX) {
         super.setX(newX);
@@ -159,14 +163,17 @@ public class Player extends Entity implements Moveable {
             Arrays.fill(this.pressedKeys, false);
         }
 
+        private boolean checkKeyValid(int keyCode) {
+            return 0 <= keyCode && keyCode < this.pressedKeys.length;
+        }
+
         public void keyTyped(KeyEvent event) {}
 
         @Override
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
 
-            if (0 <= keyCode && keyCode < this.pressedKeys.length && 
-                    this.pressedKeys[keyCode]) {
+            if (!checkKeyValid(keyCode) || this.pressedKeys[keyCode]) {
                 return;
             }
 
@@ -190,6 +197,10 @@ public class Player extends Entity implements Moveable {
         @Override
         public void keyReleased(KeyEvent event) {
             int keyCode = event.getKeyCode();
+
+            if (!checkKeyValid(keyCode)) {
+                return;
+            }
 
             this.pressedKeys[keyCode] = false;
             
@@ -228,7 +239,6 @@ public class Player extends Entity implements Moveable {
             } else {
                 moveSpeed.setLength(WALK_SPEED);
             }
-
         }
     };
 

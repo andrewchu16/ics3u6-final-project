@@ -118,7 +118,7 @@ public final class Const {
             Font baseFont = Font.createFont(fontType, new File(baseFontName));
             font = baseFont.deriveFont((float) fontSize);
         } catch (IOException ex) {
-            System.out.println("Error: Could not read font file.Y [" + baseFontName + "]");
+            System.out.println("Error: Could not read font file. [" + baseFontName + "]");
             font = fallbackFont;
         } catch (FontFormatException ex) {
             System.out.println("Error: Invalid font file. [" + baseFontName + "]");

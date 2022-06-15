@@ -228,10 +228,6 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         this.indexDir = 1;
     }
 
-    public void flipHorizontally() {
-
-    }
-    
     public boolean checkDone() {
         return (this.loopType == NO_LOOPING && this.curIndex == this.numFrames - 1);
     }
