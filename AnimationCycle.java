@@ -34,11 +34,11 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         this.frames = new AnimationFrame[numFrames];
 
         this.numFrames = numFrames;
-        this.frameWidth = picSheet.getWidth() / numFrames;
-        this.frameHeight = picSheet.getHeight();
+        this.frameWidth = picSheet.getWidth();
+        this.frameHeight = picSheet.getHeight() / numFrames;
 
         for (int i = 0; i < numFrames; i++) {
-            BufferedImage subImage = picSheet.getSubimage(i * frameWidth, 0, 
+            BufferedImage subImage = picSheet.getSubimage(0, i * frameHeight, 
                     frameWidth, frameHeight);
             this.frames[i] = new AnimationFrame(position, subImage);
         }
@@ -56,12 +56,12 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         this.position = position;
         this.frames = new AnimationFrame[this.numFrames];
         
-        this.numFrames = picSheet.getWidth() / frameWidth;
+        this.numFrames = picSheet.getHeight() / frameHeight;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
 
         for (int i = 0; i < numFrames; i++) {
-            BufferedImage subImage = picSheet.getSubimage(i * frameWidth, 0, 
+            BufferedImage subImage = picSheet.getSubimage(0, i * frameHeight, 
                     frameWidth, frameHeight);
             this.frames[i] = new AnimationFrame(position, subImage);
         }
@@ -151,8 +151,8 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
 
             // Determine the general hitbox.
             String[] generalHitboxData = input.readLine().split(" ");
-            Vector relativePosition = new Vector(Double.parseDouble(generalHitboxData[1]) / 2, 
-                    Double.parseDouble(generalHitboxData[2]) / 2);
+            Vector relativePosition = new Vector(Double.parseDouble(generalHitboxData[1]), 
+                    Double.parseDouble(generalHitboxData[2]));
             int width = Integer.parseInt(generalHitboxData[3]);
             int height = Integer.parseInt(generalHitboxData[4]);
             this.generalHitbox = new RelativeHitbox(this.position, relativePosition, width, height);
@@ -167,8 +167,8 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         }
 
         this.frames = new AnimationFrame[this.numFrames];
-        this.frameWidth = picSheet.getWidth() / numFrames;
-        this.frameHeight = picSheet.getHeight();
+        this.frameWidth = picSheet.getWidth();
+        this.frameHeight = picSheet.getHeight() / this.numFrames;
         
         // Create the animation frames.
         try {
@@ -180,8 +180,8 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
                 ArrayList<RelativeHitbox> hitboxes = new ArrayList<RelativeHitbox>();
                 for (int j = 0; j < numHitboxes; j++) {
                     String[] hitboxData = input.readLine().split(" ");
-                    Vector relativePosition = new Vector(Double.parseDouble(hitboxData[1]) / 2, 
-                            Double.parseDouble(hitboxData[2]) / 2);
+                    Vector relativePosition = new Vector(Double.parseDouble(hitboxData[1]), 
+                            Double.parseDouble(hitboxData[2]));
                     int width = Integer.parseInt(hitboxData[3]);
                     int height = Integer.parseInt(hitboxData[4]);
                     RelativeHitbox hitbox = new RelativeHitbox(this.position, relativePosition, width, height);
@@ -189,7 +189,7 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
                 }
 
                 this.frames[frameIndex] = new AnimationFrame(this.position, 
-                        picSheet.getSubimage(frameIndex * frameWidth, 0, frameWidth, 
+                        picSheet.getSubimage(0, frameIndex * frameHeight, frameWidth, 
                         frameHeight), hitboxes);
             }
         } catch (IOException ex) {
@@ -313,5 +313,12 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
     public void drawDebugInfo(Graphics graphics) {
         this.generalHitbox.drawDebugInfo(graphics);
         this.activeFrame.drawDebugInfo(graphics);
+    }
+
+    public void reflectHorizontally() {
+        int xLine = this.generalHitbox.getX() + this.generalHitbox.getWidth() / 2;
+        for (AnimationFrame frame: this.frames) {
+            frame.reflectHorizontally(xLine);
+        }
     }
 }

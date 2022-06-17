@@ -49,9 +49,7 @@ The main game takes place on a 2-dimensional plane.
 - [x] Finish game map system
 - [x] Finish mini map
 - [ ] Finish adding sprites
-- [ ] Finish item classes
 - [ ] Finish player attacks
-- [ ] Finish player inventory system
 - [ ] Finish player user interface
 - [ ] Finish enemies and enemy behaviour
 - [ ] Finish adding sounds

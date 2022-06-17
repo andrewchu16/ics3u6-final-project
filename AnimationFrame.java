@@ -104,4 +104,11 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
             hitbox.setAnchorPos(newAnchorPos);
         }
     }
+
+    public void reflectHorizontally(int xLine) {
+        this.sprite.reflectHorizontally();
+        for (RelativeHitbox hitbox: this.hitboxes) {
+            hitbox.reflectHorizontally(xLine);
+        }
+    }
 }

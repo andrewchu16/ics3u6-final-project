@@ -136,6 +136,15 @@ public class Vector {
         this.y *= -1;
     }
 
+    /**
+     * THis method reflects this {@code Vector} over a line.
+     * @param xLine The line to reflect the vector over.
+     */
+    public void reflectHorizontally(double xLine) {
+        this.x = 2 * xLine - this.x;
+    }
+
+
     public Vector getVectorX() {
         return new Vector(this.x, 0);
     }
@@ -275,5 +284,22 @@ public class Vector {
 
         double squareDistance = deltaX * deltaX + deltaY * deltaY;
         return squareDistance;
+    }
+
+    /**
+     * This method generates a vector with random integer x and y values.
+     * @param minX The minimum value the x value can be.
+     * @param maxX The maximum value the x value can be.
+     * @param minY The minimum value the y value can be.
+     * @param maxY The maximum value the y value can be.
+     * @return A new {@code Vector} object at the randomized coordinate.
+     */
+    public static Vector getRandomInstance(int minX, int maxX, int minY, int maxY) {
+        int rangeX = maxX - minX + 1;
+        int rangeY = maxY - minY + 1;
+        int x = (int) (rangeX * Math.random() + minX);
+        int y = (int) (rangeY * Math.random() + minY);
+
+        return new Vector(x, y);
     }
 }

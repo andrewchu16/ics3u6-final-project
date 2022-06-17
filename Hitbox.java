@@ -121,7 +121,7 @@ public class Hitbox implements Drawable, Debuggable, Collidable {
     @Override
     public void draw(Graphics graphics) {
         graphics.setColor(this.color);
-        ((Graphics2D) graphics).setStroke(new BasicStroke(2));
+        ((Graphics2D) graphics).setStroke(new BasicStroke(1));
         ((Graphics2D) graphics).drawRect(this.getX(), this.getY(), this.width, this.height);
     }
 

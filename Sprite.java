@@ -1,8 +1,10 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
 
 import java.io.IOException;
 
@@ -14,7 +16,10 @@ public class Sprite implements Drawable {
     private int width;
     private int height;
 
+    private boolean reflected;
     private BufferedImage image;
+    private BufferedImage originalImage;
+    private BufferedImage reflectedImage;
     
     /**
      * This constructs a new {@code Sprite} object.
@@ -26,7 +31,13 @@ public class Sprite implements Drawable {
         this.position = new Vector(x, y);
         
         // Load the image from file.
-        this.image = tryLoadImage(picName);
+        this.originalImage = tryLoadImage(picName);
+        this.reflectedImage = reflectHorizontally(this.originalImage);
+        this.reflected = false;
+        this.image = originalImage;
+
+        this.width = this.originalImage.getWidth();
+        this.height = this.originalImage.getHeight();
     }
 
     /**
@@ -38,10 +49,14 @@ public class Sprite implements Drawable {
      */
     public Sprite(int x, int y, BufferedImage pic) {
         this.position = new Vector(x, y);
-        this.image = pic;
 
-        this.width = this.image.getWidth();
-        this.height = this.image.getHeight();
+        this.originalImage = pic;
+        this.reflectedImage = reflectHorizontally(this.originalImage);
+        this.reflected = false;
+        this.image = originalImage;
+
+        this.width = this.originalImage.getWidth();
+        this.height = this.originalImage.getHeight();
     }
 
     /**
@@ -53,10 +68,14 @@ public class Sprite implements Drawable {
      */
     public Sprite(Vector position, BufferedImage pic) {
         this.position = position;
-        this.image = pic;
 
-        this.width = this.image.getWidth();
-        this.height = this.image.getHeight();
+        this.originalImage = pic;
+        this.reflectedImage = reflectHorizontally(this.originalImage);
+        this.reflected = false;
+        this.image = this.originalImage;
+
+        this.width = this.originalImage.getWidth();
+        this.height = this.originalImage.getHeight();
     }
 
     /**
@@ -69,7 +88,7 @@ public class Sprite implements Drawable {
         try {
             image = ImageIO.read(new File(picName));
         } catch (IOException ex) {
-            System.out.println("Error: Image file not found [" + picName + "]");
+            System.out.println("Error: Image file not found. [" + picName + "]");
             return null;
         }
 
@@ -137,5 +156,26 @@ public class Sprite implements Drawable {
      */
     public void draw(Graphics graphics, Vector position) {
         graphics.drawImage(this.image, (int) position.getX(), (int) position.getY(), null);
+    }
+
+    public void reflectHorizontally() {
+        if (this.image == this.originalImage) {
+            this.image = this.reflectedImage;
+        } else {
+            this.image = this.originalImage;
+        }
+    }
+
+    public static BufferedImage reflectHorizontally(BufferedImage image) {
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int colour = image.getRGB(x, y);
+                newImage.setRGB(image.getWidth() - x - 1, y, colour);
+            }
+        }
+
+        return newImage;
     }
 }

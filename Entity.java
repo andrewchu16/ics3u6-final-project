@@ -43,6 +43,10 @@ abstract public class Entity implements Drawable, Debuggable {
 
     abstract public int getWidth();
     abstract public int getHeight();
+    abstract public int getCenterX();
+    abstract public int getCenterY();
+    abstract public Vector getCenter();
+    abstract public Hitbox getGeneralHitbox();
 
     public void setName(String newName) {
         this.name = newName;

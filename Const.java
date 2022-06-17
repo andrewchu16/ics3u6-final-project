@@ -81,10 +81,10 @@ public final class Const {
     public static final BufferedImage HOW_TO_PlAY_SCREEN_TEXT = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
 
     // Player animation images.
-    public static final BufferedImage PLAYER_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_idle.png");
-    public static final BufferedImage PLAYER_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_walk.png");
-    public static final BufferedImage PLAYER_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_attack.png");
-    public static final BufferedImage PLAYER_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_hurt.png");
+    public static final BufferedImage PLAYER_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_idle_left.png");
+    public static final BufferedImage PLAYER_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_walk_left.png");
+    public static final BufferedImage PLAYER_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_attack_left.png");
+    public static final BufferedImage PLAYER_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_hurt_left.png");
 
     // Player animation files.
     public static final String PLAYER_IDLE_FILE_NAME = "assets/animation/player/mummy_idle.txt";

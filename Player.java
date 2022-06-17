@@ -6,10 +6,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Player extends Entity implements Moveable {
     private static final int WALK_SPEED = 16;
 
+    private ArrayList<AnimationCycle> cycles;
     private AnimationCycle activeCycle;
     private AnimationCycle idleCycle;
     private AnimationCycle attackCycle;
@@ -28,6 +30,12 @@ public class Player extends Entity implements Moveable {
         this.walkCycle = new AnimationCycle(this.getPos(), Const.PLAYER_WALK_SPRITE_SHEET, Const.PLAYER_WALK_FILE_NAME);
         this.attackCycle = new AnimationCycle(this.getPos(), Const.PLAYER_ATTACK_SPRITE_SHEET, Const.PLAYER_ATTACK_FILE_NAME);
         this.hurtCycle = new AnimationCycle(this.getPos(), Const.PLAYER_HURT_SPRITE_SHEET, Const.PLAYER_HURT_FILE_NAME);
+        
+        this.cycles = new ArrayList<AnimationCycle>();
+        this.cycles.add(idleCycle);
+        this.cycles.add(walkCycle);
+        this.cycles.add(attackCycle);
+        this.cycles.add(hurtCycle);
         
         this.activeCycle = idleCycle;
 
@@ -103,10 +111,6 @@ public class Player extends Entity implements Moveable {
         this.realSpeed = newRealSpeed;
     }
 
-    private void handleObstacleCollisions() {
-
-    }
-
     @Override
     public int getWidth() {
         return this.activeCycle.getFrameWidth();
@@ -117,18 +121,26 @@ public class Player extends Entity implements Moveable {
         return this.activeCycle.getFrameHeight();
     }
 
+    @Override
     public int getCenterX() {
-        RelativeHitbox generalHitbox = (RelativeHitbox) this.activeCycle.getGeneralHitbox();
+        RelativeHitbox generalHitbox = (RelativeHitbox) this.getGeneralHitbox();
 
         return generalHitbox.getX() + generalHitbox.getWidth() / 2;
     }
 
+    @Override
     public int getCenterY() {
-        RelativeHitbox generalHitbox = (RelativeHitbox) this.activeCycle.getGeneralHitbox();
+        RelativeHitbox generalHitbox = (RelativeHitbox) this.getGeneralHitbox();
 
         return generalHitbox.getY() + generalHitbox.getHeight() / 2;
     }
 
+    @Override
+    public Vector getCenter() {
+        return new Vector(this.getCenterX(), this.getCenterY());
+    }
+
+    @Override
     public Hitbox getGeneralHitbox() {
         return this.activeCycle.getGeneralHitbox().clone();
     }
@@ -256,10 +268,7 @@ public class Player extends Entity implements Moveable {
             activeCycle.setPos(getPos());
         }
 
-        public void mouseReleased(MouseEvent event) {
-
-        }
-        
+        public void mouseReleased(MouseEvent event) {}
         public void mouseClicked(MouseEvent event) {}
         public void mouseEntered(MouseEvent event) {}
         public void mouseExited(MouseEvent event) {}
@@ -277,6 +286,11 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(-WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
+        if (this.direction == Const.RIGHT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+        }
         this.direction = Const.LEFT;
     }
 
@@ -292,6 +306,11 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
+        if (this.direction == Const.LEFT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+        }
         this.direction = Const.RIGHT;
     }
 }

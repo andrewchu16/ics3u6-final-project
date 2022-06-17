@@ -37,12 +37,12 @@ public class RelativeHitbox extends Hitbox {
     
     public void setAnchorPos(Vector newAnchorPos) {
         this.anchorPosition = newAnchorPos;
-        this.setPos(Vector.sum(this.anchorPosition, this.relativePosition));
+        super.setPos(Vector.sum(this.anchorPosition, this.relativePosition));
     }
 
     public void setRelPos(Vector newRelPos) {
         this.relativePosition = newRelPos;
-        this.setPos(Vector.sum(this.anchorPosition, this.relativePosition));
+        super.setPos(Vector.sum(this.anchorPosition, this.relativePosition));
     }
 
     @Override
@@ -63,5 +63,14 @@ public class RelativeHitbox extends Hitbox {
     public RelativeHitbox clone() {
         return new RelativeHitbox(this.anchorPosition.clone(), this.relativePosition.clone(), 
                 this.getWidth(), this.getHeight());
+    }
+
+    public void reflectHorizontally(int xLine) {
+        xLine -= this.getAnchorX();
+        Vector newRelPos = this.relativePosition.clone();
+        newRelPos.reflectHorizontally(xLine);
+        newRelPos.setX(newRelPos.getX() - this.getWidth());
+
+        this.setRelPos(newRelPos);
     }
 }

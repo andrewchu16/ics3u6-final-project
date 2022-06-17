@@ -143,7 +143,9 @@ public class Chunk implements Drawable, Debuggable, Collidable {
     public void drawDebugInfo(Graphics graphics) {
         for (Tile[] tileRow: this.tiles) {
             for (Tile tile: tileRow) {
-                tile.drawDebugInfo(graphics);
+                if (tile.checkSolid()) {
+                    tile.drawDebugInfo(graphics);
+                }
             }
         }
         this.hitbox.drawDebugInfo(graphics);
