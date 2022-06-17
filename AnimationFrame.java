@@ -86,7 +86,7 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
     /**
      * This method moves the position of the sprites and the hitboxes to the
      * new position. The hiboxes maintain their relative positions to the position
-     * of the 
+     * of the anchor/animation frame position.
      * @param newPos The new position.
      */
     public void setPos(Vector newPos) {
@@ -106,7 +106,7 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
     }
 
     public void reflectHorizontally(int xLine) {
-        this.sprite.reflectHorizontally();
+        this.sprite.reflectHorizontally(xLine);
         for (RelativeHitbox hitbox: this.hitboxes) {
             hitbox.reflectHorizontally(xLine);
         }

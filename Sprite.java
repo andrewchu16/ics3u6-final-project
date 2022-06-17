@@ -13,6 +13,7 @@ import java.io.IOException;
  */
 public class Sprite implements Drawable {
     private Vector position;
+    private Vector relPosition;
     private int width;
     private int height;
 
@@ -29,6 +30,7 @@ public class Sprite implements Drawable {
      */
     public Sprite(int x, int y, String picName) {
         this.position = new Vector(x, y);
+        this.relPosition = Vector.VECTOR_ZERO.clone();
         
         // Load the image from file.
         this.originalImage = tryLoadImage(picName);
@@ -49,6 +51,7 @@ public class Sprite implements Drawable {
      */
     public Sprite(int x, int y, BufferedImage pic) {
         this.position = new Vector(x, y);
+        this.relPosition = Vector.VECTOR_ZERO.clone();
 
         this.originalImage = pic;
         this.reflectedImage = reflectHorizontally(this.originalImage);
@@ -68,6 +71,7 @@ public class Sprite implements Drawable {
      */
     public Sprite(Vector position, BufferedImage pic) {
         this.position = position;
+        this.relPosition = Vector.VECTOR_ZERO.clone();
 
         this.originalImage = pic;
         this.reflectedImage = reflectHorizontally(this.originalImage);
@@ -101,6 +105,14 @@ public class Sprite implements Drawable {
 
     public int getY() {
         return (int) this.position.getY();
+    }
+
+    public int getRelX() {
+        return (int) this.relPosition.getX();
+    }
+
+    public int getRelY() {
+        return (int) this.relPosition.getY();
     }
 
     /**
@@ -146,7 +158,8 @@ public class Sprite implements Drawable {
      */
     @Override
     public void draw(Graphics graphics) {
-        graphics.drawImage(this.image, this.getX(), this.getY(), null);
+        graphics.drawImage(this.image, this.getX() + this.getRelX(), 
+                this.getY() + this.getRelY(), null);
     }
 
     /**
@@ -158,12 +171,19 @@ public class Sprite implements Drawable {
         graphics.drawImage(this.image, (int) position.getX(), (int) position.getY(), null);
     }
 
-    public void reflectHorizontally() {
-        if (this.image == this.originalImage) {
+    public boolean checkReflectedHorizontally() {
+        return this.image == this.reflectedImage;
+    }
+
+    public void reflectHorizontally(int xLine) {
+        if (!this.checkReflectedHorizontally()) {
             this.image = this.reflectedImage;
         } else {
             this.image = this.originalImage;
         }
+        xLine -= this.getX();
+        this.relPosition.reflectHorizontally(xLine);
+        this.relPosition.setX(this.getRelX() - this.getWidth());
     }
 
     public static BufferedImage reflectHorizontally(BufferedImage image) {

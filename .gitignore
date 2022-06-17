@@ -11,6 +11,3 @@ data/
 # Ignore project submission information.
 final project proposal.pdf
 *.zip
-
-# Ignore python.
-*.py
