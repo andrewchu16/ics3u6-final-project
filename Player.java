@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 
 import java.util.Arrays;
@@ -25,7 +26,7 @@ public class Player extends Entity implements Moveable, Collidable {
     private Sword sword;
     private HealthBar healthBar;
 
-    public Player(int difficulty) {
+    public Player(int maxHealthPoints, int swordDamagePoints) {
         super(0, 0, "Player");
 
         this.idleCycle = new AnimationCycle(this.getPos(), Const.PLAYER_IDLE_SPRITE_SHEET, Const.PLAYER_IDLE_FILE_NAME);
@@ -34,27 +35,17 @@ public class Player extends Entity implements Moveable, Collidable {
         this.hurtCycle = new AnimationCycle(this.getPos(), Const.PLAYER_HURT_SPRITE_SHEET, Const.PLAYER_HURT_FILE_NAME);
         
         this.cycles = new ArrayList<AnimationCycle>();
-        this.cycles.add(idleCycle);
-        this.cycles.add(walkCycle);
-        this.cycles.add(attackCycle);
-        this.cycles.add(hurtCycle);
+        this.cycles.add(this.idleCycle);
+        this.cycles.add(this.walkCycle);
+        this.cycles.add(this.attackCycle);
+        this.cycles.add(this.hurtCycle);
         
-        this.activeCycle = idleCycle;
+        this.activeCycle = this.idleCycle;
 
         this.direction = Const.LEFT;
         this.moveSpeed = Vector.VECTOR_ZERO.clone();
         this.map = null;
-        this.sword = new Sword(this.getPos(), this.getName() + "'s Sword");
-
-        int maxHealthPoints = 0;
-        if (difficulty == Game.EASY) {
-            maxHealthPoints = Const.EASY_PLAYER_HEALTH;
-        } else if (difficulty == Game.MEDIUM) {
-            maxHealthPoints = Const.MEDIUM_PLAYER_HEALTH;
-        } else if (difficulty == Game.HARD) {
-            maxHealthPoints = Const.HARD_PLAYER_HEALTH;
-        }
-
+        this.sword = new Sword(this.getPos(), swordDamagePoints, this.getName() + "'s Sword");
         this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)), 
                 maxHealthPoints, this.getWidth(), 10);
     }
@@ -63,15 +54,18 @@ public class Player extends Entity implements Moveable, Collidable {
     public void draw(Graphics graphics) {
         this.activeCycle.draw(graphics);
         this.healthBar.draw(graphics);
+        this.sword.draw(graphics);
     }
 
     @Override
     public void drawDebugInfo(Graphics graphics) {
         this.activeCycle.drawDebugInfo(graphics);
+        this.sword.drawDebugInfo(graphics);
         
         // Draw the coordinates of the player.
-        String info = "(" + (Math.round(this.getX() * 10) / 10.0) + ", " + (Math.round(this.getY() * 10) / 10.0) + ")";
-        Text text = new Text(info, Const.DEBUG_FONT, (int) this.getX(), (int) this.getY());
+        String info = "(" + (Math.round(this.getCenterX() * 10) / 10.0) + 
+                ", " + (Math.round(this.getY() * 10) / 10.0) + ")";
+        Text text = new Text(info, Const.DEBUG_FONT, (int) this.getCenterX(), (int) this.getY());
         text.draw(graphics);
     }
 
@@ -99,6 +93,8 @@ public class Player extends Entity implements Moveable, Collidable {
             }
             this.activeCycle.setPos(this.getPos());
         }
+
+        this.sword.animate();
     }
 
     private void handleTileCollisions() {
@@ -167,13 +163,13 @@ public class Player extends Entity implements Moveable, Collidable {
     @Override
     public void setX(double newX) {
         super.setX(newX);
-        this.activeCycle.setPos(this.getPos());
+        this.setPos(this.getPos());
     }
 
     @Override
     public void setY(double newY) {
         super.setY(newY);
-        this.activeCycle.setPos(this.getPos());
+        this.setPos(this.getPos());
     }
 
     @Override
@@ -181,14 +177,24 @@ public class Player extends Entity implements Moveable, Collidable {
         super.setPos(newPos);
         this.activeCycle.setPos(newPos);
         this.healthBar.setPos(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)));
+        this.sword.setPos(newPos);
     }
 
     public void setMap(Map map) {
         this.map = map;
     }
 
+    public void setMaxHealthPoints(int newMaxHealthPoints) {
+        this.healthBar.setMaxPoints(newMaxHealthPoints);
+        this.healthBar.setHealth(newMaxHealthPoints);
+    }
+
+    public void setSwordDamage(int newSwordDamage) {
+        this.sword.setDamage(newSwordDamage);
+    }
+
     public boolean checkAttacking() {
-        return this.activeCycle == this.attackCycle;
+        return this.sword.checkAttacking();
     }
 
     public boolean checkAlive() {
@@ -294,20 +300,31 @@ public class Player extends Entity implements Moveable, Collidable {
                     attack();
                 }
             }
-
-            if (x < getX()) {
-                turnLeft();
-            } else {
-                turnRight();
-            }
-
-            activeCycle.setPos(getPos());
         }
 
         public void mouseReleased(MouseEvent event) {}
         public void mouseClicked(MouseEvent event) {}
         public void mouseEntered(MouseEvent event) {}
         public void mouseExited(MouseEvent event) {}
+    }
+
+    public class PlayerMouseMotionListener implements MouseMotionListener {
+        public void mouseDragged(MouseEvent event) {}
+
+        @Override
+        public void mouseMoved(MouseEvent event) {
+            if (checkAttacking()) {
+                return;
+            }
+
+            int x = event.getX() + (int) getCenterX() - Const.WIDTH / 2;
+
+            if (x < getCenterX()) {
+                turnLeft();
+            } else {
+                turnRight();
+            }
+        }
     }
 
     @Override
@@ -340,6 +357,8 @@ public class Player extends Entity implements Moveable, Collidable {
 
     public void attack() {
         this.activeCycle = this.attackCycle;
+        this.sword.attack();
+        this.activeCycle.setPos(getPos());
     }
 
     public void takeDamage(int damagePoints) {
@@ -366,6 +385,7 @@ public class Player extends Entity implements Moveable, Collidable {
             for (AnimationCycle cycle: this.cycles) {
                 cycle.reflectHorizontally();
             }
+            this.sword.turnLeft();
         }
         this.direction = Const.LEFT;
     }
@@ -375,6 +395,7 @@ public class Player extends Entity implements Moveable, Collidable {
             for (AnimationCycle cycle: this.cycles) {
                 cycle.reflectHorizontally();
             }
+            this.sword.turnRight();
         }
         this.direction = Const.RIGHT;
     }

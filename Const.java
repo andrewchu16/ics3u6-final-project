@@ -25,17 +25,18 @@ public final class Const {
 
     public static final int NUM_START_ENEMIES = 6;
     public static final int NUM_MAX_ENEMIES = 20;
+    public static final int SWORD_DAMAGE = 100;
 
     // Easy mode settings.
-    public static final int EASY_SPAWN_SPEED = MS_PER_S * 24;
+    public static final int EASY_SPAWN_SPEED = MS_PER_S * 20;
     public static final int EASY_ENEMY_HEALTH = 100;
     public static final int EASY_PLAYER_HEALTH = 1600;
     // Medium mode settings.
-    public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 18;
+    public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 16;
     public static final int MEDIUM_ENEMY_HEALTH = 250;
     public static final int MEDIUM_PLAYER_HEALTH = 1400;
     // Hard mode settings.
-    public static final int HARD_SPAWN_SPEED =  MS_PER_S * 14;
+    public static final int HARD_SPAWN_SPEED =  MS_PER_S * 10;
     public static final int HARD_ENEMY_HEALTH = 400;
     public static final int HARD_PLAYER_HEALTH = 1000;
 

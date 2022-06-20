@@ -21,7 +21,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
     private Sword sword;
     private HealthBar healthBar;
 
-    public Enemy(Vector position, Player player, int difficulty) {
+    public Enemy(Vector position, Player player, int maxHealthPoints, int swordDamagePoints) {
         super(position, "Unnamed Enemy " + numEnemies);
         numEnemies++;
 
@@ -32,58 +32,57 @@ public class Enemy extends Entity implements Moveable, Collidable {
         this.deathCycle = new AnimationCycle(this.getPos(), Const.ENEMY_DEATH_SPRITE_SHEET, Const.ENEMY_DEATH_FILE_NAME);
         
         this.cycles = new ArrayList<AnimationCycle>();
-        this.cycles.add(idleCycle);
-        this.cycles.add(walkCycle);
-        this.cycles.add(attackCycle);
-        this.cycles.add(hurtCycle);
-        this.cycles.add(deathCycle);
+        this.cycles.add(this.idleCycle);
+        this.cycles.add(this.walkCycle);
+        this.cycles.add(this.attackCycle);
+        this.cycles.add(this.hurtCycle);
+        this.cycles.add(this.deathCycle);
         
-        this.activeCycle = idleCycle;
+        this.activeCycle = this.idleCycle;
 
         this.direction = Const.LEFT;
         this.speed = Vector.VECTOR_ZERO.clone();
         this.targetPos = position.clone();
         this.player = player;
-        
-        int maxHealthPoints = 0;
-        if (difficulty == Game.EASY) {
-            maxHealthPoints = Const.EASY_ENEMY_HEALTH;
-        } else if (difficulty == Game.MEDIUM) {
-            maxHealthPoints = Const.MEDIUM_ENEMY_HEALTH;
-        } else if (difficulty == Game.HARD) {
-            maxHealthPoints = Const.HARD_ENEMY_HEALTH;
-        }
 
-        this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2 + 15, -53)), 
-                maxHealthPoints, this.getWidth() - 30, 7);
+        this.sword = new Sword(position, swordDamagePoints);
+        this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2 + 20, -53)), 
+                maxHealthPoints, this.getWidth() - 40, 7);
     }
 
     @Override
     public void draw(Graphics graphics) {
         this.activeCycle.draw(graphics);
         this.healthBar.draw(graphics);
+        this.sword.draw(graphics);
     }
 
     @Override
     public void drawDebugInfo(Graphics graphics) {
         this.activeCycle.drawDebugInfo(graphics);
+        this.sword.drawDebugInfo(graphics);
         
         // Draw the coordinates of the enemy.
-        String info = this.getName() + "(" + (Math.round(this.getX() * 10) / 10.0) + 
+        String info = this.getName() + "(" + (Math.round(this.getCenterX() * 10) / 10.0) + 
                 ", " + (Math.round(this.getY() * 10) / 10.0) + ")";
-        Text text = new Text(info, Const.DEBUG_FONT, (int) this.getX(), (int) this.getY());
+        Text text = new Text(info, Const.DEBUG_FONT, (int) this.getCenterX(), (int) this.getY());
         text.draw(graphics);
 
         // Draw the enemy target.
         graphics.setColor(Const.GRAY);
         graphics.fillOval((int) this.targetPos.getX() - 3, (int) this.targetPos.getY() - 3, 6, 6);
+
     }
 
     public void update() {
         // Update the speed.
         this.speed = Vector.difference(this.targetPos, this.getCenter());
         this.speed.setLength(Math.min(WALK_SPEED, 
-                Math.round(Vector.getEuclideanDistanceFrom(this.getPos(), this.targetPos))));
+                (int) (Vector.getEuclideanDistanceFrom(this.getPos(), this.targetPos))));
+
+        if (this.intersects(this.player.getGeneralHitbox())) {
+            this.speed = Vector.VECTOR_ZERO.clone();
+        }
 
         // Update the position.
         Vector newPos = this.getPos();
@@ -103,14 +102,17 @@ public class Enemy extends Entity implements Moveable, Collidable {
         
         if (this.activeCycle.checkDone()) {
             this.activeCycle.reset();
+            this.attackCycle.reset();
             this.activeCycle.setPos(this.getPos());
         }
-
-        if (this.speed.equals(Vector.VECTOR_ZERO)) {
-            this.activeCycle = this.idleCycle;
+        
+        if (this.checkAtTarget()) {
+            this.attack();
         } else {
             this.activeCycle = this.walkCycle;
         }
+
+        this.sword.animate();
     }
 
     public boolean checkAlive() {
@@ -122,7 +124,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
     }
 
     public boolean checkAttacking() {
-        return this.activeCycle == this.attackCycle;
+        return this.sword.checkAttacking();
     }
 
     @Override
@@ -196,7 +198,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
     public void setTargetPos(Vector targetPos) {
         this.targetPos = targetPos;
 
-        if (Double.compare(this.targetPos.getX(), this.getX()) <= 0) {
+        if (Double.compare(this.targetPos.getX(), this.getCenterX()) <= 0) {
             this.turnLeft();
         } else {
             this.turnRight();
@@ -206,20 +208,26 @@ public class Enemy extends Entity implements Moveable, Collidable {
     @Override
     public void setX(double newX) {
         super.setX(newX);
-        this.activeCycle.setPos(this.getPos());
+        this.setPos(this.getPos());
     }
 
     @Override
     public void setY(double newY) {
         super.setY(newY);
-        this.activeCycle.setPos(this.getPos());
+        this.setPos(this.getPos());
     }
 
     @Override
     public void setPos(Vector newPos) {
         super.setPos(newPos);
         this.activeCycle.setPos(newPos);
-        this.healthBar.setPos(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2 + 15, -53)));
+        this.healthBar.setPos(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2 + 20, -53)));
+        this.sword.setPos(newPos);
+    }
+
+    public void setMaxHealthPoints(int newMaxHealthPoints) {
+        this.healthBar.setMaxPoints(newMaxHealthPoints);
+        this.healthBar.setHealth(newMaxHealthPoints);
     }
 
     @Override
@@ -234,7 +242,8 @@ public class Enemy extends Entity implements Moveable, Collidable {
 
     public void attack() {
         if (!this.checkAttacking()) {
-            activeCycle = attackCycle;
+            this.activeCycle = this.attackCycle;
+            this.sword.attack();
         }
     }
 
@@ -243,6 +252,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
             for (AnimationCycle cycle: this.cycles) {
                 cycle.reflectHorizontally();
             }
+            this.sword.turnLeft();
         }
         this.direction = Const.LEFT;
     }
@@ -252,6 +262,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
             for (AnimationCycle cycle: this.cycles) {
                 cycle.reflectHorizontally();
             }
+            this.sword.turnRight();
         }
         this.direction = Const.RIGHT;
     }

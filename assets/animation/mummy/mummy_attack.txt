@@ -1,5 +1,5 @@
 loopType: NO_LOOPING
-generalHitbox: 54 28 40 68
+generalHitbox: 52 28 40 68
 numFrames: 6
 FRAME0
 numHitboxes: 5

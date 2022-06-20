@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 
 public class Game implements Drawable, Debuggable {
@@ -35,7 +36,7 @@ public class Game implements Drawable, Debuggable {
     public Game() {
         this.debugMode = true;
         
-        this.player = new Player(difficulty);
+        this.player = new Player(Const.MEDIUM_PLAYER_HEALTH, Const.SWORD_DAMAGE);
         this.enemies = new ArrayList<Enemy>();
 
         this.map = new Map(Const.MAP_FILE_NAME);
@@ -121,6 +122,7 @@ public class Game implements Drawable, Debuggable {
             return;
         }
 
+        // Get a valid random starting position for the enemy.
         Vector randomPos;
         do {
             randomPos = Vector.getRandomInstance(this.player.getCenterX() - 400, 
@@ -128,7 +130,20 @@ public class Game implements Drawable, Debuggable {
                     this.player.getCenterY() + 400);
         } while (Vector.compareDistance(randomPos, this.player.getCenter(), 180) <= 0);
 
-        Enemy newEnemy = new Enemy(randomPos, this.player, this.difficulty);
+        int maxHealthPoints = 0;
+        int swordDamagePoints = 0;
+        switch(this.difficulty) {
+            case EASY: 
+                maxHealthPoints = Const.EASY_ENEMY_HEALTH;
+                swordDamagePoints = Const.SWORD_DAMAGE;
+            case MEDIUM:
+                maxHealthPoints = Const.MEDIUM_ENEMY_HEALTH;
+                swordDamagePoints = Const.SWORD_DAMAGE;
+            case HARD: 
+                maxHealthPoints = Const.HARD_ENEMY_HEALTH;
+                swordDamagePoints = Const.SWORD_DAMAGE;
+        }
+        Enemy newEnemy = new Enemy(randomPos, this.player, maxHealthPoints, swordDamagePoints);
         this.enemies.add(newEnemy);
     }
 
@@ -210,12 +225,24 @@ public class Game implements Drawable, Debuggable {
         switch (difficulty) {
             case EASY:
                 this.enemySpawnLoop.setDelay(Const.EASY_SPAWN_SPEED);
+                this.player.setMaxHealthPoints(Const.EASY_PLAYER_HEALTH);
+                for (Enemy enemy: this.enemies) {
+                    enemy.setMaxHealthPoints(Const.EASY_ENEMY_HEALTH);
+                }
                 break;
             case MEDIUM:
                 this.enemySpawnLoop.setDelay(Const.MEDIUM_SPAWN_SPEED);
+                this.player.setMaxHealthPoints(Const.MEDIUM_PLAYER_HEALTH);
+                for (Enemy enemy: this.enemies) {
+                    enemy.setMaxHealthPoints(Const.MEDIUM_ENEMY_HEALTH);
+                }
                 break;
             case HARD: 
                 this.enemySpawnLoop.setDelay(Const.HARD_SPAWN_SPEED);
+                this.player.setMaxHealthPoints(Const.HARD_PLAYER_HEALTH);
+                for (Enemy enemy: this.enemies) {
+                    enemy.setMaxHealthPoints(Const.HARD_ENEMY_HEALTH);
+                }
                 break;
         }
     }
@@ -302,6 +329,29 @@ public class Game implements Drawable, Debuggable {
         public void mouseExited(MouseEvent event) {
             for (MouseListener mouseListener: this.mouseListeners) {
                 mouseListener.mouseExited(event);
+            }
+        }
+    }
+
+    public class GameMouseMotionListener implements MouseMotionListener {
+        private ArrayList<MouseMotionListener> motionListeners;
+
+        public GameMouseMotionListener() {
+            this.motionListeners = new ArrayList<MouseMotionListener>();
+            this.motionListeners.add(player.new PlayerMouseMotionListener());
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent event) {
+            for (MouseMotionListener motionListener: this.motionListeners) {
+                motionListener.mouseDragged(event);
+            }
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent event) {
+            for (MouseMotionListener motionListener: this.motionListeners) {
+                motionListener.mouseMoved(event);
             }
         }
     }

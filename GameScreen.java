@@ -22,6 +22,7 @@ public class GameScreen extends Screen {
         // Add game listeners.
         this.addKeyListener(game.new GameKeyListener(window));
         this.addMouseListener(game.new GameMouseListener());
+        this.addMouseMotionListener(game.new GameMouseMotionListener());
     }
 
     /**

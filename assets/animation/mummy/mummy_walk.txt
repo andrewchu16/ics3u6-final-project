@@ -1,5 +1,5 @@
 loopType: LOOP_TO_START
-generalHitbox: 52 26 36 70
+generalHitbox: 52 28 40 68
 numFrames: 6
 FRAME0
 numHitboxes: 4

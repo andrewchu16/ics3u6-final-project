@@ -288,20 +288,12 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
 
     @Override
     public boolean contains(int x, int y) {
-        if (this.generalHitbox.contains(x, y)) {
-            return this.activeFrame.contains(x, y);
-        } else {
-            return false;
-        }
+        return this.activeFrame.contains(x, y);
     }
 
     @Override
     public boolean intersects(Hitbox other) {
-        if (this.generalHitbox.intersects(other)) {
-            return this.activeFrame.intersects(other);
-        } else {
-            return false;
-        }
+        return this.activeFrame.intersects(other);
     }
 
     public boolean intersects(AnimationCycle otherCycle) {
