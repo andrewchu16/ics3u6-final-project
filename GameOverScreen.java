@@ -4,6 +4,7 @@ import java.awt.Graphics;
  * This class represents the {@code Screen} the player sees when the game ends.
  */
 public class GameOverScreen extends Screen {
+    private Game game;
     private Label titleLabel;
     private Label bodyLabel;
 
@@ -13,6 +14,7 @@ public class GameOverScreen extends Screen {
      */
     public GameOverScreen(Window window, Game game) {
         super(Const.NIGHT_SCREEN_BACKGROUND);
+        this.game = game;
         
         this.setName(Const.GAME_OVER_SCREEN_NAME);
 
@@ -33,6 +35,8 @@ public class GameOverScreen extends Screen {
         super.paintComponent(graphics);
 
         this.titleLabel.draw(graphics);
+
+        this.bodyLabel.setText(this.game.getPlayer().getName() + " has died. Thanks for playing!");
         this.bodyLabel.draw(graphics);
     }
 }

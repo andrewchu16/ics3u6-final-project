@@ -83,6 +83,8 @@ public class SelectScreen extends Screen {
         startButton.addHandler(window.new ScreenSwapperButtonHandler(Const.GAME_SCREEN_NAME));
         startButton.addHandler(new Button.ButtonHandler() {
             public void handlePress() {
+                String name = nameTextField.getText();
+                game.getPlayer().setName(name);
                 game.run();
             }
 

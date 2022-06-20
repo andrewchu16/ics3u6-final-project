@@ -54,8 +54,8 @@ public class Enemy extends Entity implements Moveable, Collidable {
             maxHealthPoints = Const.HARD_ENEMY_HEALTH;
         }
 
-        this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)), 
-                maxHealthPoints, this.getWidth(), 10);
+        this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2 + 15, -53)), 
+                maxHealthPoints, this.getWidth() - 30, 7);
     }
 
     @Override
@@ -219,7 +219,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
     public void setPos(Vector newPos) {
         super.setPos(newPos);
         this.activeCycle.setPos(newPos);
-        this.healthBar.setPos(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)));
+        this.healthBar.setPos(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2 + 15, -53)));
     }
 
     @Override
