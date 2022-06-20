@@ -2,8 +2,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
 import java.awt.BasicStroke;
+
+import java.util.ArrayList;
 
 public class Minimap implements Drawable {
     private Vector position;
@@ -12,14 +13,17 @@ public class Minimap implements Drawable {
     
     private Map map;
     private Player player;
+    private ArrayList<Enemy> enemies;
 
-    public Minimap(Vector position, int width, int height, double scale, Map map, Player player) {
+    public Minimap(Vector position, int width, int height, double scale, Map map, 
+            Player player, ArrayList<Enemy> enemies) {
         this.position = position;
         this.scale = scale;
         this.surf = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         this.map = map;
         this.player = player;
+        this.enemies = enemies;
     }
 
     public void update() {
@@ -42,8 +46,15 @@ public class Minimap implements Drawable {
         // Draw the map.
         this.map.draw(graphics);
 
+        // Draw the enemies.
+        for (Enemy enemy: this.enemies) {
+            graphics.setColor(Const.RED);
+            graphics.fillOval((int) enemy.getCenterX() - 10, 
+                    (int) enemy.getCenterY() - 10, 20, 20);
+        }
+
         // Draw the player.
-        graphics.setColor(Const.RED);
+        graphics.setColor(Const.DARK_BLUE);
         graphics.fillOval((int) this.player.getCenterX() - 10, 
                 (int) this.player.getCenterY() - 10, 20, 20);
 

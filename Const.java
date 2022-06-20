@@ -23,7 +23,7 @@ public final class Const {
     // The duration betweeen each frame in an animation in milliseconds.
     public static final int ANIMATE_PERIOD = MS_PER_S / 8;
 
-    public static final int NUM_START_ENEMIES = 10;
+    public static final int NUM_START_ENEMIES = 6;
     // Easy mode settings.
     public static final int EASY_SPAWN_SPEED = MS_PER_S * 16;
     public static final int EASY_ENEMY_HEALTH = 100;

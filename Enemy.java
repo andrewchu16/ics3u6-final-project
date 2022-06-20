@@ -17,9 +17,9 @@ public class Enemy extends Entity implements Moveable, Collidable {
     private int direction;
     private Vector speed;
     private Vector targetPos;
-    private Map map;
+    private Player player;
 
-    public Enemy(Vector position) {
+    public Enemy(Vector position, Player player) {
         super(position, "Unnamed Enemy " + numEnemies);
         numEnemies++;
 
@@ -41,7 +41,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
         this.direction = Const.LEFT;
         this.speed = Vector.VECTOR_ZERO.clone();
         this.targetPos = position.clone();
-        this.map = null;
+        this.player = player;
     }
 
     @Override
@@ -58,6 +58,10 @@ public class Enemy extends Entity implements Moveable, Collidable {
                 ", " + (Math.round(this.getY() * 10) / 10.0) + ")";
         Text text = new Text(info, Const.DEBUG_FONT, (int) this.getX(), (int) this.getY());
         text.draw(graphics);
+
+        // Draw the enemy target.
+        graphics.setColor(Const.GRAY);
+        graphics.fillOval((int) this.targetPos.getX() - 3, (int) this.targetPos.getY() - 3, 6, 6);
     }
 
     public void update() {
@@ -70,6 +74,13 @@ public class Enemy extends Entity implements Moveable, Collidable {
         Vector newPos = this.getPos();
         newPos.add(this.speed);
         this.setPos(newPos);
+
+        // Attack or set a new target position.
+        if (Vector.compareDistance(this.getCenter(), player.getCenter(), 50) <= 0) {
+            this.attack();
+        } else if (this.checkAtTarget()) {
+            this.setTargetPos(this.player.getCenter());
+        }
     }
 
     public void animate() {
@@ -111,12 +122,6 @@ public class Enemy extends Entity implements Moveable, Collidable {
         this.activeCycle = walkCycle;
         this.speed.add(-WALK_SPEED, 0);
         this.speed.setLength(WALK_SPEED);
-        if (this.direction == Const.RIGHT) {
-            for (AnimationCycle cycle: this.cycles) {
-                cycle.reflectHorizontally();
-            }
-        }
-        this.direction = Const.LEFT;
     }
 
     @Override
@@ -131,12 +136,6 @@ public class Enemy extends Entity implements Moveable, Collidable {
         this.activeCycle = walkCycle;
         this.speed.add(WALK_SPEED, 0);
         this.speed.setLength(WALK_SPEED);
-        if (this.direction == Const.LEFT) {
-            for (AnimationCycle cycle: this.cycles) {
-                cycle.reflectHorizontally();
-            }
-        }
-        this.direction = Const.RIGHT;
     }
 
     @Override
@@ -181,6 +180,12 @@ public class Enemy extends Entity implements Moveable, Collidable {
 
     public void setTargetPos(Vector targetPos) {
         this.targetPos = targetPos;
+
+        if (Double.compare(this.targetPos.getX(), this.getX()) <= 0) {
+            this.turnLeft();
+        } else {
+            this.turnRight();
+        }
     }
 
     @Override
@@ -201,10 +206,6 @@ public class Enemy extends Entity implements Moveable, Collidable {
         this.activeCycle.setPos(newPos);
     }
 
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
     @Override
     public boolean contains(int x, int y) {
         return this.activeCycle.contains(x, y);
@@ -219,5 +220,23 @@ public class Enemy extends Entity implements Moveable, Collidable {
         if (!this.checkAttacking()) {
             activeCycle = attackCycle;
         }
+    }
+
+    private void turnLeft() {
+        if (this.direction == Const.RIGHT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+        }
+        this.direction = Const.LEFT;
+    }
+
+    private void turnRight() {
+        if (this.direction == Const.LEFT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+        }
+        this.direction = Const.RIGHT;
     }
 }

@@ -35,14 +35,16 @@ public class Game implements Drawable, Debuggable {
         this.debugMode = true;
         
         this.player = new Player();
+        this.enemies = new ArrayList<Enemy>();
+
         this.map = new Map(Const.MAP_FILE_NAME);
         this.map.loadFromFile();
         this.map.updateRendering(this.player.getPos());
         this.player.setMap(map);
         this.minimap = new Minimap(Const.MINIMAP_POS, Const.MINIMAP_WIDTH, 
-        Const.MINIMAP_HEIGHT, Const.MINIMAP_SCALE, this.map, this.player);
+                Const.MINIMAP_HEIGHT, Const.MINIMAP_SCALE, this.map, this.player,
+                this.enemies);
         
-        this.enemies = new ArrayList<Enemy>();
         
         for (int i = 0; i < Const.NUM_START_ENEMIES; i++) {
             this.spawnEnemy();
@@ -88,12 +90,6 @@ public class Game implements Drawable, Debuggable {
 
         for (Enemy enemy: this.enemies) {
             enemy.update();
-
-            if (Vector.compareDistance(enemy.getCenter(), player.getCenter(), 50) <= 0) {
-                enemy.attack();
-            } else if (enemy.checkAtTarget()) {
-                enemy.setTargetPos(this.player.getCenter());
-            }
         }
 
         // Update map rendering if player moves to a new chunk.
@@ -121,7 +117,7 @@ public class Game implements Drawable, Debuggable {
                     this.player.getCenterY() + 400);
         } while (Vector.compareDistance(randomPos, this.player.getCenter(), 180) <= 0);
 
-        Enemy newEnemy = new Enemy(randomPos);
+        Enemy newEnemy = new Enemy(randomPos, this.player);
         this.enemies.add(newEnemy);
     }
 
