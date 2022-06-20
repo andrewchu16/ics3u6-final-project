@@ -21,7 +21,22 @@ public final class Const {
     // The duration between game updates in milliseconds.
     public static final int UPDATE_PERIOD = MS_PER_S / 45;
     // The duration betweeen each frame in an animation in milliseconds.
-    public static final int ANIMATE_PERIOD = MS_PER_S / 12;
+    public static final int ANIMATE_PERIOD = MS_PER_S / 8;
+
+    public static final int NUM_START_ENEMIES = 10;
+    // Easy mode settings.
+    public static final int EASY_SPAWN_SPEED = MS_PER_S * 16;
+    public static final int EASY_ENEMY_HEALTH = 100;
+    public static final int EASY_PLAYER_HEALTH = 1600;
+    // Medium mode settings.
+    public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 12;
+    public static final int MEDIUM_ENEMY_HEALTH = 250;
+    public static final int MEDIUM_PLAYER_HEALTH = 1400;
+    // Hard mode settings.
+    public static final int HARD_SPAWN_SPEED =  MS_PER_S * 10;
+    public static final int HARD_ENEMY_HEALTH = 400;
+    public static final int HARD_PLAYER_HEALTH = 1000;
+
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -33,7 +48,6 @@ public final class Const {
     public static final String PAUSE_SCREEN_NAME = "pause screen";
     
     // Color palette.
-    // d03d35,ff582e,f6ad41,ffda54,7dba84,4d9357,a7cedd,5ca4c1,53a1be,0c4197,d8dbe2,f3f5f7,c6cfd2,afbdc0,394748,0e262f
     public static final Color RED = new Color(208, 61, 53);
     public static final Color ORANGE = new Color(255, 88, 46);
     public static final Color YELLOW = new Color(246, 173, 65);
@@ -81,10 +95,10 @@ public final class Const {
     public static final BufferedImage HOW_TO_PlAY_SCREEN_TEXT = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
 
     // Player animation images.
-    public static final BufferedImage PLAYER_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_idle_left.png");
-    public static final BufferedImage PLAYER_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_walk_left.png");
-    public static final BufferedImage PLAYER_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_attack_left.png");
-    public static final BufferedImage PLAYER_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_hurt_left.png");
+    public static final BufferedImage PLAYER_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_idle_left.png");
+    public static final BufferedImage PLAYER_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_walk_left.png");
+    public static final BufferedImage PLAYER_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_attack_left.png");
+    public static final BufferedImage PLAYER_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_hurt_left.png");
 
     // Player animation files.
     public static final String PLAYER_IDLE_FILE_NAME = "assets/animation/mummy/mummy_idle.txt";
@@ -92,7 +106,19 @@ public final class Const {
     public static final String PLAYER_ATTACK_FILE_NAME = "assets/animation/mummy/mummy_attack.txt";
     public static final String PLAYER_HURT_FILE_NAME = "assets/animation/mummy/mummy_hurt.txt";
 
-    // Audio.
+    // Enemy animation images.
+    public static final BufferedImage ENEMY_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/enemy/mummy_idle_left.png");
+    public static final BufferedImage ENEMY_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/enemy/mummy_walk_left.png");
+    public static final BufferedImage ENEMY_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/enemy/mummy_attack_left.png");
+    public static final BufferedImage ENEMY_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/enemy/mummy_hurt_left.png");
+    public static final BufferedImage ENEMY_DEATH_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/enemy/mummy_death_left.png");
+
+    // Enemy animation files.
+    public static final String ENEMY_IDLE_FILE_NAME = "assets/animation/mummy/mummy_idle.txt";
+    public static final String ENEMY_WALK_FILE_NAME = "assets/animation/mummy/mummy_walk.txt";
+    public static final String ENEMY_ATTACK_FILE_NAME = "assets/animation/mummy/mummy_attack.txt";
+    public static final String ENEMY_HURT_FILE_NAME = "assets/animation/mummy/mummy_hurt.txt";
+    public static final String ENEMY_DEATH_FILE_NAME = "assets/animation/mummy/mummy_death.txt";
 
     // Fonts.
     private static final String AMATIC_SC_BOLD_FILE_NAME = "assets/fonts/AmaticSC-Bold.ttf";

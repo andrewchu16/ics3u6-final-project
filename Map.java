@@ -63,7 +63,7 @@ public class Map implements Drawable, Debuggable {
         // Remove chunks that are now outside render distance.
         for (Iterator<Chunk> it = this.activeChunks.iterator(); it.hasNext(); ) {
             Chunk chunk = it.next();
-            if (Vector.checkDistance(chunk.getMapPos(), cameraMapPosition, Map.RENDER_DISTANCE) > 0) {
+            if (Vector.compareDistance(chunk.getMapPos(), cameraMapPosition, Map.RENDER_DISTANCE) > 0) {
                 this.unactiveChunks.add(chunk);
                 it.remove();
             }
@@ -72,7 +72,7 @@ public class Map implements Drawable, Debuggable {
         // Add chunks that are now inside render distance.
         for (Iterator<Chunk> it = this.unactiveChunks.iterator(); it.hasNext(); ) {
             Chunk chunk = it.next();
-            if (Vector.checkDistance(chunk.getMapPos(), cameraMapPosition, Map.RENDER_DISTANCE) <= 0) {
+            if (Vector.compareDistance(chunk.getMapPos(), cameraMapPosition, Map.RENDER_DISTANCE) <= 0) {
                 this.activeChunks.add(chunk);
                 it.remove();
             }

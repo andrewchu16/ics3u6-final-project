@@ -65,7 +65,7 @@ public class SelectScreen extends Screen {
                         % Game.DIFFICULTY_STRINGS.length;
                         currentDifficultyLabel.setText(Game.DIFFICULTY_STRINGS[newDifficulty]);
                         game.setDifficulty(newDifficulty);
-                    }
+            }
                     
             public void handleHover() {}
             public void handleUnpress() {}

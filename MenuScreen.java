@@ -26,35 +26,16 @@ public class MenuScreen extends Screen {
                 Const.TITLE_FONT, Const.WHITE2);
 
         // Instantiate buttons.
-        Button continueButton = new MenuButton(50, 400, "continue button", "Continue");
-        Button newGameButton = new MenuButton(50, 480, "new game button", "New Game");
-        Button settingsButton = new MenuButton(50, 560, "settings button", "Settings");
-        Button howToPlayButton = new MenuButton(50, 640, "how to play button", "How To Play");
+        Button newGameButton = new MenuButton(50, 400, "new game button", "New Game");
+        Button settingsButton = new MenuButton(50, 480, "settings button", "Settings");
+        Button howToPlayButton = new MenuButton(50, 560, "how to play button", "How To Play");
 
         // Add button press effects.
-        continueButton.addHandler(window.new ScreenSwapperButtonHandler(Const.GAME_SCREEN_NAME));
-        continueButton.addHandler(new Button.ButtonHandler() {
-            public void handlePress() {
-                game.run();
-            }
-
-            public void handleHover() {}
-            public void handleUnpress() {}
-        });
         newGameButton.addHandler(window.new ScreenSwapperButtonHandler(Const.SELECT_SCREEN_NAME));
-        newGameButton.addHandler(new Button.ButtonHandler() {
-            public void handlePress() {
-                
-            }
-
-            public void handleHover() {}
-            public void handleUnpress() {}
-        });
         settingsButton.addHandler(window.new ScreenSwapperButtonHandler(Const.SETTINGS_SCREEN_NAME));
         howToPlayButton.addHandler(window.new ScreenSwapperButtonHandler(Const.HOW_TO_PLAY_SCREEN_NAME));
         
         // Add buttons to screen.
-        this.addButton(continueButton);
         this.addButton(newGameButton);
         this.addButton(settingsButton);
         this.addButton(howToPlayButton);

@@ -25,22 +25,29 @@ public class Game implements Drawable, Debuggable {
     private Player player;
     private Map map;
     private Minimap minimap;
+    private ArrayList<Enemy> enemies;
 
     private Timer updateLoop;
     private Timer animateLoop;
+    private Timer enemySpawnLoop;
     
     public Game() {
         this.debugMode = true;
-        this.difficulty = MEDIUM;
-
+        
         this.player = new Player();
         this.map = new Map(Const.MAP_FILE_NAME);
         this.map.loadFromFile();
         this.map.updateRendering(this.player.getPos());
         this.player.setMap(map);
         this.minimap = new Minimap(Const.MINIMAP_POS, Const.MINIMAP_WIDTH, 
-                Const.MINIMAP_HEIGHT, Const.MINIMAP_SCALE, this.map, this.player);
-
+        Const.MINIMAP_HEIGHT, Const.MINIMAP_SCALE, this.map, this.player);
+        
+        this.enemies = new ArrayList<Enemy>();
+        
+        for (int i = 0; i < Const.NUM_START_ENEMIES; i++) {
+            this.spawnEnemy();
+        }
+        
         this.updateLoop = new Timer(Const.UPDATE_PERIOD, new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 update();
@@ -52,22 +59,42 @@ public class Game implements Drawable, Debuggable {
                 animate();
             }
         });
+        
+        this.enemySpawnLoop = new Timer(Const.MEDIUM_SPAWN_SPEED, new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                spawnEnemy();
+            }
+        });
+        
+        this.setDifficulty(MEDIUM);
     }
 
     public void run() {
         this.updateLoop.start();
         this.animateLoop.start();
+        this.enemySpawnLoop.start();
     }
 
     public void pause() {
         this.updateLoop.stop();
         this.animateLoop.stop();
+        this.enemySpawnLoop.stop();
     }
 
     private void update() {
         Vector prevPlayerMapPosition = Map.calculateMapPosition(this.player.getPos());
         
         this.player.update();
+
+        for (Enemy enemy: this.enemies) {
+            enemy.update();
+
+            if (Vector.compareDistance(enemy.getCenter(), player.getCenter(), 50) <= 0) {
+                enemy.attack();
+            } else if (enemy.checkAtTarget()) {
+                enemy.setTargetPos(this.player.getCenter());
+            }
+        }
 
         // Update map rendering if player moves to a new chunk.
         Vector curPlayerMapPosition = Map.calculateMapPosition(this.player.getPos());
@@ -80,6 +107,22 @@ public class Game implements Drawable, Debuggable {
 
     private void animate() {
         this.player.animate();
+
+        for (Enemy enemy: this.enemies) {
+            enemy.animate();
+        }
+    }
+
+    private void spawnEnemy() {
+        Vector randomPos;
+        do {
+            randomPos = Vector.getRandomInstance(this.player.getCenterX() - 400, 
+                    this.player.getCenterX() + 400, this.player.getCenterY() - 400, 
+                    this.player.getCenterY() + 400);
+        } while (Vector.compareDistance(randomPos, this.player.getCenter(), 180) <= 0);
+
+        Enemy newEnemy = new Enemy(randomPos);
+        this.enemies.add(newEnemy);
     }
 
     @Override
@@ -92,6 +135,10 @@ public class Game implements Drawable, Debuggable {
 
         this.map.draw(graphics);
         this.player.draw(graphics);
+
+        for (Enemy enemy: this.enemies) {
+            enemy.draw(graphics);
+        }
         
         // Reset the graphics.
         ((Graphics2D) graphics).setTransform(saveAT);
@@ -113,6 +160,10 @@ public class Game implements Drawable, Debuggable {
 
         this.map.drawDebugInfo(graphics);
         this.player.drawDebugInfo(graphics);
+
+        for (Enemy enemy: this.enemies) {
+            enemy.drawDebugInfo(graphics);
+        }
 
         // Draw a circle at (0, 0)
         graphics.setColor(Const.RED);
@@ -139,12 +190,27 @@ public class Game implements Drawable, Debuggable {
     }
 
     public void setDifficulty(int difficulty) {
+        if (difficulty != EASY && difficulty != MEDIUM && difficulty != HARD) {
+            return;
+        }
+
         this.difficulty = difficulty;
+
+        switch (difficulty) {
+            case EASY:
+                this.enemySpawnLoop.setDelay(Const.EASY_SPAWN_SPEED);
+                break;
+            case MEDIUM:
+                this.enemySpawnLoop.setDelay(Const.MEDIUM_SPAWN_SPEED);
+                break;
+            case HARD: 
+                this.enemySpawnLoop.setDelay(Const.HARD_SPAWN_SPEED);
+                break;
+        }
     }
 
     public void setUpdatePeriod(int updatePeriod) {
         this.updateLoop.setDelay(updatePeriod);
-        // this.animateLoop.setDelay(updatePeriod);
     }
 
     public class GameKeyListener implements KeyListener {
@@ -223,6 +289,5 @@ public class Game implements Drawable, Debuggable {
                 mouseListener.mouseExited(event);
             }
         }
-
     }
 }

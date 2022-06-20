@@ -50,7 +50,7 @@ public class AcrossTheSandsGame {
         this.howToPlayScreen = new HowToPlayScreen(this.window);
         this.selectScreen = new SelectScreen(this.window, this.game);
         this.gameScreen = new GameScreen(this.window, this.game);
-        this.gameOverScreen = new GameOverScreen(this.window);
+        this.gameOverScreen = new GameOverScreen(this.window, this.game);
         this.pauseScreen = new PauseScreen(this.window, this.game);
         
         // Add screens to the window.

@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-public class Player extends Entity implements Moveable {
+public class Player extends Entity implements Moveable, Collidable {
     private static final int WALK_SPEED = 16;
 
     private ArrayList<AnimationCycle> cycles;
@@ -22,6 +22,7 @@ public class Player extends Entity implements Moveable {
     private Vector moveSpeed;
     private Vector realSpeed;
     private Map map;
+    private Sword sword;
 
     public Player() {
         super(0, 0, "Player");
@@ -75,7 +76,12 @@ public class Player extends Entity implements Moveable {
         
         if (this.activeCycle.checkDone()) {
             this.activeCycle.reset();
-            this.activeCycle = this.idleCycle;
+            this.attackCycle.reset();
+            if (this.moveSpeed.equals(Vector.VECTOR_ZERO)) {
+                this.activeCycle = this.idleCycle;
+            } else {
+                this.activeCycle = this.walkCycle;
+            }
             this.activeCycle.setPos(this.getPos());
         }
     }
@@ -124,14 +130,12 @@ public class Player extends Entity implements Moveable {
     @Override
     public int getCenterX() {
         RelativeHitbox generalHitbox = (RelativeHitbox) this.getGeneralHitbox();
-
         return generalHitbox.getX() + generalHitbox.getWidth() / 2;
     }
 
     @Override
     public int getCenterY() {
         RelativeHitbox generalHitbox = (RelativeHitbox) this.getGeneralHitbox();
-
         return generalHitbox.getY() + generalHitbox.getHeight() / 2;
     }
 
@@ -165,6 +169,10 @@ public class Player extends Entity implements Moveable {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public boolean checkAttacking() {
+        return this.activeCycle == this.attackCycle;
     }
 
     public class PlayerKeyListener implements KeyListener {
@@ -259,10 +267,18 @@ public class Player extends Entity implements Moveable {
             int x = event.getX() + (int) getCenterX() - Const.WIDTH / 2;
             int y = event.getY() + (int) getCenterY() - Const.HEIGHT / 2;
 
-            if (activeCycle.contains(x, y)) {
+            if (contains(x, y)) {
                 takeDamage();
             } else {
-                attack();
+                if (!checkAttacking()) {
+                    attack();
+                }
+            }
+
+            if (x < getX()) {
+                turnLeft();
+            } else {
+                turnRight();
             }
 
             activeCycle.setPos(getPos());
@@ -286,12 +302,6 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(-WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
-        if (this.direction == Const.RIGHT) {
-            for (AnimationCycle cycle: this.cycles) {
-                cycle.reflectHorizontally();
-            }
-        }
-        this.direction = Const.LEFT;
     }
 
     @Override
@@ -306,12 +316,6 @@ public class Player extends Entity implements Moveable {
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
-        if (this.direction == Const.LEFT) {
-            for (AnimationCycle cycle: this.cycles) {
-                cycle.reflectHorizontally();
-            }
-        }
-        this.direction = Const.RIGHT;
     }
 
     public void attack() {
@@ -320,5 +324,33 @@ public class Player extends Entity implements Moveable {
 
     public void takeDamage() {
         activeCycle = hurtCycle;
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        return this.activeCycle.contains(x, y);
+    }
+
+    @Override
+    public boolean intersects(Hitbox other) {
+        return this.activeCycle.intersects(other);
+    }
+
+    private void turnLeft() {
+        if (this.direction == Const.RIGHT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+        }
+        this.direction = Const.LEFT;
+    }
+
+    private void turnRight() {
+        if (this.direction == Const.LEFT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+        }
+        this.direction = Const.RIGHT;
     }
 }

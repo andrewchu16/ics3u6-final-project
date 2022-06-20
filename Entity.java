@@ -63,4 +63,8 @@ abstract public class Entity implements Drawable, Debuggable {
     public void setPos(Vector newPos) {
         this.position = newPos;
     }
+
+    public String toString() {
+        return this.name + " " + this.position;
+    }
 }

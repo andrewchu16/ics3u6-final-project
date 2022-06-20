@@ -221,7 +221,19 @@ public class Vector {
     public static Vector sum(Vector v1, Vector v2) {
         Vector tmp = v1.clone();
         tmp.add(v2);
+        return tmp;
+    }
 
+    /**
+     * This method returns the difference of two {@code Vector}s. If {@code v1 = (a, b)}
+     * and {@code v2 = (c, d)}, this method will return {@code (a-c, b-d)}.
+     * @param v1 The first {@code Vector}.
+     * @param v2 The second {@code Vector}.
+     * @return A new {@code Vector} that is the difference of the two {@code Vector}s.
+     */
+    public static Vector difference(Vector v1, Vector v2) {
+        Vector tmp = v1.clone();
+        tmp.sub(v2);
         return tmp;
     }
 
@@ -250,7 +262,6 @@ public class Vector {
      */
     public static double getEuclideanDistanceFrom(Vector pos1, Vector pos2) {
         double distance = Math.sqrt(getSquareEuclideanDistanceFrom(pos1, pos2));
-
         return distance;
     }
 
@@ -265,7 +276,7 @@ public class Vector {
      * distance, {@code 0} if they are exactly the distance, and a positive integer if 
      * they are farther than the distance. 
      */
-    public static int checkDistance(Vector pos1, Vector pos2, double checkDistance) {
+    public static int compareDistance(Vector pos1, Vector pos2, double checkDistance) {
         double squareDistance = getSquareEuclideanDistanceFrom(pos1, pos2);
         double squareCheckDistance = checkDistance * checkDistance;
         return Double.compare(squareDistance, squareCheckDistance);
@@ -301,5 +312,16 @@ public class Vector {
         int y = (int) (rangeY * Math.random() + minY);
 
         return new Vector(x, y);
+    }
+
+    /**
+     * This method returns a reflected copy of a {@code Vector}.
+     * @param vector The {@code Vector} to reflect.
+     * @return A reflected copy of the {@code Vector}.
+     */
+    public static Vector getReflected(Vector vector) {
+        Vector reflectedVector = vector.clone();
+        reflectedVector.reflect();
+        return reflectedVector;
     }
 }
