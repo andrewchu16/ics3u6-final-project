@@ -76,21 +76,21 @@ public final class Const {
     public static final double MINIMAP_SCALE = 6;
 
     // Menu images.
-    public static final BufferedImage DAY_SCREEN_BACKGROUND = Sprite.tryLoadImage("assets/images/menu/day_background.png");;
-    public static final BufferedImage NIGHT_SCREEN_BACKGROUND = Sprite.tryLoadImage("assets/images/menu/night_background.png");;
+    public static final BufferedImage DAY_SCREEN_BACKGROUND = Sprite.tryLoadImage("assets/images/menu/day_background.png");
+    public static final BufferedImage NIGHT_SCREEN_BACKGROUND = Sprite.tryLoadImage("assets/images/menu/night_background.png");
     public static final BufferedImage HOW_TO_PlAY_SCREEN_TEXT = Sprite.tryLoadImage("assets/images/menu/how_to_play.png");
 
     // Player animation images.
-    public static final BufferedImage PLAYER_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_idle_left.png");
-    public static final BufferedImage PLAYER_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_walk_left.png");
-    public static final BufferedImage PLAYER_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_attack_left.png");
-    public static final BufferedImage PLAYER_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/player/mummy_hurt_left.png");
+    public static final BufferedImage PLAYER_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_idle_left.png");
+    public static final BufferedImage PLAYER_WALK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_walk_left.png");
+    public static final BufferedImage PLAYER_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_attack_left.png");
+    public static final BufferedImage PLAYER_HURT_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/mummy/mummy_hurt_left.png");
 
     // Player animation files.
-    public static final String PLAYER_IDLE_FILE_NAME = "assets/animation/player/mummy_idle.txt";
-    public static final String PLAYER_WALK_FILE_NAME = "assets/animation/player/mummy_walk.txt";
-    public static final String PLAYER_ATTACK_FILE_NAME = "assets/animation/player/mummy_attack.txt";
-    public static final String PLAYER_HURT_FILE_NAME = "assets/animation/player/mummy_hurt.txt";
+    public static final String PLAYER_IDLE_FILE_NAME = "assets/animation/mummy/mummy_idle.txt";
+    public static final String PLAYER_WALK_FILE_NAME = "assets/animation/mummy/mummy_walk.txt";
+    public static final String PLAYER_ATTACK_FILE_NAME = "assets/animation/mummy/mummy_attack.txt";
+    public static final String PLAYER_HURT_FILE_NAME = "assets/animation/mummy/mummy_hurt.txt";
 
     // Audio.
 

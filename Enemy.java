@@ -1,7 +1,6 @@
 import java.awt.Graphics;
 
-public class Enemy extends Entity implements Moveable {
-
+public class Enemy extends Entity implements Moveable, Collidable {
     public Enemy(Vector position) {
         super(position);
         //TODO Auto-generated constructor stub
@@ -77,6 +76,18 @@ public class Enemy extends Entity implements Moveable {
     public Hitbox getGeneralHitbox() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean intersects(Hitbox other) {
+        // TODO Auto-generated method stub
+        return false;
     }
     
 }

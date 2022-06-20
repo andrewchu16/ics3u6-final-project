@@ -1,10 +1,8 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.geom.AffineTransform;
 
 import java.io.IOException;
 
@@ -17,7 +15,6 @@ public class Sprite implements Drawable {
     private int width;
     private int height;
 
-    private boolean reflected;
     private BufferedImage image;
     private BufferedImage originalImage;
     private BufferedImage reflectedImage;
@@ -35,7 +32,6 @@ public class Sprite implements Drawable {
         // Load the image from file.
         this.originalImage = tryLoadImage(picName);
         this.reflectedImage = reflectHorizontally(this.originalImage);
-        this.reflected = false;
         this.image = originalImage;
 
         this.width = this.originalImage.getWidth();
@@ -55,7 +51,6 @@ public class Sprite implements Drawable {
 
         this.originalImage = pic;
         this.reflectedImage = reflectHorizontally(this.originalImage);
-        this.reflected = false;
         this.image = originalImage;
 
         this.width = this.originalImage.getWidth();
@@ -75,7 +70,6 @@ public class Sprite implements Drawable {
 
         this.originalImage = pic;
         this.reflectedImage = reflectHorizontally(this.originalImage);
-        this.reflected = false;
         this.image = this.originalImage;
 
         this.width = this.originalImage.getWidth();

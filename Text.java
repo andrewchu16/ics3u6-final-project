@@ -108,7 +108,6 @@ public class Text implements Drawable {
         ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-
         graphics.setColor(this.color);
         graphics.setFont(this.font);
         graphics.drawString(this.text, (int) this.position.getX(), (int) this.position.getY());

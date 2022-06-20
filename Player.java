@@ -260,9 +260,9 @@ public class Player extends Entity implements Moveable {
             int y = event.getY() + (int) getCenterY() - Const.HEIGHT / 2;
 
             if (activeCycle.contains(x, y)) {
-                activeCycle = hurtCycle;
+                takeDamage();
             } else {
-                activeCycle = attackCycle;
+                attack();
             }
 
             activeCycle.setPos(getPos());
@@ -312,5 +312,13 @@ public class Player extends Entity implements Moveable {
             }
         }
         this.direction = Const.RIGHT;
+    }
+
+    public void attack() {
+        activeCycle = attackCycle;
+    }
+
+    public void takeDamage() {
+        activeCycle = hurtCycle;
     }
 }
