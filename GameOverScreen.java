@@ -21,8 +21,8 @@ public class GameOverScreen extends Screen {
                 Const.SUBTITLE_FONT, Const.WHITE2);
 
         // Instantiate body.
-        this.bodyLabel = new Label(Const.WIDTH / 2 - 200, Const.HEIGHT - 100, 400, 300, 
-                game.getPlayer().getName() + " has died. ", Const.BUTTON_FONT, Const.WHITE2);
+        this.bodyLabel = new Label(Const.WIDTH / 2 - 300, Const.HEIGHT / 2 - 100, 600, 300, 
+                game.getPlayer().getName() + " has died. Thanks for playing!", Const.BUTTON_FONT, Const.WHITE2);
     }
 
     /**

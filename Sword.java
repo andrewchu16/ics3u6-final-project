@@ -1,9 +1,16 @@
 import java.awt.Graphics;
 
 public class Sword extends Entity implements Collidable {
-
+    private AnimationCycle attackCycle;
+    private AnimationCycle idleCycle;
+    
     public Sword(Vector position) {
-        super(position);
+        super(position, "Unnamed Sword");
+    }
+
+    public Sword(Vector position, String name) {
+        this(position);
+        this.setName(name);
     }
 
     @Override

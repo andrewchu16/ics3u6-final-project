@@ -18,8 +18,10 @@ public class Enemy extends Entity implements Moveable, Collidable {
     private Vector speed;
     private Vector targetPos;
     private Player player;
+    private Sword sword;
+    private HealthBar healthBar;
 
-    public Enemy(Vector position, Player player) {
+    public Enemy(Vector position, Player player, int difficulty) {
         super(position, "Unnamed Enemy " + numEnemies);
         numEnemies++;
 
@@ -42,11 +44,24 @@ public class Enemy extends Entity implements Moveable, Collidable {
         this.speed = Vector.VECTOR_ZERO.clone();
         this.targetPos = position.clone();
         this.player = player;
+        
+        int maxHealthPoints = 0;
+        if (difficulty == Game.EASY) {
+            maxHealthPoints = Const.EASY_ENEMY_HEALTH;
+        } else if (difficulty == Game.MEDIUM) {
+            maxHealthPoints = Const.MEDIUM_ENEMY_HEALTH;
+        } else if (difficulty == Game.HARD) {
+            maxHealthPoints = Const.HARD_ENEMY_HEALTH;
+        }
+
+        this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)), 
+                maxHealthPoints, this.getWidth(), 10);
     }
 
     @Override
     public void draw(Graphics graphics) {
         this.activeCycle.draw(graphics);
+        this.healthBar.draw(graphics);
     }
 
     @Override
@@ -99,7 +114,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
     }
 
     public boolean checkAlive() {
-        return false;
+        return this.healthBar.getHealth() > 0;
     }
 
     public boolean checkAtTarget() {
@@ -204,6 +219,7 @@ public class Enemy extends Entity implements Moveable, Collidable {
     public void setPos(Vector newPos) {
         super.setPos(newPos);
         this.activeCycle.setPos(newPos);
+        this.healthBar.setPos(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)));
     }
 
     @Override

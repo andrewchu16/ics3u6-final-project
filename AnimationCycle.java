@@ -303,6 +303,10 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
             return false;
         }
     }
+
+    public boolean intersects(AnimationCycle otherCycle) {
+        return this.activeFrame.intersects(otherCycle.activeFrame);
+    }
     
     @Override
     public void draw(Graphics graphics) {

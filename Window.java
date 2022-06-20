@@ -7,6 +7,7 @@ import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import java.util.ArrayList;
 
@@ -149,6 +150,15 @@ public class Window {
             screenStack.remove(screenStack.size() - 1);
             String screenName = screenStack.get(screenStack.size() - 1);
             switchToScreen(screenName);
+        }
+
+        public void handleHover() {}
+        public void handleUnpress() {}
+    }
+
+    public class CloseButtonHandler implements Button.ButtonHandler {
+        public void handlePress() {
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         }
 
         public void handleHover() {}

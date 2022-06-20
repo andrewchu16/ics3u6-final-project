@@ -1,0 +1,21 @@
+loopType: NO_LOOPING
+generalHitbox: 10 16 44 46
+numFrames: 6
+FRAME0
+numHitboxes: 1
+noHitbox: 0 0 0 0
+FRAME1
+numHitboxes: 1
+noHitbox: 0 0 0 0
+FRAME2
+numHitboxes: 1
+noHitbox: 0 0 0 0
+FRAME3
+numHitboxes: 1
+hitbox1: 10 16 44 46
+FRAME4
+numHitboxes: 1
+hitbox1: 16 68 24 12
+FRAME5
+numHitboxes: 1
+noHitbox: 0 0 0 0

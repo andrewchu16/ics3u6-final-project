@@ -23,8 +23,9 @@ public class Player extends Entity implements Moveable, Collidable {
     private Vector realSpeed;
     private Map map;
     private Sword sword;
+    private HealthBar healthBar;
 
-    public Player() {
+    public Player(int difficulty) {
         super(0, 0, "Player");
 
         this.idleCycle = new AnimationCycle(this.getPos(), Const.PLAYER_IDLE_SPRITE_SHEET, Const.PLAYER_IDLE_FILE_NAME);
@@ -43,11 +44,25 @@ public class Player extends Entity implements Moveable, Collidable {
         this.direction = Const.LEFT;
         this.moveSpeed = Vector.VECTOR_ZERO.clone();
         this.map = null;
+        this.sword = new Sword(this.getPos(), this.getName() + "'s Sword");
+
+        int maxHealthPoints = 0;
+        if (difficulty == Game.EASY) {
+            maxHealthPoints = Const.EASY_PLAYER_HEALTH;
+        } else if (difficulty == Game.MEDIUM) {
+            maxHealthPoints = Const.MEDIUM_PLAYER_HEALTH;
+        } else if (difficulty == Game.HARD) {
+            maxHealthPoints = Const.HARD_PLAYER_HEALTH;
+        }
+
+        this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)), 
+                maxHealthPoints, this.getWidth(), 10);
     }
 
     @Override
     public void draw(Graphics graphics) {
         this.activeCycle.draw(graphics);
+        this.healthBar.draw(graphics);
     }
 
     @Override
@@ -165,6 +180,7 @@ public class Player extends Entity implements Moveable, Collidable {
     public void setPos(Vector newPos) {
         super.setPos(newPos);
         this.activeCycle.setPos(newPos);
+        this.healthBar.setPos(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)));
     }
 
     public void setMap(Map map) {
@@ -173,6 +189,10 @@ public class Player extends Entity implements Moveable, Collidable {
 
     public boolean checkAttacking() {
         return this.activeCycle == this.attackCycle;
+    }
+
+    public boolean checkAlive() {
+        return this.healthBar.getHealth() > 0;
     }
 
     public class PlayerKeyListener implements KeyListener {
@@ -268,7 +288,7 @@ public class Player extends Entity implements Moveable, Collidable {
             int y = event.getY() + (int) getCenterY() - Const.HEIGHT / 2;
 
             if (contains(x, y)) {
-                takeDamage();
+                takeDamage(250);
             } else {
                 if (!checkAttacking()) {
                     attack();
@@ -319,11 +339,12 @@ public class Player extends Entity implements Moveable, Collidable {
     }
 
     public void attack() {
-        activeCycle = attackCycle;
+        this.activeCycle = this.attackCycle;
     }
 
-    public void takeDamage() {
-        activeCycle = hurtCycle;
+    public void takeDamage(int damagePoints) {
+        this.healthBar.takeDamage(damagePoints);
+        this.activeCycle = this.hurtCycle;
     }
 
     @Override
@@ -334,6 +355,10 @@ public class Player extends Entity implements Moveable, Collidable {
     @Override
     public boolean intersects(Hitbox other) {
         return this.activeCycle.intersects(other);
+    }
+
+    public boolean intersects(AnimationCycle otherCycle) {
+        return this.activeCycle.intersects(otherCycle);
     }
 
     private void turnLeft() {

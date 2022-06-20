@@ -83,6 +83,16 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
         return false;
     }
 
+    public boolean intersects(AnimationFrame otherFrame) {
+        for (Hitbox hitbox: this.hitboxes) {
+            if (otherFrame.intersects(hitbox)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * This method moves the position of the sprites and the hitboxes to the
      * new position. The hiboxes maintain their relative positions to the position

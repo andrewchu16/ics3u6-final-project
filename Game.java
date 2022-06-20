@@ -26,6 +26,7 @@ public class Game implements Drawable, Debuggable {
     private Map map;
     private Minimap minimap;
     private ArrayList<Enemy> enemies;
+    private Window window;
 
     private Timer updateLoop;
     private Timer animateLoop;
@@ -34,7 +35,7 @@ public class Game implements Drawable, Debuggable {
     public Game() {
         this.debugMode = true;
         
-        this.player = new Player();
+        this.player = new Player(difficulty);
         this.enemies = new ArrayList<Enemy>();
 
         this.map = new Map(Const.MAP_FILE_NAME);
@@ -69,6 +70,7 @@ public class Game implements Drawable, Debuggable {
         });
         
         this.setDifficulty(MEDIUM);
+        this.window = null;
     }
 
     public void run() {
@@ -99,6 +101,11 @@ public class Game implements Drawable, Debuggable {
         }
 
         this.minimap.update();
+
+        if (this.checkGameOver()) {
+            this.pause();
+            window.switchToScreen(Const.GAME_OVER_SCREEN_NAME);
+        }
     }
 
     private void animate() {
@@ -110,6 +117,10 @@ public class Game implements Drawable, Debuggable {
     }
 
     private void spawnEnemy() {
+        if (this.enemies.size() >= Const.NUM_MAX_ENEMIES) {
+            return;
+        }
+
         Vector randomPos;
         do {
             randomPos = Vector.getRandomInstance(this.player.getCenterX() - 400, 
@@ -117,7 +128,7 @@ public class Game implements Drawable, Debuggable {
                     this.player.getCenterY() + 400);
         } while (Vector.compareDistance(randomPos, this.player.getCenter(), 180) <= 0);
 
-        Enemy newEnemy = new Enemy(randomPos, this.player);
+        Enemy newEnemy = new Enemy(randomPos, this.player, this.difficulty);
         this.enemies.add(newEnemy);
     }
 
@@ -173,6 +184,10 @@ public class Game implements Drawable, Debuggable {
         return this.debugMode;
     }
 
+    public boolean checkGameOver() {
+        return !this.player.checkAlive();
+    }
+
     public Player getPlayer() {
         return this.player;
     }
@@ -203,6 +218,10 @@ public class Game implements Drawable, Debuggable {
                 this.enemySpawnLoop.setDelay(Const.HARD_SPAWN_SPEED);
                 break;
         }
+    }
+
+    public void setWindow(Window window) {
+        this.window = window;
     }
 
     public void setUpdatePeriod(int updatePeriod) {

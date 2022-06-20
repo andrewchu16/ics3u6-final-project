@@ -24,19 +24,20 @@ public final class Const {
     public static final int ANIMATE_PERIOD = MS_PER_S / 8;
 
     public static final int NUM_START_ENEMIES = 6;
+    public static final int NUM_MAX_ENEMIES = 20;
+
     // Easy mode settings.
-    public static final int EASY_SPAWN_SPEED = MS_PER_S * 16;
+    public static final int EASY_SPAWN_SPEED = MS_PER_S * 24;
     public static final int EASY_ENEMY_HEALTH = 100;
     public static final int EASY_PLAYER_HEALTH = 1600;
     // Medium mode settings.
-    public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 12;
+    public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 18;
     public static final int MEDIUM_ENEMY_HEALTH = 250;
     public static final int MEDIUM_PLAYER_HEALTH = 1400;
     // Hard mode settings.
-    public static final int HARD_SPAWN_SPEED =  MS_PER_S * 10;
+    public static final int HARD_SPAWN_SPEED =  MS_PER_S * 14;
     public static final int HARD_ENEMY_HEALTH = 400;
     public static final int HARD_PLAYER_HEALTH = 1000;
-
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -119,6 +120,14 @@ public final class Const {
     public static final String ENEMY_ATTACK_FILE_NAME = "assets/animation/mummy/mummy_attack.txt";
     public static final String ENEMY_HURT_FILE_NAME = "assets/animation/mummy/mummy_hurt.txt";
     public static final String ENEMY_DEATH_FILE_NAME = "assets/animation/mummy/mummy_death.txt";
+
+    // Sword animation images.
+    public static final BufferedImage SWORD_IDLE_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/sword/sword_idle.png");
+    public static final BufferedImage SWORD_ATTACK_SPRITE_SHEET = Sprite.tryLoadImage("assets/images/sword/sword_idle.png");
+    
+    // Sword animation files.
+    public static final String SWORD_IDLE_FILE_NAME = "assets/animation/sword/sword_idle.txt";
+    public static final String SWORD_ATTACK_FILE_NAME = "assets/animation/sword/sword_attack.txt";
 
     // Fonts.
     private static final String AMATIC_SC_BOLD_FILE_NAME = "assets/fonts/AmaticSC-Bold.ttf";

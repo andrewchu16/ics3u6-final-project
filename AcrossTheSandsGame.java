@@ -61,6 +61,9 @@ public class AcrossTheSandsGame {
         this.window.addScreen(this.gameScreen);
         this.window.addScreen(this.gameOverScreen);
         this.window.addScreen(this.pauseScreen);
+
+        // Add the window object to the game.
+        this.game.setWindow(this.window);
     }
 
     /**

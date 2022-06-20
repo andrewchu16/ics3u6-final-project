@@ -32,8 +32,9 @@ public class PauseScreen extends Screen {
         
         // Instantiate buttons.
         Button goBackButton = new BackButton(30, 50, window);
-        Button resumeButton = new MenuButton(Const.WIDTH / 2 - 100, 200, "resume button", "Resume");
-        Button settingsButton = new MenuButton(Const.WIDTH / 2 - 100, 300, "settings button", "Settings");
+        Button resumeButton = new MenuButton(Const.WIDTH / 2 - 100, 250, "resume button", "Resume");
+        Button settingsButton = new MenuButton(Const.WIDTH / 2 - 100, 350, "settings button", "Settings");
+        Button quitButton = new MenuButton(Const.WIDTH / 2 - 100, 450, "quit button", "Quit Game");
 
         // Add button press effects.
         resumeButton.addHandler(new Button.ButtonHandler() {
@@ -46,11 +47,13 @@ public class PauseScreen extends Screen {
         });
         resumeButton.addHandler(window.new ScreenSwapperButtonHandler(Const.GAME_SCREEN_NAME));
         settingsButton.addHandler(window.new ScreenSwapperButtonHandler(Const.SETTINGS_SCREEN_NAME));
+        quitButton.addHandler(window.new CloseButtonHandler());
 
         // Add buttons to screen.
         this.addButton(goBackButton);
         this.addButton(resumeButton);
         this.addButton(settingsButton);
+        this.addButton(quitButton);
     }
 
     /**
