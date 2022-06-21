@@ -1,4 +1,4 @@
-36
+43
 assets/map/chunks/chunk -1 -1.txt
 assets/map/chunks/chunk -1 -2.txt
 assets/map/chunks/chunk -1 0.txt
@@ -36,8 +36,6 @@ assets/map/chunks/chunk 1 -3.txt
 assets/map/chunks/chunk 0 -3.txt 
 assets/map/chunks/chunk -1 -3.txt
 assets/map/chunks/chunk -2 -3.txt
-
-assets/map/chunks/chunk -3 3.txt
 assets/map/chunks/chunk -3 2.txt
 assets/map/chunks/chunk -3 1.txt
 assets/map/chunks/chunk -3 0.txt
