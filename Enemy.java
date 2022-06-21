@@ -139,7 +139,9 @@ public class Enemy extends Entity implements Moveable, Collidable {
         }
         
         // Walk towards the target.
-        if (!this.checkAtTarget()) {
+        if (this.checkAtTarget()) {
+            this.attack();
+        } else {
             this.activeCycle = this.walkCycle;
         }
 
