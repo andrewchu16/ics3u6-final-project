@@ -21,24 +21,25 @@ public final class Const {
     // The duration between game updates in milliseconds.
     public static final int UPDATE_PERIOD = MS_PER_S / 45;
     // The duration betweeen each frame in an animation in milliseconds.
-    public static final int ANIMATE_PERIOD = MS_PER_S / 8;
+    public static final int ANIMATE_PERIOD = MS_PER_S / 12;
 
     public static final int NUM_START_ENEMIES = 6;
     public static final int NUM_MAX_ENEMIES = 20;
     public static final int SWORD_DAMAGE = 100;
+    public static final int PLAYER_REGEN = 1;
 
     // Easy mode settings.
-    public static final int EASY_SPAWN_SPEED = MS_PER_S * 20;
-    public static final int EASY_ENEMY_HEALTH = 100;
-    public static final int EASY_PLAYER_HEALTH = 1600;
+    public static final int EASY_SPAWN_SPEED = MS_PER_S * 8;
+    public static final int EASY_ENEMY_HEALTH = 400;
+    public static final int EASY_PLAYER_HEALTH = 1400;
     // Medium mode settings.
-    public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 16;
-    public static final int MEDIUM_ENEMY_HEALTH = 250;
-    public static final int MEDIUM_PLAYER_HEALTH = 1400;
+    public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 6;
+    public static final int MEDIUM_ENEMY_HEALTH = 750;
+    public static final int MEDIUM_PLAYER_HEALTH = 1000;
     // Hard mode settings.
-    public static final int HARD_SPAWN_SPEED =  MS_PER_S * 10;
-    public static final int HARD_ENEMY_HEALTH = 400;
-    public static final int HARD_PLAYER_HEALTH = 1000;
+    public static final int HARD_SPAWN_SPEED =  MS_PER_S * 4;
+    public static final int HARD_ENEMY_HEALTH = 1000;
+    public static final int HARD_PLAYER_HEALTH = 700;
 
     // Labels for the different screens.
     public static final String MENU_SCREEN_NAME = "main menu screen";
@@ -74,13 +75,11 @@ public final class Const {
     public static final int RIGHT = 3;
     
     // Game keys.
-    public static final int K_ESC = KeyEvent.VK_ESCAPE;
+    public static final int K_PAUSE = KeyEvent.VK_ESCAPE;
     public static final int K_UP = KeyEvent.VK_W;
     public static final int K_LEFT = KeyEvent.VK_A;
     public static final int K_DOWN = KeyEvent.VK_S;
     public static final int K_RIGHT = KeyEvent.VK_D;
-    public static final int K_USE = KeyEvent.VK_E;
-    public static final int K_RELOAD = KeyEvent.VK_R;
     
     // Map data file.
     public static final String MAP_FILE_NAME = "assets/map/map.txt";

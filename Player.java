@@ -9,6 +9,10 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+/**
+ * This class represents the player in the game. The player is capable of
+ * moving around, colliding with tiles and attacking.
+ */
 public class Player extends Entity implements Moveable, Collidable {
     private static final int WALK_SPEED = 16;
 
@@ -26,9 +30,16 @@ public class Player extends Entity implements Moveable, Collidable {
     private Sword sword;
     private HealthBar healthBar;
 
-    public Player(int maxHealthPoints, int swordDamagePoints) {
+    /**
+     * This constructs a {@code Player} object.
+     * @param maxHealthPoints The player's max hit points.
+     * @param swordDamagePoints The player's sword damage.
+     * @param map The map the player interacts with.
+     */
+    public Player(int maxHealthPoints, int swordDamagePoints, Map map) {
         super(0, 0, "Player");
 
+        // Initialize the animation cycles.
         this.idleCycle = new AnimationCycle(this.getPos(), Const.PLAYER_IDLE_SPRITE_SHEET, Const.PLAYER_IDLE_FILE_NAME);
         this.walkCycle = new AnimationCycle(this.getPos(), Const.PLAYER_WALK_SPRITE_SHEET, Const.PLAYER_WALK_FILE_NAME);
         this.attackCycle = new AnimationCycle(this.getPos(), Const.PLAYER_ATTACK_SPRITE_SHEET, Const.PLAYER_ATTACK_FILE_NAME);
@@ -44,12 +55,15 @@ public class Player extends Entity implements Moveable, Collidable {
 
         this.direction = Const.LEFT;
         this.moveSpeed = Vector.VECTOR_ZERO.clone();
-        this.map = null;
+        this.map = map;
         this.sword = new Sword(this.getPos(), swordDamagePoints, this.getName() + "'s Sword");
         this.healthBar = new HealthBar(Vector.sum(this.getCenter(), new Vector(-this.getWidth() / 2, -60)), 
                 maxHealthPoints, this.getWidth(), 10);
     }
 
+    /**
+     * This method draws the player and their healthbar onto a surface.
+     */
     @Override
     public void draw(Graphics graphics) {
         this.activeCycle.draw(graphics);
@@ -57,6 +71,9 @@ public class Player extends Entity implements Moveable, Collidable {
         this.sword.draw(graphics);
     }
 
+    /**
+     * This method draws the player hitboxes and debug info onto a surface.
+     */
     @Override
     public void drawDebugInfo(Graphics graphics) {
         this.activeCycle.drawDebugInfo(graphics);
@@ -69,6 +86,9 @@ public class Player extends Entity implements Moveable, Collidable {
         text.draw(graphics);
     }
 
+    /**
+     * This method updates the player's position and handles tile collisions.
+     */
     public void update() {
         // Handle collisions.
         this.realSpeed = this.moveSpeed.clone();
@@ -78,14 +98,24 @@ public class Player extends Entity implements Moveable, Collidable {
         Vector newPos = this.getPos();
         newPos.add(this.realSpeed);
         this.setPos(newPos);
+
+        // Regenerate health randomly.
+        if ((int) (Math.random() * 5) == 0) {
+            this.healthBar.heal(Const.PLAYER_REGEN);
+        }
     }
 
+    /**
+     * This method animates the player on each frame.
+     */
     public void animate() {
         this.activeCycle.loadNextFrame();
         
         if (this.activeCycle.checkDone()) {
             this.activeCycle.reset();
             this.attackCycle.reset();
+
+            // Switch to an idle animation when stationary or walking when moving.
             if (this.moveSpeed.equals(Vector.VECTOR_ZERO)) {
                 this.activeCycle = this.idleCycle;
             } else {
@@ -97,6 +127,9 @@ public class Player extends Entity implements Moveable, Collidable {
         this.sword.animate();
     }
 
+    /**
+     * This method alters the player speed in order to prevent solid tile collisions.
+     */
     private void handleTileCollisions() {
         RelativeHitbox shiftedHitbox = (RelativeHitbox) this.getGeneralHitbox();
 
@@ -160,6 +193,14 @@ public class Player extends Entity implements Moveable, Collidable {
         return this.activeCycle.getGeneralHitbox().clone();
     }
 
+    public AnimationCycle getActiveCycle() {
+        return this.activeCycle;
+    }
+
+    public Sword getSword() {
+        return this.sword;
+    }
+
     @Override
     public void setX(double newX) {
         super.setX(newX);
@@ -184,26 +225,159 @@ public class Player extends Entity implements Moveable, Collidable {
         this.map = map;
     }
 
+    /**
+     * This method sets a new maximum health points for the player. It also
+     * refills the player's current health to the new maximum.
+     * @param newMaxHealthPoints The new maximum health points of the player.
+     */
     public void setMaxHealthPoints(int newMaxHealthPoints) {
         this.healthBar.setMaxPoints(newMaxHealthPoints);
-        this.healthBar.setHealth(newMaxHealthPoints);
+        this.healthBar.reset();
     }
 
     public void setSwordDamage(int newSwordDamage) {
         this.sword.setDamage(newSwordDamage);
     }
 
+    /**
+     * THis method checks if the player is currently attacking or not.
+     * @return {@code true} if the player is attacking, {@code false} otherwise.
+     */
     public boolean checkAttacking() {
         return this.sword.checkAttacking();
     }
 
+    /**
+     * This method checks if the player is alive or not.
+     * @return {@code true} if the player is alive, {@code false} otherwise.
+     */
     public boolean checkAlive() {
         return this.healthBar.getHealth() > 0;
     }
 
+    @Override
+    public void moveUp() {
+        this.resetAttack();
+        this.activeCycle = walkCycle;
+        this.moveSpeed.setY(-WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
+    }
+
+    @Override
+    public void moveLeft() {
+        this.resetAttack();
+        this.activeCycle = walkCycle;
+        this.moveSpeed.setX(-WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
+    }
+
+    @Override
+    public void moveDown() {
+        this.resetAttack();
+        this.activeCycle = walkCycle;
+        this.moveSpeed.setY(WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
+    }
+
+    @Override
+    public void moveRight() {
+        this.resetAttack();
+        this.activeCycle = walkCycle;
+        this.moveSpeed.setX(WALK_SPEED);
+        this.moveSpeed.setLength(WALK_SPEED);
+    }
+
+    /**
+     * This method begins the attack cycle.
+     */
+    public void attack() {
+        if (!this.checkAttacking()) {
+            this.activeCycle = this.attackCycle;
+            this.resetAttack();
+            this.sword.attack();
+            this.activeCycle.setPos(getPos());
+        }
+    }
+
+    /**
+     * This method resets the attack cycle.
+     */
+    public void resetAttack() {
+        this.attackCycle.reset();
+        this.sword.resetAttack();
+    }
+
+    /**
+     * This method inflicts damage onto the player. It also displays a hurt
+     * animation cycle.
+     * @param damagePoints The amount of damage to deal to the player.
+     */
+    public void takeDamage(int damagePoints) {
+        this.healthBar.takeDamage(damagePoints);
+        this.activeCycle = this.hurtCycle;
+    }
+
+    /**
+     * This method checks if a coordinate is contained within the hitboxes of the
+     * player.
+     */
+    @Override
+    public boolean contains(int x, int y) {
+        return this.activeCycle.contains(x, y);
+    }
+
+    /**
+     * This method checks if a hitbox intersects with the hitboxes of the player.
+     */
+    @Override
+    public boolean intersects(Hitbox other) {
+        return this.activeCycle.intersects(other);
+    }
+
+    /**
+     * This method checks if another {@code AnimationCycle} intersects with the player.
+     * @param otherCycle
+     * @return
+     */
+    public boolean intersects(AnimationCycle otherCycle) {
+        return this.activeCycle.intersects(otherCycle);
+    }
+
+    /**
+     * This method makes the player face left if they are not already.
+     */
+    private void turnLeft() {
+        if (this.direction == Const.RIGHT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+            this.sword.turnLeft();
+        }
+        this.direction = Const.LEFT;
+    }
+
+    /**
+     * This method makes the player face right if they are not already.
+     */
+    private void turnRight() {
+        if (this.direction == Const.LEFT) {
+            for (AnimationCycle cycle: this.cycles) {
+                cycle.reflectHorizontally();
+            }
+            this.sword.turnRight();
+        }
+        this.direction = Const.RIGHT;
+    }
+
+    /**
+     * This class is used to get player keyboard input.
+     */
     public class PlayerKeyListener implements KeyListener {
         private boolean[] pressedKeys;
 
+        /**
+         * This constructs a {@code PlayerKeyListener}.
+         */
         public PlayerKeyListener() {
             this.pressedKeys = new boolean[KeyEvent.KEY_LAST + 1];
             Arrays.fill(this.pressedKeys, false);
@@ -215,6 +389,9 @@ public class Player extends Entity implements Moveable, Collidable {
 
         public void keyTyped(KeyEvent event) {}
 
+        /**
+         * This method handles key pressed events.
+         */
         @Override
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
@@ -240,6 +417,9 @@ public class Player extends Entity implements Moveable, Collidable {
             }
         }
 
+        /**
+         * This method handles key released events.
+         */
         @Override
         public void keyReleased(KeyEvent event) {
             int keyCode = event.getKeyCode();
@@ -288,16 +468,12 @@ public class Player extends Entity implements Moveable, Collidable {
         }
     };
 
+    /**
+     * This class is used to get player mouse button inputs.
+     */
     public class PlayerMouseListener implements MouseListener {
         public void mousePressed(MouseEvent event) {
-            int x = event.getX() + (int) getCenterX() - Const.WIDTH / 2;
-            int y = event.getY() + (int) getCenterY() - Const.HEIGHT / 2;
-
-            if (contains(x, y)) {
-                takeDamage(250);
-            } else {
-                attack();
-            }
+            attack();
         }
 
         public void mouseReleased(MouseEvent event) {}
@@ -306,6 +482,9 @@ public class Player extends Entity implements Moveable, Collidable {
         public void mouseExited(MouseEvent event) {}
     }
 
+    /**
+     * This class is used to get player mouse inputs.
+     */
     public class PlayerMouseMotionListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent event) {}
 
@@ -315,98 +494,13 @@ public class Player extends Entity implements Moveable, Collidable {
                 return;
             }
 
+            // Turn the player to face the mouse.
             int x = event.getX() + (int) getCenterX() - Const.WIDTH / 2;
-
             if (x < getCenterX()) {
                 turnLeft();
             } else {
                 turnRight();
             }
         }
-    }
-
-    @Override
-    public void moveUp() {
-        this.resetAttack();
-        this.activeCycle = walkCycle;
-        this.moveSpeed.setY(-WALK_SPEED);
-        this.moveSpeed.setLength(WALK_SPEED);
-    }
-
-    @Override
-    public void moveLeft() {
-        this.resetAttack();
-        this.activeCycle = walkCycle;
-        this.moveSpeed.setX(-WALK_SPEED);
-        this.moveSpeed.setLength(WALK_SPEED);
-    }
-
-    @Override
-    public void moveDown() {
-        this.resetAttack();
-        this.activeCycle = walkCycle;
-        this.moveSpeed.setY(WALK_SPEED);
-        this.moveSpeed.setLength(WALK_SPEED);
-    }
-
-    @Override
-    public void moveRight() {
-        this.resetAttack();
-        this.activeCycle = walkCycle;
-        this.moveSpeed.setX(WALK_SPEED);
-        this.moveSpeed.setLength(WALK_SPEED);
-    }
-
-    public void attack() {
-        if (!this.checkAttacking()) {
-            this.activeCycle = this.attackCycle;
-            this.attackCycle.reset();
-            this.sword.attack();
-            this.activeCycle.setPos(getPos());
-        }
-    }
-
-    public void resetAttack() {
-        this.attackCycle.reset();
-        this.sword.resetAttack();
-    }
-
-    public void takeDamage(int damagePoints) {
-        this.healthBar.takeDamage(damagePoints);
-        this.activeCycle = this.hurtCycle;
-    }
-
-    @Override
-    public boolean contains(int x, int y) {
-        return this.activeCycle.contains(x, y);
-    }
-
-    @Override
-    public boolean intersects(Hitbox other) {
-        return this.activeCycle.intersects(other);
-    }
-
-    public boolean intersects(AnimationCycle otherCycle) {
-        return this.activeCycle.intersects(otherCycle);
-    }
-
-    private void turnLeft() {
-        if (this.direction == Const.RIGHT) {
-            for (AnimationCycle cycle: this.cycles) {
-                cycle.reflectHorizontally();
-            }
-            this.sword.turnLeft();
-        }
-        this.direction = Const.LEFT;
-    }
-
-    private void turnRight() {
-        if (this.direction == Const.LEFT) {
-            for (AnimationCycle cycle: this.cycles) {
-                cycle.reflectHorizontally();
-            }
-            this.sword.turnRight();
-        }
-        this.direction = Const.RIGHT;
     }
 }

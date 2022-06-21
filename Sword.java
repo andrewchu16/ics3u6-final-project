@@ -2,6 +2,10 @@ import java.awt.Graphics;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a melee sword weapon in the game. When swung, it has an
+ * animation and hitbox.
+ */
 public class Sword extends Entity implements Collidable {
     private ArrayList<AnimationCycle> cycles;
     private AnimationCycle activeCycle;
@@ -11,6 +15,11 @@ public class Sword extends Entity implements Collidable {
     private int direction;
     private int damagePoints;
     
+    /**
+     * This constructs a {@code Sword} object with a position and damage points.
+     * @param position The position of this {@code Sword}.
+     * @param swordDamagePoints The damage points this {@code Sword} does.
+     */
     public Sword(Vector position, int swordDamagePoints) {
         super(position, "Unnamed Sword");
 
@@ -27,21 +36,37 @@ public class Sword extends Entity implements Collidable {
         this.damagePoints = swordDamagePoints;
     }
 
+    /**
+     * This constructs a {@code Sword} object with a position, damage points, and a name.
+     * @param position The position of this {@code Sword}.
+     * @param swordDamagePoints The damage points this {@code Sword} does.
+     * @param name The name of this {@code Sword}.
+     */
     public Sword(Vector position, int swordDamagePoints, String name) {
         this(position, swordDamagePoints);
         this.setName(name);
     }
 
+    /**
+     * This method draws this {@code Sword} onto a surface.
+     */
     @Override
     public void draw(Graphics graphics) {
         this.activeCycle.draw(graphics);
     }
 
+    /**
+     * This method draws the hitboxes of this {@code Sword} onto a surface.
+     */
     @Override
     public void drawDebugInfo(Graphics graphics) {
         this.activeCycle.drawDebugInfo(graphics);
     }
 
+    /**
+     * This method handles the animations of this {@code Sword}. It updates animation
+     * frames and switches to different animation cycles when the current cycle ends.
+     */
     public void animate() {
         this.activeCycle.loadNextFrame();
         
@@ -53,16 +78,27 @@ public class Sword extends Entity implements Collidable {
         }
     }
 
+    /**
+     * This method determines whether a coordinate is contained in this {@code Sword}.
+     */
     @Override
     public boolean contains(int x, int y) {
         return this.activeCycle.contains(x, y);
     }
 
+    /**
+     * This method determines whether a hitbox intersects with this {@code Sword}.
+     */
     @Override
     public boolean intersects(Hitbox other) {
         return this.activeCycle.intersects(other);
     }
 
+    /**
+     * This method determines whether an {@code AnimationCycle} intersects with this {@code Sword}.
+     * @param otherCycle The {@code AnimationCycle} to check.
+     * @return {@code true} if they do intersect, {@code false} otherwise.
+     */
     public boolean intersects(AnimationCycle otherCycle) {
         return this.activeCycle.intersects(otherCycle);
     }
@@ -99,8 +135,8 @@ public class Sword extends Entity implements Collidable {
         return this.activeCycle.getGeneralHitbox().clone();
     }
 
-    public boolean checkAttacking() {
-        return this.activeCycle == this.attackCycle;
+    public int getDamage() {
+        return this.damagePoints;
     }
 
     public void setDamage(int newSwordDamage) {
@@ -113,17 +149,34 @@ public class Sword extends Entity implements Collidable {
         this.activeCycle.setPos(newPos);
     }
 
+    /**
+     * This method checks whether this {@code Sword} is in the middle of an attack cycle.
+     * @return {@code true} if it is, {@code false} otherwise.
+     */
+    public boolean checkAttacking() {
+        return this.activeCycle == this.attackCycle;
+    }
+
+    /**
+     * This method starts an attack cycle if one is not already occuring.
+     */
     public void attack() {
         if (!this.checkAttacking()) {
         this.activeCycle = this.attackCycle;
         }
     }
 
+    /**
+     * This method resets the attack cycle.
+     */
     public void resetAttack() {
         this.attackCycle.reset();
         this.activeCycle = this.idleCycle;
     }
 
+    /**
+     * This method reflects this {@code Sword} so it is facing left.
+     */
     public void turnLeft() {
         if (this.direction == Const.RIGHT) {
             for (AnimationCycle cycle: this.cycles) {
@@ -133,6 +186,9 @@ public class Sword extends Entity implements Collidable {
         this.direction = Const.LEFT;
     }
 
+    /**
+     * This method reflects this {@code Sword so ti is facing right}.
+     */
     public void turnRight() {
         if (this.direction == Const.LEFT) {
             for (AnimationCycle cycle: this.cycles) {
