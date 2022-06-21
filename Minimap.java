@@ -6,6 +6,10 @@ import java.awt.BasicStroke;
 
 import java.util.ArrayList;
 
+/**
+ * This method represents a minimap of the real game map. The minimap can be a different size
+ * magnification, and position than the actual game map.
+ */
 public class Minimap implements Drawable {
     private Vector position;
     private double scale;
@@ -15,6 +19,16 @@ public class Minimap implements Drawable {
     private Player player;
     private ArrayList<Enemy> enemies;
 
+    /**
+     * This constructs a {@code Minimap} object with a position, size, and magnification.
+     * @param position The top-left coordinate.
+     * @param width The width of this {@code Minimap}.
+     * @param height The height of this {@code Minimap}.
+     * @param scale The magnification of this {@code Minimap}.
+     * @param map The map this {@code Minimap} is based on.
+     * @param player The {@code Player} object.
+     * @param enemies The list of all the {@code Enemy} objects.
+     */
     public Minimap(Vector position, int width, int height, double scale, Map map, 
             Player player, ArrayList<Enemy> enemies) {
         this.position = position;
@@ -26,6 +40,10 @@ public class Minimap implements Drawable {
         this.enemies = enemies;
     }
 
+    /**
+     * This method updates the rendering of this {@code Minimap}. The entities are
+     * drawn as small circles on this {@code Minimap}. The player is centered.
+     */
     public void update() {
         Graphics2D graphics = this.surf.createGraphics();
 
@@ -78,6 +96,10 @@ public class Minimap implements Drawable {
         return (int) this.position.getY();
     }
 
+    /**
+     * This method draws this {@code Minimap} onto a surface. It has a gray border.
+     * @see Const#GRAY
+     */
     @Override
     public void draw(Graphics graphics) {
         // Transform the minimap to the top left.
@@ -95,11 +117,5 @@ public class Minimap implements Drawable {
 
         // Reset the graphics.
         ((Graphics2D) graphics).setTransform(saveAT);
-    }
-
-    public Vector calculateMinimapPosition(Vector realPosition) {
-        Vector minimapPosition = realPosition.clone();
-        minimapPosition.div(this.scale);
-        return minimapPosition;
     }
 }

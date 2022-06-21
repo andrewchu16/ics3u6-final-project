@@ -40,6 +40,12 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
         this.setHitboxAnchorPos(this.position);
     }
 
+    /**
+     * This constructs an {@code AnimationFrame} object with a single {@code Hitbox}
+     * around the image.
+     * @param position The top-left coordinate of this {@code AnimationFrame}.
+     * @param pic The image to use for the sprite.
+     */
     public AnimationFrame(Vector position, BufferedImage pic) {
         this.position = position;
         this.sprite = new Sprite(position, pic);
@@ -50,11 +56,17 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
         this.hitboxes.add(hitbox);
     }
 
+    /**
+     * This method draws the image onto the surface.
+     */
     @Override
     public void draw(Graphics graphics) {
         this.sprite.draw(graphics);
     }
     
+    /**
+     * This method draws the hitboxes of this {@code AnimationFrame} onto the surface.
+     */
     @Override
     public void drawDebugInfo(Graphics graphics) {
         for (Hitbox hitbox: this.hitboxes) {
@@ -62,6 +74,10 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
         }
     }
 
+    /**
+     * This method determines whether a coordinate is within any of the hitboxes 
+     * of this {@code AnimationFrame}.
+     */
     @Override
     public boolean contains(int x, int y) {
         for (Hitbox hitbox: this.hitboxes) {
@@ -72,6 +88,10 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
         return false;
     }
 
+    /**
+     * This method determines whether a hitbox intersects with any of the hitboxes
+     * of this {@code AnimationFrame}.
+     */
     @Override
     public boolean intersects(Hitbox other) {
         for (Hitbox hitbox: this.hitboxes) {
@@ -79,17 +99,21 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
                 return true;
             }
         }
-        
         return false;
     }
 
+    /**
+     * This method determines whether another {@code AnimationFrame} intersects with
+     * any of the hitboxes of this {@code AnimationFrame}.
+     * @param otherFrame The other {@code AnimationFrame} object to check.
+     * @return {@code true} if they do intersect, {@code false} otherwise.
+     */
     public boolean intersects(AnimationFrame otherFrame) {
         for (Hitbox hitbox: this.hitboxes) {
             if (otherFrame.intersects(hitbox)) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -105,16 +129,31 @@ public class AnimationFrame implements Drawable, Debuggable, Collidable {
         this.position = newPos;
     }
 
+    /**
+     * This method sets the hitboxes of this {@code AnimationFrame}.
+     * @param hitboxes An {@code ArrayList} containing relative hitboxes.
+     */
     public void setHitboxes(ArrayList<RelativeHitbox> hitboxes) {
         this.hitboxes = hitboxes;
     }
 
+    /**
+     * This method sets the anchor position of the all the relative hitboxes.
+     * The relative positions of the hitboxes are maintained. 
+     * @param newAnchorPos The new anchor position of the hitboxes.
+     * @see RelativeHitbox
+     */
     private void setHitboxAnchorPos(Vector newAnchorPos) {
         for (RelativeHitbox hitbox: this.hitboxes) {
             hitbox.setAnchorPos(newAnchorPos);
         }
     }
 
+    /**
+     * This method reflects the sprite and hitboxes of this {@code AnimationFrame}
+     * over a vertical line.
+     * @param xLine The line to reflect this {@code AnimationFrame} over.
+     */
     public void reflectHorizontally(int xLine) {
         this.sprite.reflectHorizontally(xLine);
         for (RelativeHitbox hitbox: this.hitboxes) {

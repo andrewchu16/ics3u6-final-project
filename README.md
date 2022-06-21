@@ -40,11 +40,11 @@ The main game takes place on a 2-dimensional plane.
 - [x] Finish game map system
 - [x] Finish mini map
 - [x] Finish adding sprites
-- [ ] Finish player attacks
-- [ ] Finish health bar
+- [x] Finish player attacks
+- [x] Finish health bar
 - [x] Finish enemies and enemy behaviour
-- [ ] Finish debugging game
-- [ ] Finish adding comments
+- [x] Finish debugging game
+- [x] Finish adding comments
 - [ ] Finish video
 - [ ] Submit project
 

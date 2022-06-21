@@ -9,6 +9,13 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * This class is used for easily combining animations with hitboxes. Animations
+ * can be read from a custom animation file. An {@code AnimationCycle} is made 
+ * of {@code AnimationFrame}s and a general hitbox that describes the general
+ * area that hitboxes in the {@code AnimationFrame}s will fall in.
+ * @see AnimationFrame
+ */
 public class AnimationCycle implements Drawable, Debuggable, Collidable {
     // Different looping types
     public static final int NO_LOOPING = 0;
@@ -29,14 +36,23 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
     private int frameHeight;
     private RelativeHitbox generalHitbox;
 
+    /**
+     * This constructs an {@code AnimationCycle} object out of of a sprite sheet.
+     * @param position The top-left coordinate of the {@code AnimationCycle} object.
+     * @param picSheet The sprite sheet to use. Each frame should be stacked vertically up to down.
+     * @param numFrames The number of frames in the sprite sheet.
+     * @param loopType The way to handle the cycle once it is finished. The cycle can stop, loop to start, or loop backwards.
+     */
     public AnimationCycle(Vector position, BufferedImage picSheet, int numFrames, int loopType) {
         this.position = position;
         this.frames = new AnimationFrame[numFrames];
 
+        // Calculate the dimensions of the frames.
         this.numFrames = numFrames;
         this.frameWidth = picSheet.getWidth();
         this.frameHeight = picSheet.getHeight() / numFrames;
 
+        // Create the individual {@code AnimationFrame} objects.
         for (int i = 0; i < numFrames; i++) {
             BufferedImage subImage = picSheet.getSubimage(0, i * frameHeight, 
                     frameWidth, frameHeight);
@@ -51,15 +67,25 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
                 this.frameWidth, this.frameHeight);
     }
 
+    /**
+     * This constructs an {@code AnimationCycle} object out of a sprite sheet.
+     * @param position The top-left coordinate of the {@code AnimationCycle} object.
+     * @param picSheet The sprite sheet to use. Each frame should be stacked vertically up to down.
+     * @param frameWidth The width of each frame.
+     * @param frameHeight The height of each frame.
+     * @param loopType The way to handle the cycle once it is finished. The cycle can stop, loop to start, or loop backwards.
+     */
     public AnimationCycle(Vector position, BufferedImage picSheet, int frameWidth, int frameHeight,
             int loopType) {
         this.position = position;
         this.frames = new AnimationFrame[this.numFrames];
         
+        // Calculate the number of frames.
         this.numFrames = picSheet.getHeight() / frameHeight;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
 
+        // Create the individual {@code AnimationFrame} objects.
         for (int i = 0; i < numFrames; i++) {
             BufferedImage subImage = picSheet.getSubimage(0, i * frameHeight, 
                     frameWidth, frameHeight);
@@ -98,7 +124,8 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
      * <li> All labels should be kept.</li>
      * <li> Spacing should be kept.</li>
      * <li> {@code hitboxName} can be changed with the name of any hitbox as long as it has no spaces.</li>
-     * <li> {@code x} and {@code y} can be of type {@code double}, but {@code n}, {@code width}, and {@code height} should be of type {@code int}.</li>
+     * <li> {@code x} and {@code y} can be of type {@code double}.</li>
+     * <li> {@code n}, {@code width}, and {@code height} should be of type {@code int}.</li>
      * </ul>
      * <p>The file should be formatted as follows with values filled in.</p>
      * <pre>{@code
@@ -136,7 +163,7 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
 
         // Load general animation cycle information.
         try {
-            // Determine the looping type.
+            // Get the looping type.
             String loopTypeString = input.readLine().split(" ")[1];
             if (loopTypeString.equals("NO_LOOPING")) {
                 this.setLooping(NO_LOOPING);
@@ -149,7 +176,7 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
                 this.setLooping(NO_LOOPING);
             }
 
-            // Determine the general hitbox.
+            // Get the general hitbox.
             String[] generalHitboxData = input.readLine().split(" ");
             Vector relativePosition = new Vector(Double.parseDouble(generalHitboxData[1]), 
                     Double.parseDouble(generalHitboxData[2]));
@@ -166,6 +193,7 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
             System.out.println("Error: Incorrect animation file general information format (incorrect number of values).");
         }
 
+        // Calculate the dimensions of the animation frames.
         this.frames = new AnimationFrame[this.numFrames];
         this.frameWidth = picSheet.getWidth();
         this.frameHeight = picSheet.getHeight() / this.numFrames;
@@ -223,11 +251,20 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         }
     }
 
+    /**
+     * This method restarts this {@code AnimationCycle} from the beginning. If the 
+     * loop was playing backwards, it resets to playing forwards.
+     */
     public void reset() {
         this.setActiveFrame(0);
         this.indexDir = 1;
     }
 
+    /**
+     * This method checks if this {@code AnimationCycle} has reached the last frame.
+     * @return {@code true} if it reached the last frame, {@code false} otherwise.
+     * If this cycle is looping, this method will always return {@code false}.
+     */
     public boolean checkDone() {
         return (this.loopType == NO_LOOPING && this.curIndex == this.numFrames - 1);
     }
@@ -244,8 +281,21 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         return this.frameHeight;
     }
 
+    /**
+     * This method returns a reference to the general hitbox of this {@code AnimationCycle}.
+     * @return A {@code RelativeHitbox} object.
+     */
     public Hitbox getGeneralHitbox() {
         return this.generalHitbox;
+    }
+
+    /**
+     * This method returns a reference to the active frame of this {@code AnimationCycle} 
+     * when this method is called.
+     * @return A reference to a {@code AnimationFrame} object.
+     */
+    public AnimationFrame getActiveFrame() {
+        return this.activeFrame;
     }
     
     public void setPos(Vector newPos) {
@@ -256,6 +306,11 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         this.generalHitbox.setAnchorPos(newPos);
     }
 
+    /**
+     * THis method sets the looping behaviour of this {@code AnimationCycle}. If
+     * the new loop type is invalid, it defaults to no looping.
+     * @param newLoopType The integer representing the new looping type.
+     */
     public void setLooping(int newLoopType) {
         if (FIRST_LOOP_TYPE <= newLoopType && newLoopType <= LAST_LOOP_TYPE) {
             this.loopType = newLoopType;
@@ -264,11 +319,20 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         }
     }
     
+    /**
+     * This method sets the active or visible frame based on its index in the cycle. 
+     * The modulo of the given index by the number of frames is used if the index 
+     * is too large.
+     * @param index The index of the frame to be set as active.
+     */
     public void setActiveFrame(int index) {
         this.curIndex = index % this.numFrames;
         this.activeFrame = this.frames[this.curIndex];
     }
 
+    /**
+     * This method loads the next active frame. This follows its looping type.
+     */
     public void loadNextFrame() {
         if (this.checkDone()) {
             return;
@@ -286,31 +350,55 @@ public class AnimationCycle implements Drawable, Debuggable, Collidable {
         }
     }
 
+    /**
+     * This method determines whether a coordinate is within the hitboxes of the
+     * current active {@code AnimationFrame}.
+     */
     @Override
     public boolean contains(int x, int y) {
         return this.activeFrame.contains(x, y);
     }
 
+    /**
+     * THis method determines whether a hitbox intersects with the hitboxes of the
+     * current active {@code AnimationFrame}.
+     */
     @Override
     public boolean intersects(Hitbox other) {
         return this.activeFrame.intersects(other);
     }
 
+    /**
+     * This method determines whether another {@code AnimationCycle} intersects with
+     * the current active {@code AnimationFrame}.
+     * @param otherCycle The other {@code AnimationCycle} to check.
+     * @return
+     */
     public boolean intersects(AnimationCycle otherCycle) {
-        return this.activeFrame.intersects(otherCycle.activeFrame);
+        return this.activeFrame.intersects(otherCycle.getActiveFrame());
     }
     
+    /**
+     * This method draws the active frame onto a surface.
+     */
     @Override
     public void draw(Graphics graphics) {
         this.activeFrame.draw(graphics);
     }
 
+    /**
+     * This method draws the hitboxes of the active frame onto a surface.
+     */
     @Override
     public void drawDebugInfo(Graphics graphics) {
         this.generalHitbox.drawDebugInfo(graphics);
         this.activeFrame.drawDebugInfo(graphics);
     }
 
+    /**
+     * This method reflects the sprites and hitboxes of this {@code AnimationCycle}
+     * over the middle of the general hitbox.
+     */
     public void reflectHorizontally() {
         int xLine = this.generalHitbox.getX() + this.generalHitbox.getWidth() / 2;
         for (AnimationFrame frame: this.frames) {

@@ -3,7 +3,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Enemy extends Entity implements Moveable, Collidable {
-    private static final int WALK_SPEED = 3;
+    private static final int WALK_SPEED = 4;
     private static int numEnemies = 0;
 
     private ArrayList<AnimationCycle> cycles;

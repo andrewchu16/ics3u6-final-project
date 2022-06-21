@@ -1,12 +1,21 @@
-11
-assets/map/chunks/chunk -1 1.txt
-assets/map/chunks/chunk 0 1.txt
-assets/map/chunks/chunk 1 1.txt
-assets/map/chunks/chunk -1 0.txt
-assets/map/chunks/chunk 0 0.txt
-assets/map/chunks/chunk 1 0.txt
+20
 assets/map/chunks/chunk -1 -1.txt
-assets/map/chunks/chunk 0 -1.txt
-assets/map/chunks/chunk 1 -1.txt
-assets/map/chunks/chunk -2 -2.txt
+assets/map/chunks/chunk -1 -2.txt
+assets/map/chunks/chunk -1 0.txt
+assets/map/chunks/chunk -1 1.txt
 assets/map/chunks/chunk -2 -1.txt
+assets/map/chunks/chunk -2 -2.txt
+assets/map/chunks/chunk -2 0.txt
+assets/map/chunks/chunk -2 1.txt
+assets/map/chunks/chunk 0 -1.txt
+assets/map/chunks/chunk 0 -2.txt
+assets/map/chunks/chunk 0 0.txt
+assets/map/chunks/chunk 0 1.txt
+assets/map/chunks/chunk 1 -1.txt
+assets/map/chunks/chunk 1 -2.txt
+assets/map/chunks/chunk 1 0.txt
+assets/map/chunks/chunk 1 1.txt
+assets/map/chunks/chunk 2 -1.txt
+assets/map/chunks/chunk 2 -2.txt
+assets/map/chunks/chunk 2 0.txt
+assets/map/chunks/chunk 2 1.txt

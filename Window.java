@@ -40,7 +40,6 @@ public class Window {
         this.cards = new JPanel(new CardLayout());
         this.frame.add(cards);
 
-
         this.screenStack = new ArrayList<String>();
 
         this.drawLoop = new Timer(Const.DEFAULT_FRAME_PERIOD, new ActionListener() {
@@ -85,6 +84,7 @@ public class Window {
     public void switchToScreen(String screenName) {
         CardLayout layout = (CardLayout) this.cards.getLayout();
 
+        // Record current screen.
         String prevScreenName = "";
         if (!this.screenStack.isEmpty()) {
             prevScreenName = this.screenStack.get(this.screenStack.size() - 1);
@@ -141,8 +141,8 @@ public class Window {
     }
 
     /**
-     * This class represents a handler for back button meant to switch to the previously
-     * displayed screen in the window.
+     * This class represents a handler for a {@code BackButton} meant to switch to the 
+     * previously displayed screen in this {@code Window}.
      * @see Button
      */
     public class BackButtonHandler implements Button.ButtonHandler {
@@ -156,6 +156,9 @@ public class Window {
         public void handleUnpress() {}
     }
 
+    /**
+     * This class represents a handler for a 
+     */
     public class CloseButtonHandler implements Button.ButtonHandler {
         public void handlePress() {
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));

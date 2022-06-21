@@ -296,9 +296,7 @@ public class Player extends Entity implements Moveable, Collidable {
             if (contains(x, y)) {
                 takeDamage(250);
             } else {
-                if (!checkAttacking()) {
-                    attack();
-                }
+                attack();
             }
         }
 
@@ -329,6 +327,7 @@ public class Player extends Entity implements Moveable, Collidable {
 
     @Override
     public void moveUp() {
+        this.resetAttack();
         this.activeCycle = walkCycle;
         this.moveSpeed.setY(-WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
@@ -336,6 +335,7 @@ public class Player extends Entity implements Moveable, Collidable {
 
     @Override
     public void moveLeft() {
+        this.resetAttack();
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(-WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
@@ -343,6 +343,7 @@ public class Player extends Entity implements Moveable, Collidable {
 
     @Override
     public void moveDown() {
+        this.resetAttack();
         this.activeCycle = walkCycle;
         this.moveSpeed.setY(WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
@@ -350,15 +351,24 @@ public class Player extends Entity implements Moveable, Collidable {
 
     @Override
     public void moveRight() {
+        this.resetAttack();
         this.activeCycle = walkCycle;
         this.moveSpeed.setX(WALK_SPEED);
         this.moveSpeed.setLength(WALK_SPEED);
     }
 
     public void attack() {
-        this.activeCycle = this.attackCycle;
-        this.sword.attack();
-        this.activeCycle.setPos(getPos());
+        if (!this.checkAttacking()) {
+            this.activeCycle = this.attackCycle;
+            this.attackCycle.reset();
+            this.sword.attack();
+            this.activeCycle.setPos(getPos());
+        }
+    }
+
+    public void resetAttack() {
+        this.attackCycle.reset();
+        this.sword.resetAttack();
     }
 
     public void takeDamage(int damagePoints) {

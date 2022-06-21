@@ -51,7 +51,7 @@ public class MenuScreen extends Screen {
         // Draw title.
         this.titleLabel.draw(graphics);
 
-        // Draw button.
+        // Draw buttons.
         this.drawButtons(graphics);
     }
 }

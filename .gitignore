@@ -5,9 +5,6 @@ bin/
 # Ignore image editing files.
 *.pdn
 
-# Ignore user data.
-data/
-
 # Ignore project submission information.
 final project proposal.pdf
 *.zip

@@ -18,15 +18,16 @@ public class AcrossTheSandsGame {
     private Screen pauseScreen;
 
     /**
-     * This constructs an AcrossTheSandsGame object.
+     * This constructs an {@code AcrossTheSandsGame} object.
      */
     public AcrossTheSandsGame() {
-        this.game = new Game();
+        this.window = new Window("Across The Sands", Const.WIDTH, Const.HEIGHT);
+        this.game = new Game(window);
         this.initializeWindow();
     }
 
     /**
-     * This method initializes the window and different window screens. 
+     * This method initializes the window and adds the different window screens. 
      * The screens in the window are:
      * <ol>
      * <li> The main menu screen.
@@ -41,9 +42,6 @@ public class AcrossTheSandsGame {
      * @see Screen
      */
     private void initializeWindow() {
-        // Initialize the window object.
-        this.window = new Window("Across The Sands", Const.WIDTH, Const.HEIGHT);
-
         // Initialize the window screens.
         this.menuScreen = new MenuScreen(this.window, this.game);
         this.settingsScreen = new SettingsScreen(this.window, this.game);
@@ -61,13 +59,10 @@ public class AcrossTheSandsGame {
         this.window.addScreen(this.gameScreen);
         this.window.addScreen(this.gameOverScreen);
         this.window.addScreen(this.pauseScreen);
-
-        // Add the window object to the game.
-        this.game.setWindow(this.window);
     }
 
     /**
-     * This method opens the window and starts the game.
+     * This method opens the window and starts running the game application.
      */
     public void start() {
         this.window.start();

@@ -33,7 +33,7 @@ public class Game implements Drawable, Debuggable {
     private Timer animateLoop;
     private Timer enemySpawnLoop;
     
-    public Game() {
+    public Game(Window window) {
         this.debugMode = true;
         
         this.player = new Player(Const.MEDIUM_PLAYER_HEALTH, Const.SWORD_DAMAGE);
@@ -71,7 +71,7 @@ public class Game implements Drawable, Debuggable {
         });
         
         this.setDifficulty(MEDIUM);
-        this.window = null;
+        this.window = window;
     }
 
     public void run() {
@@ -245,10 +245,6 @@ public class Game implements Drawable, Debuggable {
                 }
                 break;
         }
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
     }
 
     public void setUpdatePeriod(int updatePeriod) {

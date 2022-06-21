@@ -9,19 +9,43 @@ import java.util.Iterator;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
+/**
+ * This class represents the game map storing the position of all tiles and chunks
+ * in the game.
+ */
 public class Map implements Drawable, Debuggable {
+    // The number of chunks away from the player to render.
     public static final int RENDER_DISTANCE = 2;
 
     private String fileName;
     private ArrayList<Chunk> unactiveChunks;
     private ArrayList<Chunk> activeChunks;
 
+    /**
+     * This constructs a {@code Map} object using data from a file.
+     * @param mapFileName The name of the map file.
+     * @see Map#loadFromFile()
+     */
     public Map(String mapFileName) {
         this.fileName = mapFileName;
         this.unactiveChunks = new ArrayList<Chunk>();
         this.activeChunks = new ArrayList<Chunk>();
     }
 
+    /**
+     * This method loads the map and chunk data from a file. The map file is formatted 
+     * as follows with values substituted in:
+     * <pre>{@code
+     * numChunks
+     * chunkFilePath1
+     * chunkFilePath2
+     * chunkFilePath3
+     * ...
+     * chunkFilePathN
+     * }</pre>
+     * If an error occurs while reading the file, a relevant error message will be provided.
+     * @see Chunk#loadFromFile()
+     */
     public void loadFromFile() {
         // Open map file.
         BufferedReader input;
@@ -39,15 +63,14 @@ public class Map implements Drawable, Debuggable {
 
             for (int i = 0; i < numChunks; i++) {
                 String chunkFileName = input.readLine();
-                Chunk newChunk = new Chunk();
-                newChunk.setFileName(chunkFileName);
+                Chunk newChunk = new Chunk(chunkFileName);
                 newChunk.loadFromFile();
                 this.unactiveChunks.add(newChunk);
             }
         } catch (IOException ex) {
             System.out.println("Error: Could not read map file.");
         } catch (NumberFormatException ex) {
-            System.out.println("Error: Incorrect map file format.");
+            System.out.println("Error: Incorrect map file number format.");
         }
 
         // Close map file.
@@ -58,6 +81,11 @@ public class Map implements Drawable, Debuggable {
         }
     }
 
+    /**
+     * This method loads and unloads chunks based on their proximity to the camera.
+     * @param cameraRealPosition The real position of the camera.
+     * @see Map#calculateRealPosition(Vector)
+     */
     public void updateRendering(Vector cameraRealPosition) {
         Vector cameraMapPosition = Map.calculateMapPosition(cameraRealPosition);
         // Remove chunks that are now outside render distance.
@@ -79,11 +107,13 @@ public class Map implements Drawable, Debuggable {
         }
     }
 
-    public Tile getTileContaining(int x, int y) {
-        Chunk containingChunk = this.getChunkContaining(x, y);
-        return containingChunk.getTileContaining(x, y);
-    }
-
+    /**
+     * This method gets the {@code Chunk} that a coordinate falls into.
+     * @param x The x-coordinate.
+     * @param y The y-coordinate.
+     * @return The {@code Chunk} containing the coordinate, {@code null} if no chunk 
+     * contains the coordinate.
+     */
     public Chunk getChunkContaining(int x, int y) {
         // Search in active chunks.
         for (Chunk chunk: this.activeChunks) {
@@ -99,6 +129,7 @@ public class Map implements Drawable, Debuggable {
             }
         }
 
+        // The chunk cannot be found on the map.
         return null;
     }
 
@@ -110,6 +141,12 @@ public class Map implements Drawable, Debuggable {
         return this.unactiveChunks;
     }
 
+    /**
+     * This method determines the chunks that intersect with a hitbox. It 
+     * only checks the active chunks for intersections.
+     * @param other The hitbox to check.
+     * @return An {@code ArrayList} object containing all the active intersecting chunks.
+     */
     public ArrayList<Chunk> getActiveChunksIntersecting(Hitbox other) {
         ArrayList<Chunk> chunks = new ArrayList<Chunk>();
         
@@ -123,6 +160,12 @@ public class Map implements Drawable, Debuggable {
         return chunks;
     }
 
+    /**
+     * This method determines whether a hitbox intersects with an active solid tile.
+     * It only checks the active chunks for solid tiles.
+     * @param other The hitbox to check.
+     * @return {@code true} if the hitbox does intersect, {@code false} otherwise.
+     */
     public boolean intersectsWithActiveSolid(Hitbox other) {
         ArrayList<Chunk> intersectingChunks = this.getActiveChunksIntersecting(other);
 
@@ -134,6 +177,9 @@ public class Map implements Drawable, Debuggable {
         return false;
     }
 
+    /**
+     * This method draws all the active chunks.
+     */
     @Override
     public void draw(Graphics graphics) {
         for (Chunk chunk: this.activeChunks) {
@@ -141,6 +187,9 @@ public class Map implements Drawable, Debuggable {
         }
     }
 
+    /**
+     * This method draws the debug information of all the active chunks.
+     */
     @Override
     public void drawDebugInfo(Graphics graphics) {
         for (Chunk chunk: this.activeChunks) {
@@ -148,6 +197,14 @@ public class Map implements Drawable, Debuggable {
         }
     }
 
+    /**
+     * This method calculates the map position from a real position. The map
+     * position represents a position such that if each chunk represents one 
+     * unit, the map position would be the coordinate of the chunk the real
+     * position falls into. Map position is floored to the lowest integer.
+     * @param realPosition The real position.
+     * @return The map position based on the real position.
+     */
     public static Vector calculateMapPosition(Vector realPosition) {
         Vector mapPosition = realPosition.clone();
         mapPosition.div(Chunk.LENGTH * Tile.LENGTH);
@@ -156,6 +213,14 @@ public class Map implements Drawable, Debuggable {
         return mapPosition;
     }
 
+    /**
+     * This method calculates the real position from a map position. Since map
+     * positions are floored to the lowest integer, precision is lost when converting
+     * between map and real position.
+     * @param mapPosition The map position.
+     * @return The approximate real position based on the map position.
+     * @see Map#calculateMapPosition(Vector)
+     */
     public static Vector calculateRealPosition(Vector mapPosition) {
         Vector realPosition = mapPosition.clone();
         realPosition.mult(Chunk.LENGTH * Tile.LENGTH);
