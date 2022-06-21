@@ -114,7 +114,14 @@ public class Sword extends Entity implements Collidable {
     }
 
     public void attack() {
+        if (!this.checkAttacking()) {
         this.activeCycle = this.attackCycle;
+        }
+    }
+
+    public void resetAttack() {
+        this.attackCycle.reset();
+        this.activeCycle = this.idleCycle;
     }
 
     public void turnLeft() {
