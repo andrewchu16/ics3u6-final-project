@@ -8,3 +8,4 @@ bin/
 # Ignore project submission information.
 final project proposal.pdf
 *.zip
+*.mp4
