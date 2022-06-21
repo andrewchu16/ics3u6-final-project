@@ -12,6 +12,8 @@ public class Sword extends Entity implements Collidable {
     private AnimationCycle attackCycle;
     private AnimationCycle idleCycle;
 
+    private Sound swingSound;
+
     private int direction;
     private int damagePoints;
     
@@ -31,6 +33,8 @@ public class Sword extends Entity implements Collidable {
         this.cycles.add(this.attackCycle);
 
         this.activeCycle = this.idleCycle;
+
+        this.swingSound = new Sound(Const.SWING_SOUND_FILE_NAME);
 
         this.direction = Const.LEFT;
         this.damagePoints = swordDamagePoints;
@@ -162,7 +166,8 @@ public class Sword extends Entity implements Collidable {
      */
     public void attack() {
         if (!this.checkAttacking()) {
-        this.activeCycle = this.attackCycle;
+            this.activeCycle = this.attackCycle;
+            this.swingSound.start();
         }
     }
 

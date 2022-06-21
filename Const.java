@@ -30,15 +30,15 @@ public final class Const {
 
     // Easy mode settings.
     public static final int EASY_SPAWN_SPEED = MS_PER_S * 8;
-    public static final int EASY_ENEMY_HEALTH = 400;
+    public static final int EASY_ENEMY_HEALTH = 200;
     public static final int EASY_PLAYER_HEALTH = 1400;
     // Medium mode settings.
     public static final int MEDIUM_SPAWN_SPEED = MS_PER_S * 6;
-    public static final int MEDIUM_ENEMY_HEALTH = 750;
+    public static final int MEDIUM_ENEMY_HEALTH = 400;
     public static final int MEDIUM_PLAYER_HEALTH = 1000;
     // Hard mode settings.
     public static final int HARD_SPAWN_SPEED =  MS_PER_S * 4;
-    public static final int HARD_ENEMY_HEALTH = 1000;
+    public static final int HARD_ENEMY_HEALTH = 500;
     public static final int HARD_PLAYER_HEALTH = 700;
 
     // Labels for the different screens.
@@ -140,6 +140,9 @@ public final class Const {
     public static final Font SMALL_BUTTON_FONT = new Font("Sans-Serif", Font.PLAIN, 24);
     public static final Font DEBUG_FONT = new Font("Sans-Serif", Font.PLAIN, 12);
     
+    // Sound files.
+    public static final String SWING_SOUND_FILE_NAME = "assets/audio/swing_sound.wav";
+
     // Tile and map sprites.
     public static final Sprite SAND_TILE_SPRITE = new Sprite(0, 0, "assets/images/tiles/sand_tile.png");
     public static final Sprite ROCK_TILE_SPRITE = new Sprite(0, 0, "assets/images/tiles/rock_tile.png");

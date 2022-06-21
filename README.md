@@ -43,10 +43,11 @@ The main game takes place on a 2-dimensional plane.
 - [x] Finish player attacks
 - [x] Finish health bar
 - [x] Finish enemies and enemy behaviour
+- [x] Finish sounds
 - [x] Finish debugging game
 - [x] Finish adding comments
-- [ ] Finish video
-- [ ] Submit project
+- [x] Finish video
+- [x] Submit project
 
 ## Sprite Credits
 
